@@ -1,11 +1,115 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import logo from '../assets/dotnet_ecuador_logo.jpeg';
+import { Image } from 'astro:assets';
+import  Header  from '../components/Header.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>.NET Ecuador</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        padding: 20px;
+      }
+      .banner {
+        background-color: #eee;
+        padding: 20px;
+        text-align: center;
+      }
+      .formulario {
+        margin-top: 20px;
+      }
+      .formulario input, .formulario button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+      }
+      .acordeon {
+        margin-top: 20px;
+      }
+      .acordeon button {
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+        background-color: #02375f;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 5px;
+      }
+      .acordeon div {
+        display: none;
+        padding: 10px;
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <Header/>
+
+    <div class="container">
+      <section class="banner">
+        <h2>Bienvenido a la Comunidad .NET Ecuador</h2>
+        <p>Únete a nuestra comunidad y aprende sobre .NET y tecnologías relacionadas.</p>
+      </section>
+
+      <section class="formulario">
+        <h3>Suscríbete a nuestro boletín</h3>
+        <form>
+          <input type="text" placeholder="Nombres Completos" required />
+          <input type="email" placeholder="Correo Electrónico" required />
+          <button type="submit">Suscribirse</button>
+        </form>
+      </section>
+
+      <section>
+        <h3>Síguenos en Redes Sociales</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Únete a nuestro grupo de WhatsApp</h3>
+        <a href="#">Haz clic aquí para unirte</a>
+      </section>
+
+      <section class="acordeon">
+        <h3>Preguntas Frecuentes</h3>
+        <button onclick="toggleFAQ(0)">¿Cómo puedo unirme a la comunidad?</button>
+        <div>Asiste a nuestros eventos, participa en proyectos y únete a nuestros canales.</div>
+
+        <button onclick="toggleFAQ(1)">¿Cómo puedo unirme como voluntario?</button>
+        <div>Llena el formulario en la sección de Voluntariado y nos pondremos en contacto contigo.</div>
+
+        <button onclick="toggleFAQ(2)">¿Cómo puedo estar al tanto de los eventos?</button>
+        <div>Síguenos en redes, suscríbete al boletín y revisa nuestra web.</div>
+
+        <button onclick="toggleFAQ(3)">¿Puedo colaborar como presentador?</button>
+        <div>Si tienes una charla, contáctanos a través del formulario en la web.</div>
+
+        <button onclick="toggleFAQ(4)">¿Qué habilidades necesito?</button>
+        <div>No se requieren habilidades específicas. Lo importante es el interés por aprender.</div>
+
+        <button onclick="toggleFAQ(5)">¿Cómo puedo contribuir a los proyectos?</button>
+        <div>Únete a nuestro GitHub y colabora en código, documentación, y más.</div>
+
+        <button onclick="toggleFAQ(6)">¿La comunidad ofrece mentoría?</button>
+        <div>Sí, tenemos un programa de mentoría. Solicítalo en nuestra web.</div>
+      </section>
+    </div>
+
+    
+  </body>
+</html>

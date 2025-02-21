@@ -1,0 +1,48 @@
+---
+import logo from '../assets/dotnet_ecuador_logo.jpeg';
+import { Image } from 'astro:assets';
+import  Header  from '../components/Header.astro';
+
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobre Nosotros - .NET Ecuador</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #222;
+        color: white;
+      }
+      .nav-buttons a {
+        margin-left: 10px;
+        text-decoration: none;
+      }
+      .nav-buttons button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+      }
+      .container {
+        padding: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    
+  </body>
+</html>

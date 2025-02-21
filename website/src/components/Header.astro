@@ -1,0 +1,53 @@
+---
+import logo from '../assets/dotnet_ecuador_logo.jpeg';
+import { Image } from 'astro:assets';
+---
+
+<header class="header">
+  <Image src={logo} alt="Logo de .NET Ecuador" width="80" />
+  <h1>.NET Ecuador</h1>
+  <nav class="nav-buttons">
+    <a href="/"><button>Inicio</button></a>
+    <a href="/aboutUs"><button>Sobre Nosotros</button></a>
+    <a href="/team"><button>Nuestro Equipo</button></a>
+    <a href="/events"><button>Eventos</button></a>
+    <a href="/volunteer"><button>Voluntariado</button></a>
+  </nav>
+</header>
+
+<style>
+          .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  padding: 20px;
+  background-color: #1a152c;
+  color: white;
+}
+
+.header img {
+  width: 90px;
+  height: 65px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  margin-left: auto; 
+}
+
+.nav-buttons button {
+  background-color: #1a152c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.nav-buttons button:hover {
+  background-color: #0a0b0c; 
+}
+</style>
