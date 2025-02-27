@@ -1,0 +1,118 @@
+---
+import accordionClosed from "../assets/icons/abajo.png";
+import accordionOpen from "../assets/icons/arriba.png";
+
+export interface Props {
+  title: string;
+  desc: string;
+}
+
+const { title, desc } = Astro.props;
+---
+
+<div class="accordion">
+  <div class="accordion-item">
+    <button
+      class="accordion-header"
+      onclick="toggleAccordion(this)"
+      data-open={accordionOpen.src} 
+      data-closed={accordionClosed.src} 
+    >
+      <span>{title}</span>
+      <img
+        src={accordionClosed.src} 
+        alt="Accordion Icon"
+        width="18"
+        height="18"
+        class="accordion-icon"
+      />
+    </button>
+    <div class="accordion-content">
+      {desc}
+    </div>
+  </div>
+</div>
+
+<style>
+  .accordion {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+
+  .accordion-item {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f9fafb;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .accordion-item:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .accordion-header {
+    font-family: "Poppins";
+    width: 100%;
+    padding: 14px 20px;
+    text-align: left;
+    background: #630072;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease-in-out;
+  }
+
+  .accordion-header:hover {
+    background: #9600ad;
+  }
+
+  .accordion-content {
+    padding: 14px 20px;
+    display: none;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    font-size: 15px;
+    color: #374151;
+    line-height: 1.5;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .accordion-content.open {
+    display: block;
+  }
+
+  .accordion-icon {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .accordion-icon.rotated {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script is:inline>
+  function toggleAccordion(button) {
+    const content = button.nextElementSibling;
+    const icon = button.querySelector(".accordion-icon");
+
+    const openSrc = button.getAttribute("data-open"); 
+    const closedSrc = button.getAttribute("data-closed"); 
+
+    if (content.classList.contains("open")) {
+      content.classList.remove("open");
+      icon.src = closedSrc; 
+      icon.classList.remove("rotated");
+    } else {
+      content.classList.add("open");
+      icon.src = openSrc; 
+      icon.classList.add("rotated");
+    }
+  }
+</script>

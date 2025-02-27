@@ -1,11 +1,13 @@
 ---
-import logo from '../assets/dotnet_ecuador_logo.jpeg';
+import logo from '../assets/dotnet_logo.png';
 import { Image } from 'astro:assets';
 ---
 
 <header class="header">
-  <Image src={logo} alt="Logo de .NET Ecuador" width="80" />
-  <h1>.NET Ecuador</h1>
+  <div class="logo-container">
+    <Image src={logo} alt="Logo de .NET Ecuador" class="logo" />
+    <h1>.NET Ecuador</h1>
+  </div>
   <nav class="nav-buttons">
     <a href="/"><button>Inicio</button></a>
     <a href="/aboutUs"><button>Sobre Nosotros</button></a>
@@ -16,38 +18,60 @@ import { Image } from 'astro:assets';
 </header>
 
 <style>
-          .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; 
-  padding: 20px;
-  background-color: #1a152c;
-  color: white;
-}
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background-color: #1f085a;
+    color: white;
+    border-bottom: 4px solid #630072;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
 
-.header img {
-  width: 90px;
-  height: 65px;
-}
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
 
-.nav-buttons {
-  display: flex;
-  gap: 10px;
-  margin-left: auto; 
-}
+  .logo {
+    width: 80px;
+    height: auto;
+  }
 
-.nav-buttons button {
-  background-color: #1a152c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
+  h1 {
+    font-family: "Poppins", sans-serif;;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+  }
 
-.nav-buttons button:hover {
-  background-color: #0a0b0c; 
-}
+  .nav-buttons {
+    display: flex;
+    gap: 12px;
+  }
+
+  .nav-buttons a {
+    text-decoration: none;
+  }
+
+  .nav-buttons button {
+    background-color: #1f085a;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .nav-buttons button:hover {
+    background-color: #2e0b86;
+    transform: scale(1.05);
+  }
+
 </style>
