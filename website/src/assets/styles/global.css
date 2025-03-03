@@ -1,0 +1,373 @@
+/* Global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #eef2f7;
+  color: #333;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+
+/* Banner */
+.banner {
+  background: linear-gradient(135deg, #1f085a, #630072);
+  color: white;
+  text-align: center;
+  padding: 50px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.banner h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.banner p {
+  font-size: 18px;
+}
+
+/* Form */
+.formulario {
+  background: white;
+  padding: 25px;
+  margin-top: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formulario h3 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.formulario input {
+  font-family: "Poppins";
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.formulario button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  background: #630072;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.formulario button:hover {
+  background: #9600ad;
+  transform: translateY(-2px);
+}
+
+/* Social Media Section */
+.social-media {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.social-media h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.social-media a {
+  display: inline-block;
+  margin: 10px;
+  transition: 0.3s ease-in-out;
+}
+
+.social-media a:hover {
+  transform: scale(1.2);
+}
+
+/* WhatsApp & Podcast */
+.whatsapp_podcast {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.whatsapp_podcast h3 {
+  font-size: 20px;
+  text-align: center;
+}
+
+.whatsapp_podcast a img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.whatsapp_podcast a img:hover {
+  transform: scale(1.1);
+}
+
+/* Accordion */
+.accordion {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+.acordeon h3{
+  text-align: center;
+  margin-top: 4%;
+  font-size: 150%;
+}
+
+.accordion-item {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f9fafb;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.accordion-item:hover {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-header {
+  font-family: "Poppins";
+  width: 100%;
+  padding: 14px 20px;
+  text-align: left;
+  background: #630072;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease-in-out;
+}
+
+.accordion-header:hover {
+  background: #9600ad;
+}
+
+.accordion-content {
+  padding: 14px 20px;
+  display: none;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  font-size: 15px;
+  color: #374151;
+  line-height: 1.5;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.accordion-content.open {
+  display: block;
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+.accordion-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/*About Us*/
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.about-us-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.about-us-container h1 {
+  text-align: center;
+  color: #1f085a;
+  margin-bottom: 20px;
+}
+
+.about-us-container h2 {
+  text-align: center;
+  color: #1f085a;
+  margin-bottom: 10px;
+}
+
+.about-us-container p {
+  text-align: justify;
+  margin-bottom: 15px;
+}
+
+.about-us-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.about-us-container ul li {
+  background: #f9f9f9;
+  margin: 10px 0;
+  padding: 15px;
+  border-left: 5px solid #1f085a;
+  border-radius: 5px;
+}
+
+.about-us-container .cta {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.about-us-container .cta a {
+  background-color: #1f085a;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.about-us-container .cta a:hover {
+  background-color: #2e0b86;
+}
+
+/*Team*/
+.team-container {
+  width: 90%;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+.team {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 0.2%;
+}
+.team-container h1 {
+  text-align: center;
+  color: #1f085a;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+.join-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.join-button a {
+  text-decoration: none;
+}
+
+.join-button button {
+  background-color: #630072;
+  color: white;
+  font-size: 1.2rem;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; 
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.join-button button:hover {
+  background-color: #4a0055;
+  transform: scale(1.05);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.join-button img {
+  width: 25px;
+  height: 25px;
+}
+
+/*TeamMember*/
+.profile {
+  text-align: center;
+  width: 280px;
+  margin: 10px;
+  padding: 1.5rem;
+  color: #1f085a;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  margin-bottom: 2%;
+  word-wrap: break-word;
+  animation-name: moveIn;
+  animation-duration: 1.5s;
+}
+
+@keyframes moveIn {
+  0%{  
+      translate: 0px 120px;
+  }
+  100%{
+      translate: 0px 0px;
+  }
+}
+
+.profile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.profile-image {
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.profile-name {
+  font-size: 1.75rem;
+  margin: 0.5rem 0;
+  font-weight: bold;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.profile-description {
+  font-size: 1.1rem;
+  color: #444;
+}

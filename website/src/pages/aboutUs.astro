@@ -2,6 +2,8 @@
 import logo from '../assets/dotnet_ecuador_logo.jpeg';
 import { Image } from 'astro:assets';
 import Header from '../components/Header.astro';
+import "../assets/styles/global.css";
+
 ---
 
 <html lang="es">
@@ -11,81 +13,12 @@ import Header from '../components/Header.astro';
     <title>Sobre Nosotros - .NET Ecuador</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
+      rel="stylesheet" href="../assets/styles/global.css"
     />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: #eef2f7;
-        color: #333;
-        line-height: 1.6;
-      }
-
-      .container {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background: white;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-      }
-
-      h1 {
-        text-align: center;
-        color: #1f085a;
-        margin-bottom: 20px;
-      }
-      h2{
-        text-align: center;
-        color: #1f085a;
-        margin-bottom: 10px;
-      }
-      p {
-        text-align: justify;
-        margin-bottom: 15px;
-      }
-
-      ul {
-        list-style-type: none;
-        padding: 0;
-      }
-
-      ul li {
-        background: #f9f9f9;
-        margin: 10px 0;
-        padding: 15px;
-        border-left: 5px solid #1f085a;
-        border-radius: 5px;
-      }
-
-      .cta {
-        text-align: center;
-        margin-top: 30px;
-      }
-
-      .cta a {
-        background-color: #1f085a;
-        color: white;
-        padding: 12px 20px;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 5px;
-        display: inline-block;
-      }
-
-      .cta a:hover {
-        background-color: #2e0b86;
-      }
-    </style>
   </head>
   <body>
     <Header />
-    <div class="container">
+    <div class="about-us-container">
       <h1>¿Quiénes Somos?</h1>
       <p>DotNet Ecuador es una comunidad de desarrolladores .NET, estudiantes y empresas tecnológicas
         enfocada en el crecimiento profesional colectivo en tecnologías Microsoft. La comunidad se basa
@@ -105,19 +38,16 @@ import Header from '../components/Header.astro';
           desarrolladores compartan conocimientos y experiencias, lo que puede ayudar a todos
           a mejorar sus habilidades</li>
         <li><strong>📌 Conectar con la comunidad:</strong> Es una excelente manera de
-          conectarse con otros profesionales de la tecnología en Ecuador.
-          </li>
+          conectarse con otros profesionales de la tecnología en Ecuador.</li>
         <li><strong>📌 Mejorar en .NET:</strong> Te ofrece una variedad de recursos
           educativos que pueden ayudar a los desarrolladores a mejorar sus habilidades y
-          conocimientos en .NET.
-          </li>
+          conocimientos en .NET.</li>
         <li><strong>📌 Encontrar oportunidades laborales:</strong> Cuenta con una red de contactos que puede
           ayudar a los desarrolladores a encontrar oportunidades de empleo.</li>
       </ul>
       <p><i>Si eres un desarrollador .NET o una empresa tecnológica, te invitamos a unirte a DotNet Ecuador. La
         comunidad es una excelente manera de crecer profesionalmente y conectarse con otros profesionales
-        de la tecnología en Ecuador.
-      </i></p>
+        de la tecnología en Ecuador.</i></p>
 
       <div class="cta">
         <a href="#">Únete a DotNet Ecuador</a>
@@ -125,3 +55,5 @@ import Header from '../components/Header.astro';
     </div>
   </body>
 </html>
+
+

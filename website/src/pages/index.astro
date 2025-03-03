@@ -6,6 +6,8 @@ import whatsappIcon from "../assets/icons/whatsapp.png";
 import youtubeIcon from "../assets/icons/youtube.png";
 import spotifyIcon from "../assets/icons/spotify.png";
 
+import "../assets/styles/global.css";
+
 import { Image } from "astro:assets";
 import Header from "../components/Header.astro";
 import Accordion from "../components/Accordion.astro";
@@ -18,148 +20,10 @@ import Accordion from "../components/Accordion.astro";
     <title>.NET Ecuador</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
+      rel="stylesheet" href="../assets/styles/global.css"
     />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
 
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: #eef2f7;
-        color: #333;
-      }
-
-      .container {
-        width: 90%;
-        max-width: 900px;
-        margin: auto;
-        padding: 20px;
-      }
-
-      .banner {
-        background: linear-gradient(135deg, #1f085a, #630072);
-        color: white;
-        text-align: center;
-        padding: 50px 20px;
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      }
-
-      .banner h2 {
-        font-size: 28px;
-        margin-bottom: 10px;
-      }
-
-      .banner p {
-        font-size: 18px;
-      }
-
-      .formulario {
-        background: white;
-        padding: 25px;
-        margin-top: 25px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .formulario h3 {
-        text-align: center;
-        font-size: 22px;
-        margin-bottom: 10px;
-      }
-
-      .formulario input {
-        font-family: "Poppins";
-        width: 100%;
-        padding: 14px;
-        margin-top: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-
-      .formulario button {
-        width: 100%;
-        padding: 14px;
-        margin-top: 15px;
-        background: #630072;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.3s ease-in-out;
-      }
-
-      .formulario button:hover {
-        background: #9600ad;
-        transform: translateY(-2px);
-      }
-
-      .social-media {
-        text-align: center;
-        margin-top: 25px;
-      }
-
-      .social-media h3 {
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
-
-      .social-media a {
-        display: inline-block;
-        margin: 10px;
-        transition: 0.3s ease-in-out;
-      }
-
-      .social-media a:hover {
-        transform: scale(1.2);
-      }
-
-      .whatsapp_podcast {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        margin-top: 25px;
-      }
-
-      .whatsapp_podcast h3 {
-        font-size: 20px;
-        text-align: center;
-      }
-
-      .whatsapp_podcast a img {
-        transition: transform 0.3s ease-in-out;
-      }
-
-      .whatsapp_podcast a img:hover {
-        transform: scale(1.1);
-      }
-
-      .acordeon {
-        margin-top: 30px;
-      }
-
-      .acordeon h3 {
-        text-align: center;
-        font-size: 22px;
-        margin-bottom: 15px;
-      }
-
-      .acordeon div {
-        display: none;
-        padding: 12px;
-        background-color: #f1f1f1;
-        border-radius: 5px;
-        margin-top: 5px;
-      }
-
-    </style>
+    
   </head>
   <body>
     <Header />
