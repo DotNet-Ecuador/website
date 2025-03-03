@@ -1,0 +1,112 @@
+---
+import { Image } from "astro:assets";
+import Header from "../components/Header.astro";
+import TeamMember from "../components/TeamMember.astro";
+import whatsappIcon from "../assets/icons/whatsapp.png";
+
+---
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nuestro Equipo</title>
+        <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet"
+        />
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+    
+          body {
+            font-family: "Poppins", sans-serif;
+            background-color: #eef2f7;
+            color: #333;
+          }
+    
+          .container {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+          }
+          .team {
+            flex-wrap: wrap;
+            display: flex;
+            justify-content: center;
+            gap: 0.2%;
+          }
+          h1 {
+            text-align: center;
+            color: #1f085a;
+            font-size: 2.5rem;
+            font-weight: 600;
+          }
+          .join-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+          }
+
+          .join-button a {
+            text-decoration: none;
+          }
+
+          .join-button button {
+            background-color: #630072;
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; 
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+          }
+
+          .join-button button:hover {
+            background-color: #4a0055;
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+          }
+
+          .join-button img {
+            width: 25px;
+            height: 25px;
+          }
+    
+        </style>
+    </head>
+    <body>
+      <Header />
+      <div class="container">
+        <h1>Conoce al gran equipo de <span style="color: #630072;">DotNet Ecuador</span></h1>
+      </div>
+      <section class="team">
+      <TeamMember imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyzTWQoCUbRNdiyorem5Qp1zYYhpliR9q0Bw&s" name="Juan Pérez" role="Developer"/>
+      <TeamMember imageUrl = "https://www.wilsoncenter.org/sites/default/files/styles/480x480/public/media/images/person/james-person-1.jpg" name="Pedro Gómez" role="Conferencista"/>
+      <TeamMember imageUrl = "https://architecture.ou.edu/wp-content/uploads/2018/07/ANGELAPERSON-1447-300x300.jpg" name="Marcela Delgado" role="Finanzas"/>
+      <TeamMember imageUrl = "https://media.licdn.com/dms/image/v2/D4E03AQFXXilZQD4XYg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1709665176462?e=2147483647&v=beta&t=zGEVuInYXP3g6ptL7ZN0wCbEhPoWUuVS-yv_Pb-xMnU" name="Martín Cardenas" role="Legal"/>
+    </section>
+
+    <div class="join-button">
+      <a href="#" target="_blank">
+        <button>
+          Únete al equipo
+          <Image src={whatsappIcon} alt="WhatsApp" />
+        </button>
+      </a>
+    </div>
+    
+
+    </body>
+    
+</html>
