@@ -13,24 +13,47 @@ body {
 
 .container {
   width: 90%;
-  max-width: 900px;
+  max-width: 1100px;
   margin: auto;
   padding: 20px;
 }
 
 
 /* Banner */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0px;
+  padding: 20px 0px;
+  transition: transform 0.3s ease-in-out; 
+  overflow: hidden;
+  position: relative;
+}
+
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+
 .banner {
+  flex: 1;
   background: linear-gradient(135deg, #1f085a, #630072);
   color: white;
-  text-align: center;
-  padding: 50px 20px;
+  padding: 40px;
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  height: 310px;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
 }
 
 .banner h2 {
-  font-size: 28px;
+  font-size: 32px;
   margin-bottom: 10px;
 }
 
@@ -38,23 +61,27 @@ body {
   font-size: 18px;
 }
 
-/* Form */
 .formulario {
+  flex: 1;
   background: white;
-  padding: 25px;
-  margin-top: 25px;
+  padding: 30px;
   border-radius: 10px;
+  border-top-left-radius: 0%;
+  border-bottom-left-radius: 0%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 310px;
 }
 
-.formulario h3 {
+.formulario h3,
+.formulario_vol h3 {
   text-align: center;
-  font-size: 22px;
-  margin-bottom: 10px;
+  font-size: 24px;
+  margin-bottom: 15px;
 }
 
-.formulario input {
-  font-family: "Poppins";
+.formulario input,
+.formulario_vol input {
+  font-family: inherit;
   width: 100%;
   padding: 14px;
   margin-top: 10px;
@@ -63,8 +90,10 @@ body {
   font-size: 16px;
 }
 
-.formulario button {
+.formulario button,
+.formulario_vol button {
   width: 100%;
+  font-family: inherit;
   padding: 14px;
   margin-top: 15px;
   background: #630072;
@@ -76,12 +105,25 @@ body {
   transition: 0.3s ease-in-out;
 }
 
-.formulario button:hover {
+.formulario button:hover,
+.formulario_vol button:hover {
   background: #9600ad;
   transform: translateY(-2px);
 }
 
 /* Social Media Section */
+.container-social {
+  display: flex;
+  justify-content: center; 
+  border-radius: 12px;
+  align-items:center; 
+  gap: 80px; 
+  flex-wrap: wrap; 
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
 .social-media {
   text-align: center;
   margin-top: 25px;
@@ -100,28 +142,6 @@ body {
 
 .social-media a:hover {
   transform: scale(1.2);
-}
-
-/* WhatsApp & Podcast */
-.whatsapp_podcast {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  margin-top: 25px;
-}
-
-.whatsapp_podcast h3 {
-  font-size: 20px;
-  text-align: center;
-}
-
-.whatsapp_podcast a img {
-  transition: transform 0.3s ease-in-out;
-}
-
-.whatsapp_podcast a img:hover {
-  transform: scale(1.1);
 }
 
 /* Accordion */
@@ -196,7 +216,7 @@ body {
 /*About Us*/
 .animate-on-scroll {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateX(-50px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
@@ -371,3 +391,100 @@ body {
   font-size: 1.1rem;
   color: #444;
 }
+
+
+/*Voluntariado*/
+.volunteer{
+    flex: 1;
+    background: linear-gradient(75deg, #1f085a, #630072);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    text-align: justify;
+    color:white;
+}
+.volunteer h1{
+  text-align: center;
+}
+
+.formulario_vol {
+  flex: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  margin: auto;
+  font-family: inherit;
+}
+
+.datos-personales {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.checkbox-group label {
+  font-weight: normal;
+  margin-left: 5px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 10px;
+}
+
+input:required,
+select:required,
+textarea:required {
+  border-left: 3px solid #630072;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #630072;
+  outline: none;
+  box-shadow: 0 0 5px #630072;
+}
+

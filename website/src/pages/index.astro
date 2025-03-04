@@ -29,23 +29,26 @@ import Accordion from "../components/Accordion.astro";
     <Header />
 
     <div class="container">
-      <section class="banner">
-        <h2>Bienvenido a la Comunidad .NET Ecuador</h2>
-        <p>
-          Únete a nuestra comunidad y aprende sobre .NET y tecnologías
-          relacionadas.
-        </p>
+      <section class="hero">
+        <div class="banner">
+          <h2>Bienvenido a la Comunidad .NET Ecuador</h2>
+          <p>
+            Únete a nuestra comunidad y aprende sobre .NET y tecnologías
+            relacionadas.
+          </p>
+        </div>
+
+        <div class="formulario">
+          <h3>¡Únete a nosotros!</h3>
+          <form>
+            <input type="text" placeholder="Nombres Completos" required />
+            <input type="email" placeholder="Correo Electrónico" required />
+            <button type="submit">Suscribirse</button>
+          </form>
+        </div>
       </section>
 
-      <section class="formulario">
-        <h3>¡Únete a nosotros!</h3>
-        <form>
-          <input type="text" placeholder="Nombres Completos" required />
-          <input type="email" placeholder="Correo Electrónico" required />
-          <button type="submit">Suscribirse</button>
-        </form>
-      </section>
-
+      <div class="container-social">
       <section class="social-media">
         <h3>Síguenos en Redes Sociales</h3>
         <a href="https://www.tiktok.com/@dotnetecuador" target="_blank">
@@ -55,22 +58,20 @@ import Accordion from "../components/Accordion.astro";
           <Image src={instagramIcon} alt={"instagram"} width={50} />
         </a>
         <a href="https://www.youtube.com/@dotnet-ecuador" target="_blank">
-          <Image src={youtubeIcon} alt={"youtube"} width={50} />
+          <Image src={youtubeIcon} alt={"youtube"} width={50}/>
         </a>
         <a href="https://www.linkedin.com/company/dotnet-ecuador/?originalSubdomain=ec" target="_blank">
           <Image src={linkedinIcon} alt={"linkedin"} width={50} />
         </a>
+        <a href="#" target="_blank"><Image src={whatsappIcon} alt={"whatsapp"} width={50} loading="eager" /></a>
+        <a href="https://open.spotify.com/show/0UUXZpDtW89OFGxmcy08RI?si=3f19ba238de2464e" target="_blank"><Image src={spotifyIcon} alt={"spotify"} width={50} /></a>
+
       </section>
 
-      <section class="whatsapp_podcast">
-        <h3>Únete a nuestro grupo de WhatsApp</h3>
-        <a href="#" target="_blank"><Image src={whatsappIcon} alt={"whatsapp"} width={50} /></a>
-        <h3>Escucha nuestro podcast</h3>
-        <a href="https://open.spotify.com/show/0UUXZpDtW89OFGxmcy08RI?si=3f19ba238de2464e" target="_blank"><Image src={spotifyIcon} alt={"spotify"} width={50} /></a>
-      </section>
+    </div>
 
       <section class="acordeon">
-        <h3>Preguntas Frecuentes</h3>
+        <h3 >Preguntas Frecuentes</h3>
 
         <Accordion
           title="¿Cómo puedo unirme a la comunidad .NET Ecuador?"
@@ -92,7 +93,7 @@ import Accordion from "../components/Accordion.astro";
           title="¿Cómo puedo contribuir a los proyectos de la comunidad?"
           desc="Puedes unirte a los proyectos de la comunidad a través de nuestro repositorio de GitHub. https://github.com/DotNet-Ecuador "
         />
-        <Accordion
+        <Accordion 
           title="¿La comunidad ofrece algún tipo de mentoría?"
           desc="Sí, tenemos un programa de mentoría donde miembros experimentados ayudan a guiar a los nuevos desarrolladores en su camino profesional."
         />

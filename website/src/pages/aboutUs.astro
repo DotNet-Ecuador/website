@@ -29,31 +29,52 @@ import "../assets/styles/global.css";
       potenciar las habilidades técnicas de sus miembros y facilitar conexiones con oportunidades
       laborales.</p>
 
-      <h2>Beneficios de unirse a DotNet Ecuador</h2>
+      <h2 class="animate-on-scroll">Beneficios de unirse a DotNet Ecuador</h2>
       <ul>
-        <li><strong>📌 Aprender de expertos:</strong> : La comunidad cuenta con un
+        <li class="animate-on-scroll"><strong>📌 Aprender de expertos:</strong> : La comunidad cuenta con un
           equipo de mentores experimentados que están disponibles para ayudar a los
           desarrolladores a aprender y crecer profesionalmente</li>
-        <li><strong>📌 Compartir conocimientos:</strong> Ofrece un espacio para que los
+        <li class="animate-on-scroll"><strong>📌 Compartir conocimientos:</strong> Ofrece un espacio para que los
           desarrolladores compartan conocimientos y experiencias, lo que puede ayudar a todos
           a mejorar sus habilidades</li>
-        <li><strong>📌 Conectar con la comunidad:</strong> Es una excelente manera de
+        <li class="animate-on-scroll"><strong>📌 Conectar con la comunidad:</strong> Es una excelente manera de
           conectarse con otros profesionales de la tecnología en Ecuador.</li>
-        <li><strong>📌 Mejorar en .NET:</strong> Te ofrece una variedad de recursos
+        <li class="animate-on-scroll"><strong>📌 Mejorar en .NET:</strong> Te ofrece una variedad de recursos
           educativos que pueden ayudar a los desarrolladores a mejorar sus habilidades y
           conocimientos en .NET.</li>
-        <li><strong>📌 Encontrar oportunidades laborales:</strong> Cuenta con una red de contactos que puede
+        <li class="animate-on-scroll"><strong>📌 Encontrar oportunidades laborales:</strong> Cuenta con una red de contactos que puede
           ayudar a los desarrolladores a encontrar oportunidades de empleo.</li>
       </ul>
-      <p><i>Si eres un desarrollador .NET o una empresa tecnológica, te invitamos a unirte a DotNet Ecuador. La
+      <p class="animate-on-scroll"><i>Si eres un desarrollador .NET o una empresa tecnológica, te invitamos a unirte a DotNet Ecuador. La
         comunidad es una excelente manera de crecer profesionalmente y conectarse con otros profesionales
         de la tecnología en Ecuador.</i></p>
 
       <div class="cta">
-        <a href="#">Únete a DotNet Ecuador</a>
+        <a href="#" class="animate-on-scroll">Únete a DotNet Ecuador</a>
       </div>
     </div>
   </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const elements = document.querySelectorAll(".animate-on-scroll");
+
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target); 
+          }
+        });
+      },
+      { threshold: 0.2 } 
+    );
+
+    elements.forEach((el) => observer.observe(el));
+  });
+</script>
+
 
 
