@@ -295,7 +295,7 @@ body {
   flex-wrap: wrap;
   display: flex;
   justify-content: center;
-  gap: 0.2%;
+  gap: 0%;
 }
 .team-container h1 {
   text-align: center;
