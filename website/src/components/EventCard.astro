@@ -1,0 +1,114 @@
+---
+export interface Props {
+  idImage: string[]; // Array of IDs
+  images: string[];  // Array of Image URLs
+  title: string;
+  description: string;
+  reverse?: boolean;
+}
+
+const { idImage, images, title, description, reverse } = Astro.props;
+---
+<style>
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: white;
+    max-width: 800px;
+    margin: auto;
+    flex-direction: row;
+  }
+
+  .card.reverse {
+    flex-direction: row-reverse;
+  }
+  .card-content {
+    flex: 1;
+  }
+
+  h2 {
+    margin: 0 0 10px;
+  }
+
+  p {
+    margin: 0;
+  }
+  .image-container{
+    padding: 2rem;
+    overflow: hidden;
+  }
+  .slider-wrapper{
+    position: relative;
+    max-width: 350px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .slider{
+    display: flex;
+    aspect-ratio: 16 / 9;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    scrollbar-width: 0px;
+  }
+
+  .slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slider img{
+    flex: 1 0 100%;
+    scroll-snap-align: start;
+    object-fit: cover;
+  }
+  .slider-nav{
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom:1.25rem;
+    left:50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+  .slider-nav a {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: white;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+
+  }
+
+  .slider-nav a:hover{
+    opacity: 1;
+  }
+
+</style>
+
+<div class={`card ${reverse ? 'reverse' : ''}`}>
+  <section class="image-container">
+    <div class="slider-wrapper">
+      <div class="slider">
+        {images.map((image, index) => (
+          <img id={idImage[index]} src={image} alt={title} />
+        ))}
+      </div>
+      <div class="slider-nav">
+        {idImage.map((id, index) => (
+          <a href={`#${id}`} ></a> 
+        ))}
+      </div>
+    </div>
+  </section>
+  <div class="card-content">
+    <h2>{title}</h2>
+    <p>{description}</p>
+  </div>
+</div>
