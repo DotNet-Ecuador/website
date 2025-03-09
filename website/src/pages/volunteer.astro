@@ -1,0 +1,106 @@
+---
+import Header from '../components/Header.astro';
+import "../assets/styles/global.css";
+
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voluntariado - .NET Ecuador</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet" href="../assets/styles/global.css"
+    />
+  </head>
+  <body>
+    <Header />
+    <div class="volunteer">
+      <h1>¿Qué significa ser voluntario en DotNet?</h1><br>
+      <p>
+        Los voluntarios pueden participar en una variedad de actividades, como la organización de eventos, la creación de contenido, el apoyo técnico, la gestión de redes sociales, y mucho más. Siempre estamos abiertos a nuevas ideas y formas de colaboración.
+      </p>
+      <p>
+        No es necesario tener experiencia previa. Aceptamos voluntarios de todos los niveles de habilidad y experiencia. Lo más importante es tu entusiasmo y disposición para ayudar a la comunidad
+      </p>
+      <p>
+        El compromiso de tiempo puede variar según la actividad y tu disponibilidad. Trabajamos contigo para asegurarnos de que puedas contribuir de manera efectiva sin afectar tus otras responsabilidades.
+      </p>
+    </div>
+
+    <section class="volunteer-form">
+      <div class = "formulario_vol"> 
+        <h3>Formulario de Inscripción para Voluntarios</h3>
+        <form>
+          <div class = "datos-personales">
+          <div class="form-group">
+              <label for="nombres">Nombres Completos:</label>
+              <input type="text" id="nombres" name="nombres" placeholder="Ej: Manuel Gonzalez" required>
+          </div>
+          <div class="form-group">
+              <label for="email">Correo Electrónico:</label>
+              <input type="email" id="email" name="email" placeholder="Correo Electrónico" required>
+          </div>
+          <div class="form-group">
+              <label for="telefono">Número de Teléfono:</label>
+              <input type="text" id="telefono" name="telefono" placeholder="Número de Teléfono" required>
+          </div>
+          <div class="form-group">
+              <label for="ciudad">Ciudad/Localidad:</label>
+              <input type="text" id="ciudad" name="ciudad" placeholder="Ciudad/Localidad" required>
+          </div>
+        </div>
+
+          <div class="form-group">
+              <label for="experiencia">¿Tienes experiencia previa en voluntariado? (Sí/No):</label>
+              <select id="experiencia" name="experiencia" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+              </select><br>
+          </div>
+
+          <div class="form-group">
+              <label>¿En qué áreas te gustaría colaborar? (Puedes seleccionar más de una opción):</label>
+              <div class="checkbox-group">
+                  <input type="checkbox" id="organizacion" name="areas[]" value="Organización de eventos">
+                  <label for="organizacion">Organización de eventos</label><br>
+                  <input type="checkbox" id="contenido" name="areas[]" value="Creación de contenido">
+                  <label for="contenido">Creación de contenido</label><br>
+                  <input type="checkbox" id="apoyo" name="areas[]" value="Apoyo técnico">
+                  <label for="apoyo">Apoyo técnico</label><br>
+                  <input type="checkbox" id="redes" name="areas[]" value="Gestión de redes sociales">
+                  <label for="redes">Gestión de redes sociales</label><br>
+                  <input type="checkbox" id="otros" name="areas[]" value="Otros">
+                  <label for="otros">Otros:</label>
+                  <input type="text" id="otros_texto" name="otros_texto">
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="disponibilidad">Disponibilidad de tiempo (días y horas):</label>
+              <input type="text" id="disponibilidad" name="disponibilidad" placeholder="Ej: Lunes a Viernes, 14:00 - 18:00" required>
+          </div>
+          <div class="form-group">
+              <label for="habilidades">¿Tienes alguna habilidad o conocimiento específico que te gustaría compartir con la comunidad?</label>
+              <textarea id="habilidades" name="habilidades" rows="1" cols=100%></textarea>
+          </div>
+          <div class="form-group">
+              <label for="motivacion">¿Por qué te gustaría ser voluntario en la comunidad .NET Ecuador?</label>
+              <textarea id="motivacion" name="motivacion" rows="1" cols=100></textarea>
+          </div>
+          <div class="form-group">
+              <label for="comentarios">Comentarios adicionales:</label>
+              <textarea id="comentarios" name="comentarios" rows="1" cols=100%></textarea>
+          </div>
+          <div class="form-group">
+              <button type="submit">Enviar</button>
+          </div>
+        </form>
+        
+      </div>
+    </section>
+  </body>
+</html>
+
+

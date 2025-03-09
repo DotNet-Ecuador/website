@@ -1,0 +1,12 @@
+---
+import "../assets/styles/global.css"
+const { imageUrl, name, role } = Astro.props;
+---
+
+<div class="profile">
+  <img src={imageUrl} alt={name} class="profile-image" />
+  <h2 class="profile-name">{name}</h2>
+  <p class="profile-description">{role}</p>
+</div>
+
+

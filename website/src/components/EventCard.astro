@@ -1,0 +1,70 @@
+---
+import Image from 'astro/components/Image.astro';
+import locationIcon from '../assets/icons/location.png'
+import dateIcon from '../assets/icons/calendar.png'
+import "../assets/styles/global.css"
+
+
+export interface Props {
+  idImage: string[]; 
+  images: string[];  
+  title: string;
+  description: string;
+  date: string;
+  location:string;
+  reverse?: boolean;
+}
+
+const { idImage, images, title, description,date,location, reverse } = Astro.props;
+---
+
+<div class="animate-on-scroll">
+  <div class={`card ${reverse ? 'reverse' : ''}`}>
+    <section class="image-container">
+      <div class="slider-wrapper">
+        <div class="slider">
+          {images.map((image, index) => (
+            <img id={idImage[index]} src={image} alt={title} />
+          ))}
+        </div>
+        <div class="slider-nav">
+          {idImage.map((id, index) => (
+            <a href={`#${id}`} ></a> 
+          ))}
+        </div>
+      </div>
+    </section>
+    <div class="card-content">
+      <div class="card-meta">
+        <div class="location">
+          <Image src={locationIcon} alt="Location" width={20} />
+          <span>{location}</span>
+        </div>
+        <Image src={dateIcon} alt="Date" width={20} />
+        <p class="date">{date}</p>
+      </div>
+      <h2>{title}</h2>
+      <p class="description">{description}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const elements = document.querySelectorAll(".animate-on-scroll");
+
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target); 
+          }
+        });
+      },
+      { threshold: 0.2 } 
+    );
+
+    elements.forEach((el) => observer.observe(el));
+  });
+</script>
