@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.8",
-    "astro": "^5.4.1"
+    "astro": "^5.4.1",
+    "remark-parse": "^11.0.0"
   }
 }
