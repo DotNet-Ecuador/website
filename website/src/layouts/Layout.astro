@@ -1,13 +1,34 @@
+---
+import { SITE } from '../config'
+import Header from '../components/Header.astro';
+
+interface Props {
+    title: string
+    description: string
+    lang?: string
+    structuredData?: object
+}
+
+const { title, description = SITE.description, lang } = Astro.props
+const normalizeTitle = !title ? SITE.title : `${title} | ${SITE.title}`
+---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="../../public/favicon.ico" />
+		<meta name="generator" content={Astro.generator} /> 
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>{normalizeTitle}</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+			rel="stylesheet" href="../assets/styles/global.css"
+		/>
 	</head>
 	<body>
+		<Header />
 		<slot />
 	</body>
 </html>

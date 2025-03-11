@@ -5,47 +5,35 @@ import TeamMember from "../components/TeamMember.astro";
 import whatsappIcon from "../assets/icons/whatsapp.png";
 
 import "../assets/styles/global.css";
-
-
+import Layout from "../layouts/Layout.astro";
 ---
-<html lang="es">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Nuestro Equipo</title>
-        <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-        rel="stylesheet" href="../assets/styles/global.css"
-        />
-    </head>
-    <body>
-      <Header />
-      <div class="team-container">
-        <h1>Conoce al gran equipo de <span style="color: #630072;">DotNet Ecuador</span></h1>
-      </div>
-      <section class="team">
-      <TeamMember imageUrl = "https://i.imgur.com/GaxB6y4.jpeg" name="Byron Duarte" role="Founder"/>
-      <TeamMember imageUrl = "https://i.imgur.com/Tvqk8kS.jpeg" name="Kevin Santacruz" role="Co-Founder"/>
-      <TeamMember imageUrl = "https://i.imgur.com/qdLPSjf.jpeg" name="Cristopher Coronado" role="Software Engineer"/>
-      <TeamMember imageUrl = "https://i.imgur.com/KVXu8G0.jpeg" name="Josiel Ramos" role="Diseñador Gráfico"/>
-      <TeamMember imageUrl = "https://i.imgur.com/b712nbL.jpeg" name="Daniel Jaramillo" role="Desarrollador Web"/>
-      <TeamMember imageUrl = "https://i.imgur.com/LOlCruU.jpeg" name="Christian Bueno" role="Desarrollador Web"/>
-      <TeamMember imageUrl = "https://i.imgur.com/7hK9hQf.jpeg" name="Alfonso Vera" role="Desarrollador Web"/>
-      <TeamMember imageUrl = "https://i.imgur.com/a7BCKzB.jpeg" name="Jose Villavicencio" role="Software Engineer"/>
-      <TeamMember imageUrl = "https://i.imgur.com/IrgGlMR.jpeg" name="Esleiter Fajardo" role="Desarrollador Web"/>
-      <TeamMember imageUrl = "https://i.imgur.com/IXP5Qxk.jpeg" name="Anthony San Lucas" role="Desarrollador Web"/>
-      <TeamMember imageUrl = "https://i.imgur.com/vkoVSGX.jpeg" name="Samuel Murillo" role="Unity Game Developer"/>
+<Layout
+  title="Equipo"
+  description="">
+  <div class="team-container">
+    <h1>Conoce al gran equipo de <span style="color: #630072;">DotNet Ecuador</span></h1>
+  </div>
+  <section class="team">
+  <TeamMember imageUrl = "https://i.imgur.com/GaxB6y4.jpeg" name="Byron Duarte" role="Founder"/>
+  <TeamMember imageUrl = "https://i.imgur.com/Tvqk8kS.jpeg" name="Kevin Santacruz" role="Co-Founder"/>
+  <TeamMember imageUrl = "https://i.imgur.com/qdLPSjf.jpeg" name="Cristopher Coronado" role="Software Engineer"/>
+  <TeamMember imageUrl = "https://i.imgur.com/KVXu8G0.jpeg" name="Josiel Ramos" role="Diseñador Gráfico"/>
+  <TeamMember imageUrl = "https://i.imgur.com/b712nbL.jpeg" name="Daniel Jaramillo" role="Desarrollador Web"/>
+  <TeamMember imageUrl = "https://i.imgur.com/LOlCruU.jpeg" name="Christian Bueno" role="Desarrollador Web"/>
+  <TeamMember imageUrl = "https://i.imgur.com/7hK9hQf.jpeg" name="Alfonso Vera" role="Desarrollador Web"/>
+  <TeamMember imageUrl = "https://i.imgur.com/a7BCKzB.jpeg" name="Jose Villavicencio" role="Software Engineer"/>
+  <TeamMember imageUrl = "https://i.imgur.com/IrgGlMR.jpeg" name="Esleiter Fajardo" role="Desarrollador Web"/>
+  <TeamMember imageUrl = "https://i.imgur.com/IXP5Qxk.jpeg" name="Anthony San Lucas" role="Desarrollador Web"/>
+  <TeamMember imageUrl = "https://i.imgur.com/vkoVSGX.jpeg" name="Samuel Murillo" role="Unity Game Developer"/>
 
-      </section>
+  </section>
 
-    <div class="join-button">
-      <a href="#" target="_blank">
-        <button>
-          Únete al equipo
-          <Image src={whatsappIcon} alt="WhatsApp" />
-        </button>
-      </a>
-    </div>
-    </body>
-</html>
-
+  <div class="join-button">
+    <a href="#" target="_blank">
+      <button>
+        Únete al equipo
+        <Image src={whatsappIcon} alt="WhatsApp" />
+      </button>
+    </a>
+  </div>
+</Layout>
