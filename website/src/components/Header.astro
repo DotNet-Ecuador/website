@@ -3,18 +3,16 @@ import logo from '../assets/dotnet_logo.png';
 import { Image } from 'astro:assets';
 import "../assets/styles/global.css"
 ---
-
 <header class="header">
   <div class="logo-container">
     <Image src={logo} alt="Logo de .NET Ecuador" class="logo" loading="eager"/>
-    <h1>.NET Ecuador</h1>
   </div>
   <nav class="nav-buttons">
     <a href="/"><button>Inicio</button></a>
     <a href="/aboutUs"><button>Sobre Nosotros</button></a>
+    <a href="/volunteer"><button>Voluntariado</button></a>
     <a href="/team"><button>Nuestro Equipo</button></a>
     <a href="/events"><button>Eventos</button></a>
-    <a href="/volunteer"><button>Voluntariado</button></a>
   </nav>
 </header>
 
@@ -29,34 +27,31 @@ import "../assets/styles/global.css"
     border-bottom: 4px solid #630072;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
-
   .logo-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
   }
-
   .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 80px;
     height: auto;
   }
-
   h1 {
     font-family: "Poppins", sans-serif;;
     font-size: 24px;
     font-weight: 600;
     margin: 0;
   }
-
   .nav-buttons {
     display: flex;
     gap: 12px;
   }
-
   .nav-buttons a {
     text-decoration: none;
   }
-
   .nav-buttons button {
     background-color: #1f085a;
     color: white;
@@ -69,10 +64,8 @@ import "../assets/styles/global.css"
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
   }
-
   .nav-buttons button:hover {
     background-color: #2e0b86;
     transform: scale(1.05);
   }
-
 </style>
