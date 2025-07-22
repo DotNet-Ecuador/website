@@ -5,7 +5,9 @@ import "../assets/styles/global.css"
 ---
 <header class="header">
   <div class="logo-container">
-    <Image src={logo} alt="Logo de .NET Ecuador" class="logo" loading="eager"/>
+    <a href="/">
+      <Image src={logo} alt="Logo de .NET Ecuador" class="logo" loading="eager"/>
+    </a>
   </div>
   <nav class="nav-buttons">
     <a href="/"><button>Inicio</button></a>
@@ -15,6 +17,9 @@ import "../assets/styles/global.css"
     <a href="/events"><button>Eventos</button></a>
     <a href="/contact"><button>Contacto</button></a>
     <a href="/Proyectos"><button>Proyectos</button></a>
+    <a href="https://github.com/DotNet-Ecuador" target="_blank" rel="noopener" class="github-link" style="margin-left:8px; margin-bottom:32px; display:inline-block; text-decoration:none; color:inherit;">
+      <img src="/logo.png" alt="GitHub" style="height:74px;width:auto; display:block; border-radius:50%; background:transparent;" />
+    </a>
 
   </nav>
 </header>
@@ -24,10 +29,10 @@ import "../assets/styles/global.css"
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 30px;
+    padding: 0px 6px;
     background-color: #1f085a;
     color: white;
-    border-bottom: 4px solid #630072;
+    border-bottom: 4px solid #1f085a;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   .logo-container {
@@ -51,6 +56,7 @@ import "../assets/styles/global.css"
   .nav-buttons {
     display: flex;
     gap: 12px;
+    padding-top: 24px;
   }
   .nav-buttons a {
     text-decoration: none;

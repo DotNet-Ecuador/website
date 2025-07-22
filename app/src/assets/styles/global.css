@@ -648,19 +648,45 @@ textarea:focus {
 }
 
 /* Cards de Proyectos */
+.proyectos-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow-x: auto;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
 .proyecto-card {
   background: #fff;
   border-radius: 1rem;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   padding: 2rem;
-  width: 300px;
+  width: 220px;
   min-height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: transform 0.25s cubic-bezier(.21,1.02,.73,1), box-shadow 0.25s cubic-bezier(.21,1.02,.73,1);
+  flex-shrink: 0;
+  border: 2px solid #630072;
+  position: relative;
 }
+
 .proyecto-card:hover {
   transform: translateY(-18px) scale(1.03);
   box-shadow: 0 12px 32px rgba(99,0,114,0.18);
+  z-index: 100;
+}
+
+@media (max-width: 950px) {
+  .proyectos-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
 }
