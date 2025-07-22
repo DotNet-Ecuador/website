@@ -1,19 +1,42 @@
 ---
-import tiktokIcon from "../assets/icons/tik_tok.png";
-import instagramIcon from "../assets/icons/instagram.png";
-import linkedinIcon from "../assets/icons/linkedin.png";
-import whatsappIcon from "../assets/icons/whatsapp.png";
-import youtubeIcon from "../assets/icons/youtube.png";
-import spotifyIcon from "../assets/icons/spotify.png";
-import "../assets/styles/global.css";
-import { Image } from "astro:assets";
-import Accordion from "../components/Accordion.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 <Layout
-  title=""
+  title="Contacto"
   description="">
-  <div class="container">
-    
+        <div class="container" style="text-align: center;">
+  <h1 style="margin-top: 40px;">
+    <span style="color: #1f085a; font-size: 2.5rem;">Contáctanos</span>
+  </h1>
+</div>
+
+  <p style="margin-top: 20px; text-align: center;">
+  Puedes contactarnos a través de nuestro correo electrónico o Número celular. ¡Estamos para ayudarte!
+</p>
+
+
+      
+<div style="display: flex; gap: 24px; justify-content: center; margin-top: 32px;">
+  <div style="flex: 1;">
+    <a href="TU_URL_AQUI" style="text-decoration: none; display: block;">
+      <div class="contact-container" style="cursor: pointer; display: flex; flex-direction: column; align-items: flex-start;">
+        <h2 style="margin: 0 0 16px 0; width: 100%; text-align: center; color: #ffff">Correo Electrónico</h2>
+        <div style="display: flex; align-items: center; margin-top: 16px; margin-left: -32px;">
+          <img src="/correo.png" alt="Correo" style="width:32px; height:32px; margin-right:12px;" />
+          <span style="font-size: 1.3rem; color: #000000;">equipo@donetecuador.com</span>
+        </div>
+      </div>
+    </a>
   </div>
+  <div style="flex: 1;">
+    <div class="contact-container" style="display: flex; flex-direction: column; align-items: flex-start;">
+      <h2 style="margin: 0 0 16px 0; width: 100%; text-align: center; color: #ffff;">Número Celular</h2>
+      <div style="display: flex; align-items: center; margin-top: 16px; margin-left: -32px;">
+        <img src="/celular.png" alt="Celular" style="width:50px; height:50px; margin-right:12px;" />
+        <span style="font-size: 1.3rem; color: #000000;">0998829043</span>
+      </div>
+    </div>  
+  </div>
+</div>
+
 </Layout>

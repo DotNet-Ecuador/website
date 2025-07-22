@@ -1,15 +1,8 @@
 ---
-import tiktokIcon from "../assets/icons/tik_tok.png";
-import instagramIcon from "../assets/icons/instagram.png";
-import linkedinIcon from "../assets/icons/linkedin.png";
-import whatsappIcon from "../assets/icons/whatsapp.png";
-import youtubeIcon from "../assets/icons/youtube.png";
-import spotifyIcon from "../assets/icons/spotify.png";
-import "../assets/styles/global.css";
-import { Image } from "astro:assets";
-import Accordion from "../components/Accordion.astro";
-import Layout from "../layouts/Layout.astro";
+import Layout from '../layouts/Layout.astro';
+import Accordion from '../components/Accordion.astro';
 ---
+
 <Layout
   title=""
   description="">
@@ -30,24 +23,29 @@ import Layout from "../layouts/Layout.astro";
     </section>
 
     <div class="container-social">
-    <section class="social-media">
-      <h3>Síguenos en Redes Sociales</h3>
-      <a href="https://www.tiktok.com/@dotnetecuador" target="_blank">
-        <Image src={tiktokIcon} alt={"tiktok"} width={50} />
-      </a>
-      <a href="https://www.instagram.com/dotnet_ecuador/" target="_blank">
-        <Image src={instagramIcon} alt={"instagram"} width={50} />
-      </a>
-      <a href="https://www.youtube.com/@dotnet-ecuador" target="_blank">
-        <Image src={youtubeIcon} alt={"youtube"} width={50}/>
-      </a>
-      <a href="https://www.linkedin.com/company/dotnet-ecuador/?originalSubdomain=ec" target="_blank">
-        <Image src={linkedinIcon} alt={"linkedin"} width={50} />
-      </a>
-      <a href="#" target="_blank"><Image src={whatsappIcon} alt={"whatsapp"} width={50} loading="eager" /></a>
-      <a href="https://open.spotify.com/show/0UUXZpDtW89OFGxmcy08RI?si=3f19ba238de2464e" target="_blank"><Image src={spotifyIcon} alt={"spotify"} width={50} /></a>
-
-    </section>
+      // ... existing code ...
+      <section class="social-media">
+        <h3>Síguenos en Redes Sociales</h3>
+        <a href="https://www.tiktok.com/@dotnetecuador" target="_blank">
+          <img src="/src/assets/icons/tik_tok.png" alt="tiktok" width="50" />
+        </a>
+        <a href="https://www.instagram.com/dotnet_ecuador/" target="_blank">
+          <img src="/src/assets/icons/instagram.png" alt="instagram" width="50" />
+        </a>
+        <a href="https://www.youtube.com/@dotnet-ecuador" target="_blank">
+          <img src="/src/assets/icons/youtube.png" alt="youtube" width="50"/>
+        </a>
+        <a href="https://www.linkedin.com/company/dotnet-ecuador/?originalSubdomain=ec" target="_blank">
+          <img src="/src/assets/icons/linkedin.png" alt="linkedin" width="50" />
+        </a>
+        <a href="#" target="_blank">
+          <img src="/src/assets/icons/whatsapp.png" alt="whatsapp" width="50" loading="eager" />
+        </a>
+        <a href="https://open.spotify.com/show/0UUXZpDtW89OFGxmcy08RI?si=3f19ba238de2464e" target="_blank">
+          <img src="/src/assets/icons/spotify.png" alt="spotify" width="50" />
+        </a>
+      </section>
+  // ... existing code ...
 
   </div>
     <section class="acordeon">

@@ -1,12 +1,13 @@
 ---
+// layout/BaseLayout.astro
 import { SITE } from '../config'
 import Header from '../components/Header.astro';
 
 interface Props {
-    title: string
-    description: string
-    lang?: string
-    structuredData?: object
+  title: string
+  description: string
+  lang?: string
+  structuredData?: object
 }
 
 const { title, description = SITE.description, lang } = Astro.props
@@ -14,30 +15,71 @@ const normalizeTitle = !title ? SITE.title : `${title} | ${SITE.title}`
 ---
 <!doctype html>
 <html lang={lang}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="../../public/favicon.ico" />
-		<meta name="generator" content={Astro.generator} /> 
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>{normalizeTitle}</title>
-		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-			rel="stylesheet" href="../assets/styles/global.css"
-		/>
-	</head>
-	<body>
-		<Header />
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} /> 
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{normalizeTitle}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/styles/global.css" />
+  </head>
+  <body>
+    <div class="layout-wrapper">
+      <Header />
+      <main class="main-content">
+        <slot />
+      </main>
+
+      <footer class="main-footer">
+        <div class="footer-content">
+          <p>&copy; 2025 Donet Ecuador. Todos los derechos reservados.</p>
+          <p>
+            <a href="mailto:equipo@donetecuador.com">equipo@donetecuador.com</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+  }
+
+  .layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+  }
+
+  .main-footer {
+    background-color: #1f085a;
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .footer-content a {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  .footer-content p {
+    margin: 0.5rem 0;
+  }
 </style>
