@@ -1,0 +1,76 @@
+---
+import EventCard from '../components/EventCard.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Eventos"
+  description="Descubre los próximos eventos, conferencias y talleres de DotNet Ecuador. Únete a nuestra comunidad de desarrolladores.">
+  
+  <div class="container-custom">
+    <!-- Header Section -->
+    <div class="text-center mb-8 sm:mb-12 lg:mb-16">
+      <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary-900 mb-4 sm:mb-6">
+        Próximos eventos en <span class="text-secondary-600">DotNet Ecuador</span>
+      </h1>
+      <p class="text-neutral-600 text-base sm:text-lg max-w-2xl mx-auto">
+        Participa en nuestros eventos presenciales y virtuales para aprender, compartir y conectar con la comunidad .NET
+      </p>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="space-y-8 lg:space-y-12">
+      <EventCard 
+        idImage={["csharp1", "csharp2", "csharp3"]} 
+        images={[
+          'https://media.licdn.com/dms/image/v2/C4E1BAQGD8r2Pv9iPpg/company-background_10000/company-background_10000/0/1609965184925/csharpcorner_cover?e=2147483647&v=beta&t=p1xvHK2SI1o2c8rwXGCyVjpF7INq4CfAxVZhPcSGs_A', 
+          "https://conferencealert.com/blog/wp-content/uploads/2020/03/poster2.jpg",
+          "https://www.unr.edu/main/images/news/2024/October/shamik-sengupta.jpg"
+        ]} 
+        title='Conferencia C# - Desarrollo Moderno'
+        description='Descubre las últimas novedades de C# y .NET en esta conferencia imperdible. Aprende sobre patrones modernos, arquitecturas escalables y las mejores prácticas para el desarrollo profesional.'
+        date='03 de Marzo' 
+        location='Escuela Politécnica Nacional' 
+        reverse={false}
+      />
+      
+      <EventCard 
+        idImage={["aspnet-workshop"]} 
+        images={['https://lh3.googleusercontent.com/proxy/Aw0nH5dOq4z6H3sSpXkMfSXNmjr-RgA-JHoSX8I_SOxo0_Q9Zxr8B6hBkV2fr861YQyyyxcaBS8gY8lQ8d8Du4oegd_jdpiv8dv9ytPU3MjfTsbHWxoig4dDk5SdqBmByOf8cdnzjgQLeo8P_-1o98I16jfs7A64zg']} 
+        title='Workshop ASP.NET Core'
+        description='Taller práctico sobre el desarrollo de APIs REST con ASP.NET Core. Incluye autenticación JWT, Entity Framework, y despliegue en la nube.'
+        date='10 al 15 de Marzo' 
+        location='ESPOL' 
+        reverse={true}
+      />
+      
+      <EventCard 
+        idImage={["blazor-meetup-1", "blazor-meetup-2"]} 
+        images={[
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVKmNnMgV1uZgP78VCGzTy1a9jt2VzMZwmXQ&s',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJVI-B0UkbRdxxlZf_-NKqC2LVOBIM6UzAHA&s'
+        ]} 
+        title='Meetup Blazor - Aplicaciones Web Interactivas'
+        description='Explora el poder de Blazor para crear aplicaciones web interactivas con C#. Desde los conceptos básicos hasta técnicas avanzadas de optimización y deployment.'
+        date='25 de Marzo' 
+        location='CC. Quicentro' 
+        reverse={false}
+      />
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-12 sm:mt-16 lg:mt-20">
+      <div class="card p-6 sm:p-8 lg:p-10 max-w-2xl mx-auto gradient-primary text-white">
+        <h3 class="text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">
+          ¿Quieres ser ponente?
+        </h3>
+        <p class="text-base sm:text-lg mb-6 opacity-95">
+          Comparte tu conocimiento con la comunidad. Contáctanos para proponer tu charla o taller.
+        </p>
+        <a href="/contacto" class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors">
+          Proponer Charla
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

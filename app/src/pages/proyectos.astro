@@ -1,0 +1,337 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Accordion from '../components/Accordion.astro';
+---
+
+<Layout
+  title="Proyectos"
+  description="Explora los proyectos open source de DotNet Ecuador. Contribuye con pull requests y forma parte del desarrollo comunitario.">
+  
+  <!-- Hero Section with modern design -->
+  <section class="relative py-16 sm:py-20 lg:py-28 overflow-hidden"
+           style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);">
+    <!-- Background with gradients and glass effect -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-neutral-50 to-primary-100"></div>
+    <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/5 via-transparent to-primary-600/10"></div>
+    
+    <!-- Decorative elements -->
+    <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-primary-400/15 to-primary-600/25 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-gradient-to-tr from-primary-700/15 to-primary-500/25 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-primary-300/10 to-primary-800/20 rounded-full blur-2xl animate-float"></div>
+    
+    <div class="relative z-10 container-custom">
+      <!-- Header Section -->
+      <div class="text-center">
+        <div class="animation-fade-scale">
+          <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+            <span class="animate-gradient-text font-extrabold">
+              Nuestros Proyectos
+            </span>
+          </h1>
+        </div>
+        <div class="animation-fade-scale" style="animation-delay: 200ms;">
+          <p class="text-lg sm:text-xl lg:text-2xl text-neutral-700 max-w-4xl mx-auto leading-relaxed">
+            Contribuye a nuestros proyectos open source y ayuda a hacer crecer la comunidad .NET en Ecuador.
+            <span class="text-primary-600 font-medium">¡Envíanos tu Pull Request!</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <div class="container-custom px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Projects Grid -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 sm:mb-20 lg:mb-24">
+      <!-- Website Project -->
+      <div class="project-card group" style="animation-delay: 100ms;">
+        <div class="relative overflow-hidden">
+          <!-- Glowing background effect -->
+          <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+          
+          <!-- Main card -->
+          <a href="https://github.com/DotNet-Ecuador/website" target="_blank" rel="noopener" class="relative block bg-gradient-to-br from-white/60 via-white/40 to-white/30 backdrop-blur-xl border border-white/40 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/70 group-hover:via-white/50 group-hover:to-white/40 group-hover:border-white/60 group-hover:shadow-2xl group-hover:shadow-primary-500/20 no-underline">
+            <!-- Project Icon -->
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0l12 12-12 12L0 12z" opacity="0.6"/>
+                  <path d="M12 5.69l5.66 5.66L12 17.01 6.34 11.35z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-primary-900 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:to-primary-800 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  Website
+                </h2>
+                <span class="text-sm text-primary-500 font-medium">Astro • TypeScript</span>
+              </div>
+            </div>
+            
+            <!-- Description -->
+            <p class="text-neutral-700 text-lg mb-6 leading-relaxed group-hover:text-neutral-800 transition-colors duration-300">
+              Página web oficial de la comunidad de tecnologías Microsoft .NET en Ecuador. Construida con tecnologías modernas y diseño responsivo.
+            </p>
+            
+            <!-- Technologies -->
+            <div class="mb-6">
+              <h3 class="text-neutral-800 font-semibold mb-3">Tecnologías:</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">Astro</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">TypeScript</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">CSS</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">JavaScript</span>
+              </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="flex items-center justify-between">
+              <span class="text-primary-600 font-medium">Ver en GitHub</span>
+              <div class="w-6 h-6 text-primary-500 group-hover:translate-x-1 transition-transform duration-200">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Ecos Volcan Project -->
+      <div class="project-card group" style="animation-delay: 200ms;">
+        <div class="relative overflow-hidden">
+          <!-- Glowing background effect -->
+          <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+          
+          <!-- Main card -->
+          <a href="https://github.com/DotNet-Ecuador/ecos-volcan" target="_blank" rel="noopener" class="relative block bg-gradient-to-br from-white/60 via-white/40 to-white/30 backdrop-blur-xl border border-white/40 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/70 group-hover:via-white/50 group-hover:to-white/40 group-hover:border-white/60 group-hover:shadow-2xl group-hover:shadow-primary-500/20 no-underline">
+            <!-- Project Icon -->
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-primary-900 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:to-primary-800 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  Ecos Volcán
+                </h2>
+                <span class="text-sm text-primary-500 font-medium">C# • Unity Game</span>
+              </div>
+            </div>
+            
+            <!-- Description -->
+            <p class="text-neutral-700 text-lg mb-6 leading-relaxed group-hover:text-neutral-800 transition-colors duration-300">
+              Videojuego de Acción 2D donde los jugadores exploran las distintas regiones de Ecuador descubriendo su riqueza cultural y natural.
+            </p>
+            
+            <!-- Technologies -->
+            <div class="mb-6">
+              <h3 class="text-neutral-800 font-semibold mb-3">Tecnologías:</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">C#</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">Unity</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">Game Development</span>
+              </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="flex items-center justify-between">
+              <span class="text-primary-600 font-medium">Ver en GitHub</span>
+              <div class="w-6 h-6 text-primary-500 group-hover:translate-x-1 transition-transform duration-200">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- API Website Project -->
+      <div class="project-card group" style="animation-delay: 300ms;">
+        <div class="relative overflow-hidden">
+          <!-- Glowing background effect -->
+          <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+          
+          <!-- Main card -->
+          <a href="https://github.com/DotNet-Ecuador/api-website-oficial" target="_blank" rel="noopener" class="relative block bg-gradient-to-br from-white/60 via-white/40 to-white/30 backdrop-blur-xl border border-white/40 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/70 group-hover:via-white/50 group-hover:to-white/40 group-hover:border-white/60 group-hover:shadow-2xl group-hover:shadow-primary-500/20 no-underline">
+            <!-- Project Icon -->
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8.5 8.5a2.5 2.5 0 015 0v7a2.5 2.5 0 01-5 0v-7zM12 1l8.5 6v10L12 23l-8.5-6V7L12 1z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-primary-900 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:to-primary-800 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  API Website
+                </h2>
+                <span class="text-sm text-primary-500 font-medium">C# • Docker</span>
+              </div>
+            </div>
+            
+            <!-- Description -->
+            <p class="text-neutral-700 text-lg mb-6 leading-relaxed group-hover:text-neutral-800 transition-colors duration-300">
+              API backend que proporciona servicios y datos para la página oficial de la comunidad DotNet Ecuador.
+            </p>
+            
+            <!-- Technologies -->
+            <div class="mb-6">
+              <h3 class="text-neutral-800 font-semibold mb-3">Tecnologías:</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">C#</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">Docker</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">API</span>
+              </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="flex items-center justify-between">
+              <span class="text-primary-600 font-medium">Ver en GitHub</span>
+              <div class="w-6 h-6 text-primary-500 group-hover:translate-x-1 transition-transform duration-200">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Conference Resources Project -->
+      <div class="project-card group" style="animation-delay: 400ms;">
+        <div class="relative overflow-hidden">
+          <!-- Glowing background effect -->
+          <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+          
+          <!-- Main card -->
+          <a href="https://github.com/DotNet-Ecuador/conference-resources" target="_blank" rel="noopener" class="relative block bg-gradient-to-br from-white/60 via-white/40 to-white/30 backdrop-blur-xl border border-white/40 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/70 group-hover:via-white/50 group-hover:to-white/40 group-hover:border-white/60 group-hover:shadow-2xl group-hover:shadow-primary-500/20 no-underline">
+            <!-- Project Icon -->
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-primary-900 group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:to-primary-800 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  Conference Resources
+                </h2>
+                <span class="text-sm text-primary-500 font-medium">Documentación • Recursos</span>
+              </div>
+            </div>
+            
+            <!-- Description -->
+            <p class="text-neutral-700 text-lg mb-6 leading-relaxed group-hover:text-neutral-800 transition-colors duration-300">
+              Repositorio con recursos de conferencias comunitarias, organizados por evento y tema. Material educativo para la comunidad.
+            </p>
+            
+            <!-- Technologies -->
+            <div class="mb-6">
+              <h3 class="text-neutral-800 font-semibold mb-3">Contenido:</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">Presentaciones</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">Material educativo</span>
+                <span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">Videos</span>
+              </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="flex items-center justify-between">
+              <span class="text-primary-600 font-medium">Ver en GitHub</span>
+              <div class="w-6 h-6 text-primary-500 group-hover:translate-x-1 transition-transform duration-200">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function setupIntersectionObserver() {
+      const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      // Observe fade-in and fade-scale animations
+      const fadeElements = document.querySelectorAll('.animation-fade-in, .animation-fade-scale');
+      fadeElements.forEach((el) => observer.observe(el));
+      
+      // Observe project cards with staggered animation
+      const projectCards = document.querySelectorAll('.project-card');
+      projectCards.forEach((card, index) => {
+        observer.observe(card);
+      });
+    }
+
+    function addParallaxEffect() {
+      const decorativeElements = document.querySelectorAll('.absolute');
+      
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        decorativeElements.forEach((el, index) => {
+          if (el.classList.contains('blur-3xl') || el.classList.contains('blur-2xl')) {
+            el.style.transform = `translateY(${rate * (0.2 + index * 0.1)}px)`;
+          }
+        });
+      });
+    }
+
+    function addProjectCardEffects() {
+      const projectCards = document.querySelectorAll('.project-card');
+      
+      projectCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          // Add subtle floating effect to other cards
+          projectCards.forEach(otherCard => {
+            if (otherCard !== card) {
+              otherCard.style.transform = 'translateY(-4px) scale(0.98)';
+              otherCard.style.opacity = '0.8';
+            }
+          });
+        });
+
+        card.addEventListener('mouseleave', () => {
+          // Reset all cards
+          projectCards.forEach(otherCard => {
+            otherCard.style.transform = '';
+            otherCard.style.opacity = '';
+          });
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupIntersectionObserver();
+      addParallaxEffect();
+      addProjectCardEffects();
+      
+      // Add dynamic gradient animation to title
+      const gradientTitle = document.querySelector('.animate-gradient-text');
+      if (gradientTitle) {
+        gradientTitle.addEventListener('mouseenter', () => {
+          gradientTitle.style.animationDuration = '3s';
+        });
+        gradientTitle.addEventListener('mouseleave', () => {
+          gradientTitle.style.animationDuration = '6s';
+        });
+      }
+    });
+  </script>
+</Layout>

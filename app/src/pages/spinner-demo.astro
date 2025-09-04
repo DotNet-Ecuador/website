@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SpinnerExample from '../components/SpinnerExample.astro';
+---
+
+<Layout 
+  title="Demo Spinner" 
+  description="Demostración del componente Spinner reutilizable para formularios"
+>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-primary-900 text-center mb-8">
+      Componente Spinner - Demo
+    </h1>
+    
+    <div class="max-w-4xl mx-auto">
+      <SpinnerExample />
+    </div>
+    
+    <!-- Documentación de uso -->
+    <div class="max-w-4xl mx-auto mt-12 bg-gray-50 p-6 rounded-lg">
+      <h2 class="text-2xl font-semibold mb-4">Cómo usar el componente Spinner</h2>
+      
+      <h3 class="text-lg font-semibold mb-2">1. Uso standalone</h3>
+      <pre class="bg-gray-800 text-gray-100 p-4 rounded mb-4 overflow-x-auto"><code>---
+import Spinner from '../components/Spinner.astro';
+---
+
+&lt;Spinner size="md" variant="primary" text="Cargando..." /&gt;
+&lt;Spinner variant="white"&gt;Texto personalizado&lt;/Spinner&gt;</code></pre>
+      
+      <h3 class="text-lg font-semibold mb-2">2. Botón con estado loading</h3>
+      <pre class="bg-gray-800 text-gray-100 p-4 rounded mb-4 overflow-x-auto"><code>---
+import Button from '../components/Button.astro';
+---
+
+&lt;Button variant="primary" loading={true}&gt;
+  Enviando...
+&lt;/Button&gt;</code></pre>
+      
+      <h3 class="text-lg font-semibold mb-2">3. JavaScript para formularios</h3>
+      <pre class="bg-gray-800 text-gray-100 p-4 rounded mb-4 overflow-x-auto"><code>// En tu formulario
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  // Activar loading
+  submitBtn.setAttribute('loading', 'true');
+  
+  try {
+    await enviarFormulario();
+    // Manejar éxito
+  } catch (error) {
+    // Manejar error
+  } finally {
+    // Desactivar loading
+    submitBtn.removeAttribute('loading');
+  }
+});</code></pre>
+
+      <h3 class="text-lg font-semibold mb-2">Props disponibles</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border border-gray-300 px-4 py-2 text-left">Prop</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Tipo</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Default</th>
+              <th class="border border-gray-300 px-4 py-2 text-left">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="border border-gray-300 px-4 py-2">size</td>
+              <td class="border border-gray-300 px-4 py-2">'sm' | 'md' | 'lg'</td>
+              <td class="border border-gray-300 px-4 py-2">'md'</td>
+              <td class="border border-gray-300 px-4 py-2">Tamaño del spinner</td>
+            </tr>
+            <tr>
+              <td class="border border-gray-300 px-4 py-2">variant</td>
+              <td class="border border-gray-300 px-4 py-2">'primary' | 'white' | 'neutral'</td>
+              <td class="border border-gray-300 px-4 py-2">'primary'</td>
+              <td class="border border-gray-300 px-4 py-2">Color del spinner</td>
+            </tr>
+            <tr>
+              <td class="border border-gray-300 px-4 py-2">text</td>
+              <td class="border border-gray-300 px-4 py-2">string</td>
+              <td class="border border-gray-300 px-4 py-2">-</td>
+              <td class="border border-gray-300 px-4 py-2">Texto a mostrar junto al spinner</td>
+            </tr>
+            <tr>
+              <td class="border border-gray-300 px-4 py-2">class</td>
+              <td class="border border-gray-300 px-4 py-2">string</td>
+              <td class="border border-gray-300 px-4 py-2">''</td>
+              <td class="border border-gray-300 px-4 py-2">Clases CSS adicionales</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</Layout>

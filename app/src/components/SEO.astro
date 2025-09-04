@@ -1,0 +1,70 @@
+---
+import { SITE } from '../config';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image = '/og-image.jpg',
+  canonical,
+  noindex = false,
+  nofollow = false,
+} = Astro.props;
+
+const makeTitle = title ? `${title} | ${SITE.title}` : SITE.title;
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site || SITE.url).href;
+const socialImageURL = new URL(image, Astro.site || SITE.url).href;
+---
+
+<title>{makeTitle}</title>
+<meta name="title" content={makeTitle} />
+<meta name="description" content={description} />
+<meta name="author" content={SITE.author} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={makeTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageURL} />
+<meta property="og:site_name" content={SITE.title} />
+<meta property="og:locale" content="es_EC" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={makeTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={socialImageURL} />
+
+<!-- Additional SEO -->
+<meta name="robots" content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} />
+<meta name="googlebot" content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} />
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{SITE.title}",
+    "url": "{SITE.url}",
+    "description": "{SITE.description}",
+    "logo": "{SITE.url}/logo.png",
+    "sameAs": [
+      "https://github.com/DotNet-Ecuador",
+      "https://www.linkedin.com/company/dotnet-ecuador/",
+      "https://www.instagram.com/dotnet_ecuador/",
+      "https://www.tiktok.com/@dotnetecuador",
+      "https://www.youtube.com/@dotnet-ecuador"
+    ]
+  }
+</script>

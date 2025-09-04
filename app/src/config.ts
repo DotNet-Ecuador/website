@@ -10,8 +10,8 @@ export const SITE: Site = {
 
 export const NavigationLinks: NavigationLink[] = [
     { name: 'Inicio', url: '/' },
-    { name: 'Sobre Nosotros', url: '/sobre-nosotros' },
-    { name: 'Voluntariado', url: '/voluntariaodo' },
+    { name: 'Voluntariado', url: '/voluntariado' },
     { name: 'Nuestro Equipo', url: '/equipo' },
-    { name: 'Eventos', url: '/eventos' },
+    { name: 'Proyectos', url: '/proyectos' },
+    { name: 'Sobre Nosotros', url: '/sobre-nosotros' },
 ]

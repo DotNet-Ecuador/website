@@ -1,0 +1,301 @@
+---
+export interface Props {
+  id: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+const { id, size = 'md' } = Astro.props;
+
+const sizeClasses = {
+  sm: 'max-w-sm',
+  md: 'max-w-md', 
+  lg: 'max-w-lg',
+  xl: 'max-w-xl'
+};
+---
+
+<!-- Modal Backdrop -->
+<div 
+  class="modal micromodal-slide" 
+  id={id} 
+  aria-hidden="true"
+>
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div 
+      class={`modal__container ${sizeClasses[size]}`}
+      role="dialog" 
+      aria-modal="true"
+      aria-labelledby={`${id}-title`}
+      aria-describedby={`${id}-content`}
+    >
+      <!-- Modal Header -->
+      <header class="modal__header">
+        <h2 class="modal__title" id={`${id}-title`}>
+          <span class="modal__icon"></span>
+          <span class="modal__title-text"></span>
+        </h2>
+        <button 
+          class="modal__close" 
+          aria-label="Cerrar modal" 
+          data-micromodal-close
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Modal Content -->
+      <main class="modal__content" id={`${id}-content`}>
+        <div class="modal__message"></div>
+      </main>
+
+      <!-- Modal Footer -->
+      <footer class="modal__footer">
+        <button 
+          class="modal__btn modal__btn-primary" 
+          data-micromodal-close
+        >
+          Entendido
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Modal Styles */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: none;
+  }
+
+  .modal.is-open {
+    display: flex;
+  }
+
+  .modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .modal__container {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Header */
+  .modal__header {
+    padding: 1.5rem 2rem 1rem 2rem;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .modal__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .modal__icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .modal__icon.success {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+
+  .modal__icon.success::before {
+    content: "✓";
+    font-weight: bold;
+  }
+
+  .modal__icon.error {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+
+  .modal__icon.error::before {
+    content: "✕";
+    font-weight: bold;
+  }
+
+  .modal__close {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal__close:hover {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  /* Content */
+  .modal__content {
+    padding: 1rem 2rem 1.5rem 2rem;
+  }
+
+  .modal__message {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #475569;
+  }
+
+  /* Footer */
+  .modal__footer {
+    padding: 1rem 2rem 1.5rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .modal__btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+  }
+
+  .modal__btn-primary {
+    background: #4a08b2;
+    color: white;
+  }
+
+  .modal__btn-primary:hover {
+    background: #5b21b6;
+    transform: translateY(-1px);
+  }
+
+  /* Animations */
+  @keyframes mmfadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes mmslideIn {
+    from { transform: translateY(-15%) scale(0.95); }
+    to { transform: translateY(0) scale(1); }
+  }
+
+  @keyframes mmfadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes mmslideOut {
+    from { transform: translateY(0) scale(1); }
+    to { transform: translateY(-15%) scale(0.95); }
+  }
+
+  .micromodal-slide {
+    display: none;
+  }
+
+  .micromodal-slide.is-open {
+    display: flex;
+  }
+
+  .micromodal-slide[aria-hidden="false"] .modal__overlay {
+    animation: mmfadeIn 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+
+  .micromodal-slide[aria-hidden="false"] .modal__container {
+    animation: mmslideIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .micromodal-slide[aria-hidden="true"] .modal__overlay {
+    animation: mmfadeOut 0.3s cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+
+  .micromodal-slide[aria-hidden="true"] .modal__container {
+    animation: mmslideOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .modal__overlay {
+      padding: 1rem 0.5rem;
+    }
+    
+    .modal__container {
+      margin: 0 0.5rem;
+      border-radius: 1rem;
+    }
+    
+    .modal__header,
+    .modal__content,
+    .modal__footer {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  import MicroModal from 'micromodal';
+
+  // Initialize MicroModal when component mounts
+  if (typeof window !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+      MicroModal.init({
+        onShow: (modal) => console.log('Modal opened:', modal.id),
+        onClose: (modal) => console.log('Modal closed:', modal.id),
+        openTrigger: 'data-micromodal-trigger',
+        closeTrigger: 'data-micromodal-close',
+        disableScroll: true,
+        disableFocus: false,
+        awaitCloseAnimation: true,
+        debugMode: false
+      });
+    });
+  }
+</script>

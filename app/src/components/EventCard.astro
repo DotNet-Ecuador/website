@@ -1,9 +1,7 @@
 ---
-import Image from 'astro/components/Image.astro';
+import { Image } from 'astro:assets';
 import locationIcon from '../assets/icons/location.png'
 import dateIcon from '../assets/icons/calendar.png'
-import "../assets/styles/global.css"
-
 
 export interface Props {
   idImage: string[]; 
@@ -11,60 +9,88 @@ export interface Props {
   title: string;
   description: string;
   date: string;
-  location:string;
+  location: string;
   reverse?: boolean;
 }
 
-const { idImage, images, title, description,date,location, reverse } = Astro.props;
+const { idImage, images, title, description, date, location, reverse = false } = Astro.props;
 ---
 
-<div class="animate-on-scroll">
-  <div class={`card ${reverse ? 'reverse' : ''}`}>
-    <section class="image-container">
-      <div class="slider-wrapper">
-        <div class="slider">
+<div class="animation-fade-in mb-6 sm:mb-8">
+  <div class={`card max-w-5xl mx-auto flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-6 p-4 sm:p-6 lg:p-8 min-h-[400px] sm:min-h-[450px] lg:min-h-[300px]`}>
+    
+    <!-- Image Slider Section -->
+    <div class="w-full lg:w-1/2 flex-shrink-0">
+      <div class="relative max-w-md mx-auto lg:max-w-none overflow-hidden rounded-2xl shadow-lg">
+        <div class="slider flex aspect-video overflow-x-auto snap-x snap-mandatory scrollbar-hide smooth-scroll">
           {images.map((image, index) => (
-            <img id={idImage[index]} src={image} alt={title} />
+            <img 
+              id={idImage[index]} 
+              src={image} 
+              alt={`${title} - Imagen ${index + 1}`}
+              class="w-full h-full object-cover flex-shrink-0 snap-start"
+              loading="lazy"
+            />
           ))}
         </div>
-        <div class="slider-nav">
-          {idImage.map((id, index) => (
-            <a href={`#${id}`} ></a> 
-          ))}
+        
+        <!-- Navigation Dots -->
+        {images.length > 1 && (
+          <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {idImage.map((id, index) => (
+              <a 
+                href={`#${id}`} 
+                class="w-2.5 h-2.5 bg-white rounded-full opacity-75 hover:opacity-100 transition-opacity focus:opacity-100"
+                aria-label={`Ver imagen ${index + 1}`}
+              ></a> 
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+    
+    <!-- Content Section -->
+    <div class="w-full lg:w-1/2 flex flex-col justify-center space-y-4 text-center lg:text-left">
+      
+      <!-- Meta Information -->
+      <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-6 text-sm text-neutral-600">
+        <div class="flex items-center gap-2">
+          <Image src={locationIcon} alt="Ubicación" width={16} height={16} class="flex-shrink-0" />
+          <span class="font-medium">{location}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <Image src={dateIcon} alt="Fecha" width={16} height={16} class="flex-shrink-0" />
+          <span class="font-bold text-primary-600">{date}</span>
         </div>
       </div>
-    </section>
-    <div class="card-content">
-      <div class="card-meta">
-        <div class="location">
-          <Image src={locationIcon} alt="Location" width={20} />
-          <span>{location}</span>
-        </div>
-        <Image src={dateIcon} alt="Date" width={20} />
-        <p class="date">{date}</p>
-      </div>
-      <h2>{title}</h2>
-      <p class="description">{description}</p>
+      
+      <!-- Title -->
+      <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-900 leading-tight">
+        {title}
+      </h2>
+      
+      <!-- Description -->
+      <p class="text-neutral-700 leading-relaxed text-sm sm:text-base">
+        {description}
+      </p>
     </div>
   </div>
 </div>
 
+<style>
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+</style>
+
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const elements = document.querySelectorAll(".animate-on-scroll");
-
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target); 
-          }
-        });
-      },
-      { threshold: 0.2 } 
-    );
-
-    elements.forEach((el) => observer.observe(el));
-  });
+  import { setupIntersectionObserver } from '../utils/observer';
+  setupIntersectionObserver();
 </script>
