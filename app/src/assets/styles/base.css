@@ -53,6 +53,15 @@
     @apply opacity-100 translate-x-0;
   }
 
+  /* Enhanced fade in with scale */
+  .animation-fade-scale {
+    @apply opacity-0 translate-y-6 scale-95 transition-all duration-500 ease-out;
+  }
+
+  .animation-fade-scale.visible {
+    @apply opacity-100 translate-y-0 scale-100;
+  }
+
   /* Mobile-first touch targets */
   @media (max-width: 1023px) {
     .btn-primary,
@@ -75,4 +84,98 @@
   .text-responsive {
     @apply text-sm xs:text-base sm:text-lg;
   }
+
+  /* Modern Team Section Animations */
+  .team-member-card {
+    @apply opacity-0 translate-y-8 scale-95 transition-all duration-700 ease-out;
+  }
+
+  .team-member-card.visible {
+    @apply opacity-100 translate-y-0 scale-100;
+  }
+
+  .team-grid-stagger {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8;
+  }
+
+  /* Floating animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Pulse glow effect */
+  @keyframes pulse-glow {
+    0%, 100% { 
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+      transform: scale(1);
+    }
+    50% { 
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3);
+      transform: scale(1.02);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Gradient text animation */
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animate-gradient-text {
+    background: linear-gradient(-45deg, #4a08b2, #8b5dff, #27272a, #a688ff, #4a08b2);
+    background-size: 500% 500%;
+    animation: gradient-shift 8s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Project Cards */
+  .project-card {
+    @apply opacity-0 translate-y-8 scale-95 transition-all duration-700 ease-out;
+  }
+
+  .project-card.visible {
+    @apply opacity-100 translate-y-0 scale-100;
+  }
+
+  /* Benefit Cards */
+  .benefit-card {
+    @apply opacity-0 translate-y-8 scale-95 transition-all duration-700 ease-out;
+  }
+
+  .benefit-card.visible {
+    @apply opacity-100 translate-y-0 scale-100;
+  }
+
+  /* Light gradient text for dark backgrounds */
+  .animate-gradient-text-light {
+    background: linear-gradient(-45deg, #ffffff, #a688ff, #ffffff, #8b5dff, #ffffff);
+    background-size: 500% 500%;
+    animation: gradient-shift 6s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Stagger animation delays */
+  .stagger-1 { animation-delay: 100ms; }
+  .stagger-2 { animation-delay: 200ms; }
+  .stagger-3 { animation-delay: 300ms; }
+  .stagger-4 { animation-delay: 400ms; }
+  .stagger-5 { animation-delay: 500ms; }
+  .stagger-6 { animation-delay: 600ms; }
+  .stagger-7 { animation-delay: 700ms; }
+  .stagger-8 { animation-delay: 800ms; }
+  .stagger-9 { animation-delay: 900ms; }
+  .stagger-10 { animation-delay: 1000ms; }
 }

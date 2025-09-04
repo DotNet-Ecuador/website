@@ -6,70 +6,181 @@ import Button from "../components/Button.astro";
 <Layout
   title="Sobre Nosotros"
   description="Conoce más sobre DotNet Ecuador, una comunidad de desarrolladores .NET enfocada en el crecimiento profesional colectivo en tecnologías Microsoft.">
-  <div class="container-custom p-8">
-    <div class="card max-w-4xl mx-auto p-10 mt-10 animation-fade-in">
-      <h1 class="text-center text-4xl font-bold text-primary-900 mb-8 animation-fade-in">¿Quiénes Somos?</h1>
-      
-      <p class="text-justify mb-6 text-lg leading-relaxed animation-fade-in">
-        DotNet Ecuador es una comunidad de desarrolladores .NET, estudiantes y empresas tecnológicas
-        enfocada en el crecimiento profesional colectivo en tecnologías Microsoft. La comunidad se basa
-        en los valores de colaboración, innovación y aprendizaje continuo.
-      </p>
-
-      <p class="text-justify mb-8 text-lg leading-relaxed animation-fade-in">
-        Su misión es fomentar el intercambio de conocimientos sobre el ecosistema .NET a través de
-        eventos de networking, conferencias técnicas y recursos de aprendizaje, con el objetivo de
-        potenciar las habilidades técnicas de sus miembros y facilitar conexiones con oportunidades
-        laborales.
-      </p>
-
-      <h2 class="text-center text-2xl font-semibold text-primary-900 mb-6 animation-fade-in">Beneficios de unirse a DotNet Ecuador</h2>
-      
-      <div class="space-y-4 mb-8">
-        <div class="animation-fade-in p-4 bg-neutral-50 border-l-4 border-primary-900 rounded">
-          <strong class="text-primary-900">📌 Aprender de expertos:</strong> La comunidad cuenta con un
-          equipo de mentores experimentados que están disponibles para ayudar a los
-          desarrolladores a aprender y crecer profesionalmente
+  
+  <!-- Dark Hero Section -->
+  <section class="relative py-16 overflow-hidden">
+    <!-- Dark background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700"></div>
+    
+    <!-- Decorative elements -->
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-primary-600/20 to-primary-500/30 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-primary-700/25 to-primary-600/35 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/3 right-1/3 w-64 h-64 bg-gradient-to-br from-primary-600/15 to-primary-500/25 rounded-full blur-2xl animate-float"></div>
+    
+    <div class="relative z-10">
+      <div class="container-custom pt-20 pb-12">
+        <!-- Header Section -->
+        <div class="text-center mb-16">
+          <h1 class="text-4xl lg:text-6xl font-bold text-white mb-8 animation-fade-scale font-heading">
+            ¿Quiénes Somos?
+          </h1>
+          
+          <!-- Mission Statement -->
+          <div class="max-w-4xl mx-auto space-y-6 text-lg lg:text-xl text-white/90 leading-relaxed">
+            <p class="animation-fade-scale" style="animation-delay: 200ms;">
+              <strong class="text-primary-300">DotNet Ecuador</strong> es una comunidad de desarrolladores .NET, estudiantes y empresas tecnológicas enfocada en el crecimiento profesional colectivo en tecnologías Microsoft.
+            </p>
+            <p class="animation-fade-scale" style="animation-delay: 400ms;">
+              Nos basamos en los valores de <strong class="text-primary-300">colaboración, innovación y aprendizaje continuo</strong>, fomentando el intercambio de conocimientos a través de eventos, conferencias técnicas y recursos educativos.
+            </p>
+          </div>
         </div>
-        <div class="animation-fade-in p-4 bg-neutral-50 border-l-4 border-primary-900 rounded">
-          <strong class="text-primary-900">📌 Compartir conocimientos:</strong> Ofrece un espacio para que los
-          desarrolladores compartan conocimientos y experiencias, lo que puede ayudar a todos
-          a mejorar sus habilidades
-        </div>
-        <div class="animation-fade-in p-4 bg-neutral-50 border-l-4 border-primary-900 rounded">
-          <strong class="text-primary-900">📌 Conectar con la comunidad:</strong> Es una excelente manera de
-          conectarse con otros profesionales de la tecnología en Ecuador.
-        </div>
-        <div class="animation-fade-in p-4 bg-neutral-50 border-l-4 border-primary-900 rounded">
-          <strong class="text-primary-900">📌 Mejorar en .NET:</strong> Te ofrece una variedad de recursos
-          educativos que pueden ayudar a los desarrolladores a mejorar sus habilidades y
-          conocimientos en .NET.
-        </div>
-        <div class="animation-fade-in p-4 bg-neutral-50 border-l-4 border-primary-900 rounded">
-          <strong class="text-primary-900">📌 Encontrar oportunidades laborales:</strong> Cuenta con una red de contactos que puede
-          ayudar a los desarrolladores a encontrar oportunidades de empleo.
-        </div>
-      </div>
-      
-      <p class="animation-fade-in text-center italic text-lg mb-8 text-neutral-700">
-        Si eres un desarrollador .NET o una empresa tecnológica, te invitamos a unirte a DotNet Ecuador. La
-        comunidad es una excelente manera de crecer profesionalmente y conectarse con otros profesionales
-        de la tecnología en Ecuador.
-      </p>
-
-      <div class="text-center animation-fade-in">
-        <Button href="/voluntariado" size="lg" class="px-8 py-4">
-          Únete a DotNet Ecuador
-        </Button>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="relative py-20 bg-gradient-to-br from-neutral-900 via-neutral-800 to-primary-900">
+    <!-- Decorative elements -->
+    <div class="absolute top-20 left-1/4 w-32 h-32 bg-gradient-to-br from-primary-600/15 to-primary-700/20 rounded-full blur-2xl animate-float"></div>
+    <div class="absolute bottom-20 right-1/3 w-24 h-24 bg-gradient-to-br from-primary-500/12 to-primary-800/18 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
+    
+    <div class="relative z-10 container-custom">
+      <!-- Section Title -->
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-5xl font-bold text-white mb-6 animation-fade-scale">
+          ¿Por qué unirse a <span class="text-primary-400">nuestra comunidad</span>?
+        </h2>
+        <p class="text-lg text-white/80 max-w-3xl mx-auto animation-fade-scale" style="animation-delay: 200ms;">
+          Descubre todos los beneficios que tenemos para ti como desarrollador o empresa tecnológica
+        </p>
+      </div>
+
+      <!-- Benefits Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <!-- Benefit Card 1 -->
+        <div class="benefit-card group" style="animation-delay: 100ms;">
+          <div class="relative overflow-hidden">
+            <!-- Glowing background -->
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+            
+            <!-- Card content -->
+            <div class="relative bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/15 group-hover:via-white/10 group-hover:to-white/15 group-hover:border-white/30">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white group-hover:text-primary-300 transition-colors duration-300">
+                  Aprender de Expertos
+                </h3>
+              </div>
+              <p class="text-white/80 text-lg leading-relaxed">
+                Contamos con un equipo de mentores experimentados que están disponibles para ayudar a los desarrolladores a aprender y crecer profesionalmente en el ecosistema .NET.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefit Card 2 -->
+        <div class="benefit-card group" style="animation-delay: 200ms;">
+          <div class="relative overflow-hidden">
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+            <div class="relative bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/15 group-hover:via-white/10 group-hover:to-white/15 group-hover:border-white/30">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white group-hover:text-primary-300 transition-colors duration-300">
+                  Compartir Conocimientos
+                </h3>
+              </div>
+              <p class="text-white/80 text-lg leading-relaxed">
+                Ofrecemos un espacio colaborativo para que los desarrolladores compartan conocimientos y experiencias, ayudando a todos a mejorar sus habilidades técnicas.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefit Card 3 -->
+        <div class="benefit-card group" style="animation-delay: 300ms;">
+          <div class="relative overflow-hidden">
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+            <div class="relative bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/15 group-hover:via-white/10 group-hover:to-white/15 group-hover:border-white/30">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v-3h2l.94-1.28A1.92 1.92 0 0 1 11.44 9h1.12c.8 0 1.54.37 2.01 1l.41.55H18v2h-3.5l-.8 1H18v2h-4.5l-1.5 2H10l1.5-2H8.5l-.8-1H4z"/>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white group-hover:text-primary-300 transition-colors duration-300">
+                  Networking Profesional
+                </h3>
+              </div>
+              <p class="text-white/80 text-lg leading-relaxed">
+                Una excelente oportunidad para conectarte con otros profesionales de la tecnología en Ecuador y expandir tu red de contactos profesionales.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefit Card 4 -->
+        <div class="benefit-card group" style="animation-delay: 400ms;">
+          <div class="relative overflow-hidden">
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-primary-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg scale-110"></div>
+            <div class="relative bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 transition-all duration-500 group-hover:from-white/15 group-hover:via-white/10 group-hover:to-white/15 group-hover:border-white/30">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                  </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white group-hover:text-primary-300 transition-colors duration-300">
+                  Oportunidades Laborales
+                </h3>
+              </div>
+              <p class="text-white/80 text-lg leading-relaxed">
+                Accede a nuestra red de contactos empresariales que puede ayudarte a encontrar nuevas oportunidades de empleo en el ámbito tecnológico.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Call to Action -->
+      <div class="text-center">
+        <div class="relative max-w-2xl mx-auto">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-400/20 via-primary-500/15 to-primary-600/20 rounded-3xl blur-xl scale-110 animate-pulse-glow"></div>
+          <div class="relative bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 sm:p-10 lg:p-12 text-center animation-fade-scale transition-all duration-500 hover:from-white/15 hover:via-white/10 hover:to-white/15">
+            <h3 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+              ¡Únete a Nuestra Comunidad!
+            </h3>
+            <p class="text-lg sm:text-xl text-white/80 mb-8 leading-relaxed">
+              Si eres desarrollador .NET o empresa tecnológica, te invitamos a formar parte de nuestra comunidad.
+              <span class="text-primary-300 font-semibold block mt-2">¡Es la mejor forma de crecer profesionalmente!</span>
+            </p>
+            <Button href="/voluntariado" size="lg" class="group/btn relative inline-flex items-center gap-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/40 overflow-hidden">
+              <!-- Shimmer effect -->
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+              <span class="relative z-10">Únete a DotNet Ecuador</span>
+              <svg class="relative z-10 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+              </svg>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <script>
   function setupIntersectionObserver() {
     const observerOptions = {
-      threshold: 0.2,
+      threshold: 0.15,
       rootMargin: '0px 0px -50px 0px'
     };
 
@@ -82,11 +193,61 @@ import Button from "../components/Button.astro";
       });
     }, observerOptions);
 
-    const elementsToAnimate = document.querySelectorAll('.animation-fade-in');
-    elementsToAnimate.forEach((el) => observer.observe(el));
+    // Observe fade-in and fade-scale animations
+    const fadeElements = document.querySelectorAll('.animation-fade-in, .animation-fade-scale');
+    fadeElements.forEach((el) => observer.observe(el));
+    
+    // Observe benefit cards with staggered animation
+    const benefitCards = document.querySelectorAll('.benefit-card');
+    benefitCards.forEach((card, index) => {
+      observer.observe(card);
+    });
   }
 
-  document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
+  function addParallaxEffect() {
+    const decorativeElements = document.querySelectorAll('.absolute');
+    
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * -0.5;
+      
+      decorativeElements.forEach((el, index) => {
+        if (el.classList.contains('blur-3xl') || el.classList.contains('blur-2xl') || el.classList.contains('blur-xl')) {
+          el.style.transform = `translateY(${rate * (0.2 + index * 0.1)}px)`;
+        }
+      });
+    });
+  }
+
+  function addBenefitCardEffects() {
+    const benefitCards = document.querySelectorAll('.benefit-card');
+    
+    benefitCards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        // Add subtle floating effect to other cards
+        benefitCards.forEach(otherCard => {
+          if (otherCard !== card) {
+            otherCard.style.transform = 'translateY(-2px) scale(0.98)';
+            otherCard.style.opacity = '0.8';
+          }
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        // Reset all cards
+        benefitCards.forEach(otherCard => {
+          otherCard.style.transform = '';
+          otherCard.style.opacity = '';
+        });
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupIntersectionObserver();
+    addParallaxEffect();
+    addBenefitCardEffects();
+  });
 </script>
 
 
