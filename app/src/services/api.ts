@@ -38,8 +38,8 @@ class ApiService {
     data: VolunteerApplicationRequest
   ): Promise<ApiResponse<any>> {
     try {
-      // Use local API route to avoid CORS issues
-      const response = await fetch('/api/volunteer-application', {
+      // Call external API directly
+      const response = await fetch(`${this.baseUrl}/api/v1/volunteer-application/apply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ class ApiService {
 
       const result = await response.json();
       
-      if (!response.ok || !result.success) {
+      if (!response.ok) {
         // Return detailed error information from API
         const errorMessage = result.message || `Error ${response.status}: ${response.statusText}`;
         throw new Error(errorMessage);
@@ -59,7 +59,7 @@ class ApiService {
       return {
         success: true,
         data: result.data,
-        message: result.message || 'Operación completada exitosamente'
+        message: result.message || 'Aplicación enviada exitosamente'
       };
     } catch (error) {
       console.error('Error submitting volunteer application:', error);
