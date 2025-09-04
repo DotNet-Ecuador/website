@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Modal from '../components/Modal.astro';
 ---
 <Layout
   title="Voluntariado"
@@ -105,7 +106,7 @@ import Layout from '../layouts/Layout.astro';
                         id="email" 
                         name="email" 
                         placeholder="correo@ejemplo.com" 
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}"
                         title="Ingresa un correo electrónico válido"
                         maxlength="100"
                         required
@@ -366,8 +367,8 @@ import Layout from '../layouts/Layout.astro';
               </div>
             </form>
             
-            <!-- Toast Container -->
-            <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+            <!-- Response Modal -->
+            <Modal id="response-modal" size="md" />
           </div>
         </div>
       </div>
@@ -452,18 +453,29 @@ import Layout from '../layouts/Layout.astro';
         }
       }
       
-      // Show single toast message for first invalid field
+      // Show modal for validation errors
       if (firstInvalidField) {
         firstInvalidField.focus();
         
-        showToast('Completa todos los campos obligatorios', 'error', 3000);
+        // Use modal for validation errors
+        import('../utils/modal.ts').then(({ modalService }) => {
+          modalService.showError(
+            'Campos Requeridos',
+            'Por favor, completa todos los campos obligatorios antes de continuar.'
+          );
+        });
       }
       
       // Special validation for step 3 (collaboration areas)
       if (currentStep === 3) {
         const checkedBoxes = currentStepElement.querySelectorAll('input[name="areas[]"]:checked');
         if (checkedBoxes.length === 0) {
-          showToast('Por favor, selecciona al menos un área de colaboración.', 'error');
+          import('../utils/modal.ts').then(({ modalService }) => {
+            modalService.showError(
+              'Áreas de Colaboración',
+              'Por favor, selecciona al menos un área de colaboración para continuar.'
+            );
+          });
           return false;
         }
       }
@@ -520,88 +532,107 @@ import Layout from '../layouts/Layout.astro';
       }
       
       if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
           console.log('Form submitted, validating step:', currentStep);
+          
           if (!validateCurrentStep()) {
-            e.preventDefault();
             console.log('Form validation failed');
-          } else {
-            console.log('Form validation passed');
+            return;
           }
+          
+          console.log('Form validation passed, submitting to API');
+          await handleFormSubmission(form);
         });
       }
     }
 
-    function showToast(message, type = 'info', duration = 4000) {
-      const container = document.getElementById('toast-container');
-      if (!container) return;
+
+    async function handleFormSubmission(form) {
+      const submitBtn = document.getElementById('submit-btn');
+      const originalBtnText = submitBtn.textContent;
       
-      const toast = document.createElement('div');
-      toast.className = `toast transform translate-x-full opacity-0 transition-all duration-300`;
-      
-      const icons = {
-        success: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>`,
-        error: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>`,
-        info: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>`
-      };
-      
-      // Set background color based on type
-      if (type === 'success') {
-        toast.style.background = '#22c55e';
-        toast.style.borderLeft = '4px solid #16a34a';
-      } else if (type === 'error') {
-        toast.style.background = '#ef4444';
-        toast.style.borderLeft = '4px solid #dc2626';
-      } else {
-        toast.style.background = '#4a08b2';
-        toast.style.borderLeft = '4px solid #5b21b6';
+      try {
+        // Disable submit button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        submitBtn.classList.add('opacity-50');
+        
+        // Collect form data
+        const formData = collectFormData(form);
+        
+        // Import and use the API service
+        const { apiService } = await import('../services/api.ts');
+        const response = await apiService.submitVolunteerApplication(formData);
+        
+        if (response.success) {
+          // Import modal service
+          const { modalService } = await import('../utils/modal.ts');
+          
+          modalService.showSuccess(
+            '¡Aplicación Enviada!',
+            response.message || '¡Aplicación enviada exitosamente! Te contactaremos pronto.'
+          );
+          
+          // Reset form after successful submission
+          setTimeout(() => {
+            form.reset();
+            currentStep = 1;
+            showStep(1);
+          }, 2000);
+        } else {
+          throw new Error(response.message || 'Error al enviar la aplicación');
+        }
+        
+      } catch (error) {
+        console.error('Form submission error:', error);
+        const errorMessage = error.message || 'Error inesperado al enviar la aplicación. Por favor, inténtalo de nuevo.';
+        
+        // Import modal service for errors
+        const { modalService } = await import('../utils/modal.ts');
+        modalService.showError(
+          'Error al Enviar',
+          errorMessage
+        );
+      } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+        submitBtn.classList.remove('opacity-50');
       }
-      toast.style.color = 'white';
+    }
+
+    function collectFormData(form) {
+      const formData = new FormData(form);
       
-      toast.innerHTML = `
-        <div style="display: flex; align-items: flex-start; gap: 12px;">
-          <div style="flex-shrink: 0; margin-top: 2px;">
-            ${icons[type] || icons.info}
-          </div>
-          <div style="flex: 1;">
-            <p style="font-size: 14px; font-weight: 500; margin: 0; color: white;">${message}</p>
-          </div>
-          <button class="toast-close" style="flex-shrink: 0; margin-left: 8px; color: white; background: none; border: none; cursor: pointer; opacity: 0.8; padding: 0;">
-            <svg style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-            </svg>
-          </button>
-        </div>
-      `;
-      
-      container.appendChild(toast);
-      
-      // Animate in
-      setTimeout(() => {
-        toast.classList.remove('translate-x-full', 'opacity-0');
-      }, 10);
-      
-      // Close button functionality
-      const closeBtn = toast.querySelector('.toast-close');
-      closeBtn.addEventListener('click', () => {
-        removeToast(toast);
+      // Get areas of interest as array
+      const areasOfInterest = [];
+      const areaCheckboxes = form.querySelectorAll('input[name="areas[]"]:checked');
+      areaCheckboxes.forEach(checkbox => {
+        if (checkbox.value !== 'Other') {
+          areasOfInterest.push(checkbox.value);
+        }
       });
       
-      // Auto-remove after duration
-      setTimeout(() => {
-        removeToast(toast);
-      }, duration);
-    }
-    
-    function removeToast(toast) {
-      if (!toast.parentNode) return;
+      // Get other areas text if "Other" is selected
+      const otherCheckbox = form.querySelector('input[name="areas[]"][value="Other"]:checked');
+      const otherAreasText = otherCheckbox ? formData.get('otros_texto') || '' : '';
       
-      toast.classList.add('translate-x-full', 'opacity-0');
-      setTimeout(() => {
-        if (toast.parentNode) {
-          toast.parentNode.removeChild(toast);
-        }
-      }, 300);
+      // Map form field names to API expected names
+      return {
+        fullName: formData.get('nombres'),
+        email: formData.get('email'),
+        phoneNumber: formData.get('telefono'),
+        country: formData.get('pais'),
+        city: formData.get('ciudad'),
+        hasVolunteeringExperience: formData.get('experiencia') === 'si',
+        areasOfInterest: areasOfInterest,
+        otherAreas: otherAreasText,
+        availableTime: formData.get('disponibilidad'),
+        skillsOrKnowledge: formData.get('habilidades'),
+        whyVolunteer: formData.get('motivacion'),
+        additionalComments: formData.get('comentarios') || ''
+      };
     }
 
     function setupInputFiltering() {
@@ -640,8 +671,13 @@ import Layout from '../layouts/Layout.astro';
       });
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
       console.log('DOM loaded, initializing form');
+      
+      // Initialize modal service
+      const { modalService } = await import('../utils/modal.ts');
+      modalService.init();
+      
       setupIntersectionObserver();
       setupMultiStepForm();
       setupInputFiltering();
@@ -738,49 +774,4 @@ import Layout from '../layouts/Layout.astro';
     border-color: #ef4444 !important;
   }
   
-  /* Toast Styles */
-  .toast {
-    min-width: 300px;
-    max-width: 400px;
-    padding: 20px 24px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), 0 4px 6px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .toast-success {
-    background: #22c55e !important;
-    color: white !important;
-    border-left: 4px solid #16a34a;
-  }
-  
-  .toast-error {
-    background: #ef4444 !important;
-    color: white !important;
-    border-left: 4px solid #dc2626;
-  }
-  
-  .toast-info {
-    background: #4a08b2 !important;
-    color: white !important;
-    border-left: 4px solid #5b21b6;
-  }
-  
-  .toast-close {
-    cursor: pointer;
-  }
-  
-  /* Toast container responsive */
-  @media (max-width: 640px) {
-    #toast-container {
-      top: 1rem;
-      right: 1rem;
-      left: 1rem;
-    }
-    
-    .toast {
-      min-width: auto;
-      max-width: none;
-    }
-  }
 </style>
