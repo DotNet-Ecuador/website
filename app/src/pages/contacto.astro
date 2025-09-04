@@ -1,0 +1,62 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+<Layout
+  title="Contacto"
+  description="Contáctanos para unirte a la comunidad DotNet Ecuador. Estamos aquí para ayudarte en tu crecimiento profesional.">
+  
+  <div class="container-custom text-center p-8">
+    <h1 class="mt-10 text-4xl font-bold text-primary-900 mb-8 animation-fade-in">Contáctanos</h1>
+    <p class="text-lg text-neutral-600 mb-12 animation-fade-in">
+      Puedes contactarnos a través de nuestro correo electrónico o número celular. ¡Estamos para ayudarte!
+    </p>
+
+    <div class="flex flex-col md:flex-row gap-6 justify-center max-w-4xl mx-auto">
+      <div class="flex-1 animation-fade-in">
+        <a href="mailto:equipo@dotnetecuador.com" class="block">
+          <div class="card p-8 bg-primary-900 text-white hover:bg-primary-800 transition-all duration-300 cursor-pointer">
+            <h2 class="text-2xl font-semibold mb-6">Correo Electrónico</h2>
+            <div class="flex items-center justify-center">
+              <img src="/correo.png" alt="Correo" class="w-8 h-8 mr-3" />
+              <span class="text-lg">equipo@dotnetecuador.com</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="flex-1 animation-fade-in">
+        <div class="card p-8 bg-primary-900 text-white">
+          <h2 class="text-2xl font-semibold mb-6">Número Celular</h2>
+          <div class="flex items-center justify-center">
+            <img src="/celular.png" alt="Celular" class="w-12 h-12 mr-3" />
+            <span class="text-lg">0998829043</span>
+          </div>
+        </div>  
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setupIntersectionObserver() {
+      const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      const elementsToAnimate = document.querySelectorAll('.animation-fade-in');
+      elementsToAnimate.forEach((el) => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
+  </script>
+
+</Layout>

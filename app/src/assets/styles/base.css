@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-neutral-100 text-neutral-800 font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 text-white px-4 py-2 rounded-lg font-medium 
+           hover:bg-primary-700 transition-all duration-300 
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+           min-h-[44px] min-w-[44px];
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 text-white px-4 py-2 rounded-lg font-medium 
+           hover:bg-secondary-700 transition-all duration-300
+           focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2
+           min-h-[44px] min-w-[44px];
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-card hover:shadow-card-hover 
+           transition-all duration-300;
+  }
+
+  .container-custom {
+    @apply w-full max-w-7xl mx-auto px-4 xs:px-5 sm:px-6 lg:px-8;
+  }
+
+  .gradient-primary {
+    @apply bg-gradient-to-br from-primary-900 to-primary-600;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 
+           bg-clip-text text-transparent;
+  }
+
+  .animation-fade-in {
+    @apply opacity-0 -translate-x-12 transition-all duration-700 ease-out;
+  }
+
+  .animation-fade-in.visible {
+    @apply opacity-100 translate-x-0;
+  }
+
+  /* Mobile-first touch targets */
+  @media (max-width: 1023px) {
+    .btn-primary,
+    .btn-secondary,
+    button,
+    [role="button"] {
+      @apply min-h-[44px] min-w-[44px];
+    }
+  }
+
+  /* Responsive typography utilities */
+  .heading-responsive {
+    @apply text-xl xs:text-2xl sm:text-3xl lg:text-4xl xl:text-5xl;
+  }
+
+  .subheading-responsive {
+    @apply text-lg xs:text-xl sm:text-2xl lg:text-3xl;
+  }
+
+  .text-responsive {
+    @apply text-sm xs:text-base sm:text-lg;
+  }
+}

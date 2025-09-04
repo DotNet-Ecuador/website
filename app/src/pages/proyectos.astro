@@ -1,0 +1,104 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Accordion from '../components/Accordion.astro';
+---
+
+<Layout
+  title="Proyectos"
+  description="Explora los proyectos open source de DotNet Ecuador. Contribuye con pull requests y forma parte del desarrollo comunitario.">
+  
+  <div class="container-custom p-8">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl lg:text-5xl font-bold text-primary-900 mb-6 animation-fade-in">
+        Envíanos tus Pull Requests
+      </h1>
+      <p class="text-lg text-neutral-600 max-w-2xl mx-auto animation-fade-in">
+        Contribuye a nuestros proyectos open source y ayuda a hacer crecer la comunidad .NET en Ecuador
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8">
+      <a href="https://github.com/DotNet-Ecuador/website" class="card p-6 hover:shadow-card-hover transition-all duration-300 no-underline animation-fade-in" target="_blank" rel="noopener">
+        <h2 class="text-2xl font-bold text-primary-900 mb-3">Website</h2>
+        <p class="text-neutral-600 mb-4">
+          Página web de la comunidad de tecnologías Microsoft .NET en Ecuador
+        </p>
+        <div class="mt-4">
+          <strong class="text-neutral-800 block mb-2">Tecnologías usadas:</strong>
+          <ul class="text-sm text-neutral-600 ml-5 space-y-1">
+            <li>• Astro</li>
+            <li>• CSS</li>
+            <li>• TypeScript</li>
+            <li>• JavaScript</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="https://github.com/DotNet-Ecuador/ecos-volcan" class="card p-6 hover:shadow-card-hover transition-all duration-300 no-underline animation-fade-in" target="_blank" rel="noopener">
+        <h2 class="text-2xl font-bold text-primary-900 mb-3">Ecos Volcán</h2>
+        <p class="text-neutral-600 mb-4">
+          Videojuego de Acción 2D. Los jugadores exploran las distintas regiones de Ecuador mientras descubren la riqueza cultural y natural del país.
+        </p>
+        <div class="mt-4">
+          <strong class="text-neutral-800 block mb-2">Tecnologías usadas:</strong>
+          <ul class="text-sm text-neutral-600 ml-5 space-y-1">
+            <li>• C#</li>
+            <li>• Rich Text Format</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="https://github.com/DotNet-Ecuador/api-website-oficial" class="card p-6 hover:shadow-card-hover transition-all duration-300 no-underline animation-fade-in" target="_blank" rel="noopener">
+        <h2 class="text-2xl font-bold text-primary-900 mb-3">API Website Oficial</h2>
+        <p class="text-neutral-600 mb-4">
+          API que sirve a la página oficial de la comunidad
+        </p>
+        <div class="mt-4">
+          <strong class="text-neutral-800 block mb-2">Tecnologías usadas:</strong>
+          <ul class="text-sm text-neutral-600 ml-5 space-y-1">
+            <li>• C#</li>
+            <li>• Dockerfile</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="https://github.com/DotNet-Ecuador/conference-resources" class="card p-6 hover:shadow-card-hover transition-all duration-300 no-underline animation-fade-in" target="_blank" rel="noopener">
+        <h2 class="text-2xl font-bold text-primary-900 mb-3">Conference Resources</h2>
+        <p class="text-neutral-600 mb-4">
+          Este repositorio contiene recursos de conferencias comunitarias, organizados por evento y tema. Incluye presentaciones, hojas de trabajo, videos y material educativo compartido.
+        </p>
+        <div class="mt-4">
+          <strong class="text-neutral-800 block mb-2">Recursos disponibles:</strong>
+          <ul class="text-sm text-neutral-600 ml-5 space-y-1">
+            <li>• Presentaciones</li>
+            <li>• Material educativo</li>
+            <li>• Videos</li>
+          </ul>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function setupIntersectionObserver() {
+      const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      const elementsToAnimate = document.querySelectorAll('.animation-fade-in');
+      elementsToAnimate.forEach((el) => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
+  </script>
+</Layout>

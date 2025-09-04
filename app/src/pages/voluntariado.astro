@@ -1,0 +1,786 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+  title="Voluntariado"
+  description="Únete como voluntario a DotNet Ecuador. Contribuye al crecimiento de la comunidad .NET en Ecuador y desarrolla tus habilidades profesionales.">
+  
+  <!-- Hero Section -->
+  <section class="relative py-16 overflow-hidden">
+    <!-- Background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700"></div>
+    
+    <!-- Decorative elements -->
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-primary-600/20 to-primary-500/30 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-primary-700/25 to-primary-600/35 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 right-1/3 w-64 h-64 bg-gradient-to-br from-primary-600/15 to-primary-500/25 rounded-full blur-2xl"></div>
+    
+    <div class="relative z-10">
+      <div class="container-custom pt-20 pb-12">
+        <!-- Header Section -->
+        <div class="text-center mb-16">
+          <h1 class="text-4xl lg:text-6xl font-bold text-white mb-8 animation-fade-in font-heading">
+            ¿Qué significa ser voluntario en <span class="text-primary-300">DotNet Ecuador</span>?
+          </h1>
+          
+          <!-- Simple text content -->
+          <div class="max-w-4xl mx-auto space-y-6 text-lg lg:text-xl text-white/90 leading-relaxed">
+            <p class="animation-fade-in">
+              Como voluntario puedes participar en organización de eventos, creación de contenido, apoyo técnico, gestión de redes sociales y mucho más. Siempre estamos abiertos a nuevas ideas y formas de colaboración.
+            </p>
+            <p class="animation-fade-in">
+              <strong class="text-primary-300">No necesitas experiencia previa.</strong> Aceptamos voluntarios de todos los niveles. Lo más importante es tu entusiasmo y disposición para ayudar a la comunidad .NET en Ecuador.
+            </p>
+            <p class="animation-fade-in">
+              El tiempo de compromiso es flexible según tu disponibilidad. Trabajamos contigo para que contribuyas efectivamente sin afectar tus otras responsabilidades.
+            </p>
+          </div>
+        </div>
+
+        <!-- Multi-Step Form Section -->
+        <div class="max-w-4xl mx-auto">
+          <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-8 lg:p-12 shadow-2xl animation-fade-in">
+            <!-- Step Progress Bar -->
+            <div class="mb-12">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex-1">
+                  <div class="flex items-center">
+                    <div class="step-indicator active" data-step="1">
+                      <span class="step-number">1</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="2">
+                      <span class="step-number">2</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="3">
+                      <span class="step-number">3</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="4">
+                      <span class="step-number">4</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-between text-sm font-medium text-neutral-600">
+                <span>Información Personal</span>
+                <span>Experiencia</span>
+                <span>Colaboración</span>
+                <span>Finalizar</span>
+              </div>
+            </div>
+
+            <form id="volunteer-form" class="space-y-8">
+              <!-- Step 1: Información Personal -->
+              <div class="step-content active" data-step="1">
+                <h3 class="text-2xl font-bold text-primary-900 mb-8 text-center">
+                  Información Personal
+                </h3>
+                <div class="space-y-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label for="nombres" class="block text-sm font-semibold text-primary-900 mb-3">
+                        Nombres Completos *
+                      </label>
+                      <input 
+                        type="text" 
+                        id="nombres" 
+                        name="nombres" 
+                        placeholder="Ej: Manuel Gonzalez" 
+                        pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+"
+                        title="Solo se permiten letras, espacios y acentos"
+                        minlength="2"
+                        maxlength="50"
+                        required
+                        class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300"
+                      >
+                    </div>
+                    <div>
+                      <label for="email" class="block text-sm font-semibold text-primary-900 mb-3">
+                        Correo Electrónico *
+                      </label>
+                      <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="correo@ejemplo.com" 
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        title="Ingresa un correo electrónico válido"
+                        maxlength="100"
+                        required
+                        class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300"
+                      >
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label for="telefono" class="block text-sm font-semibold text-primary-900 mb-3">
+                        Número de Teléfono *
+                      </label>
+                      <input 
+                        type="tel" 
+                        id="telefono" 
+                        name="telefono" 
+                        placeholder="Ej: +593 99 123 4567" 
+                        pattern="[\+]?[0-9\s\-\(\)]+"
+                        title="Solo números, espacios, guiones, paréntesis y símbolo +"
+                        minlength="7"
+                        maxlength="13"
+                        required
+                        class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300"
+                      >
+                    </div>
+                    <div>
+                      <label for="pais" class="block text-sm font-semibold text-primary-900 mb-3">
+                        País *
+                      </label>
+                      <select 
+                        id="pais" 
+                        name="pais" 
+                        required
+                        class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300 cursor-pointer"
+                      >
+                        <option value="">Selecciona tu país</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="Brasil">Brasil</option>
+                        <option value="Chile">Chile</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Costa Rica">Costa Rica</option>
+                        <option value="Cuba">Cuba</option>
+                        <option value="Ecuador" selected>Ecuador</option>
+                        <option value="El Salvador">El Salvador</option>
+                        <option value="España">España</option>
+                        <option value="Estados Unidos">Estados Unidos</option>
+                        <option value="Guatemala">Guatemala</option>
+                        <option value="Honduras">Honduras</option>
+                        <option value="México">México</option>
+                        <option value="Nicaragua">Nicaragua</option>
+                        <option value="Panamá">Panamá</option>
+                        <option value="Paraguay">Paraguay</option>
+                        <option value="Perú">Perú</option>
+                        <option value="Puerto Rico">Puerto Rico</option>
+                        <option value="República Dominicana">República Dominicana</option>
+                        <option value="Uruguay">Uruguay</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Otro">Otro país</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+                    <div>
+                      <label for="ciudad" class="block text-sm font-semibold text-primary-900 mb-3">
+                        Ciudad/Localidad *
+                      </label>
+                      <input 
+                        type="text" 
+                        id="ciudad" 
+                        name="ciudad" 
+                        placeholder="Ej: Quito, Guayaquil, Cuenca" 
+                        pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+"
+                        title="Solo se permiten letras, espacios y acentos"
+                        minlength="2"
+                        maxlength="50"
+                        required
+                        class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Experiencia -->
+              <div class="step-content" data-step="2">
+                <h3 class="text-2xl font-bold text-primary-900 mb-8 text-center">
+                  Experiencia y Disponibilidad
+                </h3>
+                <div class="space-y-6">
+                  <div>
+                    <label class="block text-sm font-semibold text-primary-900 mb-6">
+                      ¿Tienes experiencia previa en voluntariado? *
+                    </label>
+                    <div class="space-y-4">
+                      <label class="flex items-center p-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 cursor-pointer">
+                        <input 
+                          type="radio" 
+                          name="experiencia" 
+                          value="si" 
+                          class="w-4 h-4 text-primary-600 bg-white border-neutral-300 mr-3 focus:ring-primary-600 focus:ring-2"
+                        >
+                        <span class="text-primary-900 font-medium">Sí, tengo experiencia previa en voluntariado</span>
+                      </label>
+                      <label class="flex items-center p-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 cursor-pointer">
+                        <input 
+                          type="radio" 
+                          name="experiencia" 
+                          value="no" 
+                          checked
+                          class="w-4 h-4 text-primary-600 bg-white border-neutral-300 mr-3 focus:ring-primary-600 focus:ring-2"
+                        >
+                        <span class="text-primary-900 font-medium">No, sería mi primera experiencia como voluntario</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <label for="disponibilidad" class="block text-sm font-semibold text-primary-900 mb-3">
+                      Disponibilidad de tiempo * <span class="text-neutral-600 font-normal">(días y horas)</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="disponibilidad" 
+                      name="disponibilidad" 
+                      placeholder="Ej: Lunes a Viernes, 14:00 - 18:00 | Fines de semana, 09:00 - 12:00" 
+                      maxlength="100"
+                      required
+                      class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300"
+                    >
+                  </div>
+                  <div>
+                    <label for="habilidades" class="block text-sm font-semibold text-primary-900 mb-3">
+                      Habilidades y conocimientos técnicos *
+                    </label>
+                    <textarea 
+                      id="habilidades" 
+                      name="habilidades" 
+                      rows="4"
+                      maxlength="500"
+                      minlength="10"
+                      required
+                      class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300 resize-vertical"
+                      placeholder="Describe tus habilidades técnicas, experiencia profesional, lenguajes de programación, frameworks, etc."
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3: Áreas de Colaboración -->
+              <div class="step-content" data-step="3">
+                <h3 class="text-2xl font-bold text-primary-900 mb-8 text-center">
+                  Áreas de Colaboración
+                </h3>
+                <div class="space-y-6">
+                  <div>
+                    <label class="block text-sm font-semibold text-primary-900 mb-6">
+                      ¿En qué áreas te gustaría colaborar? * <span class="text-neutral-600 font-normal">(Selecciona al menos una)</span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <label class="flex items-center p-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 cursor-pointer">
+                        <input type="checkbox" name="areas[]" value="EventOrganization" class="w-4 h-4 text-primary-600 bg-white border-neutral-300 rounded mr-3">
+                        <span class="text-primary-900 font-medium">Organización de eventos</span>
+                      </label>
+                      <label class="flex items-center p-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 cursor-pointer">
+                        <input type="checkbox" name="areas[]" value="ContentCreation" class="w-4 h-4 text-primary-600 bg-white border-neutral-300 rounded mr-3">
+                        <span class="text-primary-900 font-medium">Creación de contenido</span>
+                      </label>
+                      <label class="flex items-center p-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 cursor-pointer">
+                        <input type="checkbox" name="areas[]" value="TechnicalSupport" class="w-4 h-4 text-primary-600 bg-white border-neutral-300 rounded mr-3">
+                        <span class="text-primary-900 font-medium">Apoyo técnico</span>
+                      </label>
+                      <label class="flex items-center p-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 cursor-pointer">
+                        <input type="checkbox" name="areas[]" value="SocialMediaManagement" class="w-4 h-4 text-primary-600 bg-white border-neutral-300 rounded mr-3">
+                        <span class="text-primary-900 font-medium">Gestión de redes sociales</span>
+                      </label>
+                    </div>
+                    <div class="mt-4">
+                      <label class="flex items-start p-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 cursor-pointer">
+                        <input type="checkbox" name="areas[]" value="Other" class="w-4 h-4 text-primary-600 bg-white border-neutral-300 rounded mr-3 mt-1">
+                        <div class="flex-1">
+                          <span class="text-primary-900 font-medium block mb-2">Otras áreas:</span>
+                          <input 
+                            type="text" 
+                            name="otros_texto" 
+                            placeholder="Especifica otras áreas de colaboración..."
+                            maxlength="100"
+                            class="form-input w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:outline-none transition-all duration-300"
+                          >
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 4: Motivación y Finalización -->
+              <div class="step-content" data-step="4">
+                <h3 class="text-2xl font-bold text-primary-900 mb-8 text-center">
+                  Motivación y Comentarios
+                </h3>
+                <div class="space-y-6">
+                  <div>
+                    <label for="motivacion" class="block text-sm font-semibold text-primary-900 mb-3">
+                      ¿Por qué te gustaría ser voluntario en la comunidad .NET Ecuador? *
+                    </label>
+                    <textarea 
+                      id="motivacion" 
+                      name="motivacion" 
+                      rows="4" 
+                      minlength="20"
+                      maxlength="1000"
+                      required
+                      class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300 resize-vertical"
+                      placeholder="Comparte tu motivación para unirte como voluntario. ¿Qué te inspira a contribuir con la comunidad .NET?"
+                    ></textarea>
+                  </div>
+                  <div>
+                    <label for="comentarios" class="block text-sm font-semibold text-primary-900 mb-3">
+                      Comentarios adicionales
+                    </label>
+                    <textarea 
+                      id="comentarios" 
+                      name="comentarios" 
+                      rows="3"
+                      maxlength="500"
+                      class="form-input w-full px-4 py-3 bg-neutral-50 border-2 border-neutral-200 rounded-xl text-primary-900 placeholder-neutral-500 focus:border-primary-600 focus:bg-white focus:outline-none transition-all duration-300 resize-vertical"
+                      placeholder="Cualquier información adicional que consideres relevante..."
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Navigation Buttons -->
+              <div class="flex justify-between pt-8 border-t border-neutral-200">
+                <button 
+                  type="button" 
+                  id="prev-btn" 
+                  class="px-6 py-3 bg-neutral-200 text-neutral-700 rounded-xl font-medium hover:bg-neutral-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  style="display: none;"
+                >
+                  ← Anterior
+                </button>
+                <button 
+                  type="button" 
+                  id="next-btn" 
+                  class="px-8 py-3 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300 transform hover:scale-105 ml-auto"
+                >
+                  Siguiente →
+                </button>
+                <button 
+                  type="submit" 
+                  id="submit-btn" 
+                  class="px-8 py-3 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300 transform hover:scale-105 ml-auto"
+                  style="display: none;"
+                >
+                  Enviar Solicitud
+                </button>
+              </div>
+            </form>
+            
+            <!-- Toast Container -->
+            <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Additional decorative elements -->
+    <div class="absolute bottom-20 right-1/4 w-32 h-32 bg-gradient-to-br from-primary-600/15 to-primary-700/20 rounded-full blur-2xl"></div>
+    <div class="absolute top-1/2 -left-16 w-24 h-24 bg-gradient-to-br from-primary-600/12 to-primary-800/18 rounded-full blur-xl"></div>
+  </section>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    function updateStepIndicators() {
+      document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+        const stepNum = index + 1;
+        indicator.classList.remove('active', 'completed');
+        
+        if (stepNum < currentStep) {
+          indicator.classList.add('completed');
+        } else if (stepNum === currentStep) {
+          indicator.classList.add('active');
+        }
+      });
+      
+      // Update step lines
+      document.querySelectorAll('.step-line').forEach((line, index) => {
+        line.classList.toggle('active', index < currentStep - 1);
+      });
+    }
+
+    function showStep(step) {
+      // Hide all step contents
+      document.querySelectorAll('.step-content').forEach(content => {
+        content.classList.remove('active');
+        content.style.display = 'none';
+      });
+      
+      // Show current step
+      const currentStepElement = document.querySelector(`.step-content[data-step="${step}"]`);
+      if (currentStepElement) {
+        currentStepElement.classList.add('active');
+        currentStepElement.style.display = 'block';
+      }
+      
+      updateStepIndicators();
+      
+      // Update navigation buttons
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const submitBtn = document.getElementById('submit-btn');
+      
+      if (prevBtn) prevBtn.style.display = step > 1 ? 'block' : 'none';
+      if (nextBtn) nextBtn.style.display = step < totalSteps ? 'block' : 'none';
+      if (submitBtn) submitBtn.style.display = step === totalSteps ? 'block' : 'none';
+    }
+
+    function validateCurrentStep() {
+      const currentStepElement = document.querySelector(`.step-content[data-step="${currentStep}"]`);
+      if (!currentStepElement) return false;
+      
+      const requiredFields = currentStepElement.querySelectorAll('[required]');
+      let isValid = true;
+      
+      // Clear previous error states
+      currentStepElement.querySelectorAll('.form-input').forEach(field => {
+        field.classList.remove('error');
+      });
+      
+      // Use HTML5 validation for fields in current step
+      const fieldsInStep = currentStepElement.querySelectorAll('.form-input');
+      let firstInvalidField = null;
+      
+      for (let field of fieldsInStep) {
+        if (!field.checkValidity()) {
+          field.classList.add('error');
+          if (!firstInvalidField) {
+            firstInvalidField = field;
+            isValid = false;
+          }
+        }
+      }
+      
+      // Show single toast message for first invalid field
+      if (firstInvalidField) {
+        firstInvalidField.focus();
+        
+        showToast('Completa todos los campos obligatorios', 'error', 3000);
+      }
+      
+      // Special validation for step 3 (collaboration areas)
+      if (currentStep === 3) {
+        const checkedBoxes = currentStepElement.querySelectorAll('input[name="areas[]"]:checked');
+        if (checkedBoxes.length === 0) {
+          showToast('Por favor, selecciona al menos un área de colaboración.', 'error');
+          return false;
+        }
+      }
+      
+      // Don't show generic toast if HTML5 validation already handled it
+      
+      return isValid;
+    }
+
+    function setupIntersectionObserver() {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      const elementsToAnimate = document.querySelectorAll('.animation-fade-in');
+      elementsToAnimate.forEach((el) => observer.observe(el));
+    }
+
+    function setupMultiStepForm() {
+      const nextBtn = document.getElementById('next-btn');
+      const prevBtn = document.getElementById('prev-btn');
+      const form = document.getElementById('volunteer-form');
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          console.log('Next button clicked, current step:', currentStep);
+          if (validateCurrentStep() && currentStep < totalSteps) {
+            currentStep++;
+            console.log('Moving to step:', currentStep);
+            showStep(currentStep);
+          }
+        });
+      }
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          console.log('Previous button clicked, current step:', currentStep);
+          if (currentStep > 1) {
+            currentStep--;
+            console.log('Moving to step:', currentStep);
+            showStep(currentStep);
+          }
+        });
+      }
+      
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          console.log('Form submitted, validating step:', currentStep);
+          if (!validateCurrentStep()) {
+            e.preventDefault();
+            console.log('Form validation failed');
+          } else {
+            console.log('Form validation passed');
+          }
+        });
+      }
+    }
+
+    function showToast(message, type = 'info', duration = 4000) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      
+      const toast = document.createElement('div');
+      toast.className = `toast transform translate-x-full opacity-0 transition-all duration-300`;
+      
+      const icons = {
+        success: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>`,
+        error: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>`,
+        info: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>`
+      };
+      
+      // Set background color based on type
+      if (type === 'success') {
+        toast.style.background = '#22c55e';
+        toast.style.borderLeft = '4px solid #16a34a';
+      } else if (type === 'error') {
+        toast.style.background = '#ef4444';
+        toast.style.borderLeft = '4px solid #dc2626';
+      } else {
+        toast.style.background = '#4a08b2';
+        toast.style.borderLeft = '4px solid #5b21b6';
+      }
+      toast.style.color = 'white';
+      
+      toast.innerHTML = `
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+          <div style="flex-shrink: 0; margin-top: 2px;">
+            ${icons[type] || icons.info}
+          </div>
+          <div style="flex: 1;">
+            <p style="font-size: 14px; font-weight: 500; margin: 0; color: white;">${message}</p>
+          </div>
+          <button class="toast-close" style="flex-shrink: 0; margin-left: 8px; color: white; background: none; border: none; cursor: pointer; opacity: 0.8; padding: 0;">
+            <svg style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      `;
+      
+      container.appendChild(toast);
+      
+      // Animate in
+      setTimeout(() => {
+        toast.classList.remove('translate-x-full', 'opacity-0');
+      }, 10);
+      
+      // Close button functionality
+      const closeBtn = toast.querySelector('.toast-close');
+      closeBtn.addEventListener('click', () => {
+        removeToast(toast);
+      });
+      
+      // Auto-remove after duration
+      setTimeout(() => {
+        removeToast(toast);
+      }, duration);
+    }
+    
+    function removeToast(toast) {
+      if (!toast.parentNode) return;
+      
+      toast.classList.add('translate-x-full', 'opacity-0');
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 300);
+    }
+
+    function setupInputFiltering() {
+      // Input filtering for text-only fields (nombres, ciudad, disponibilidad, otros_texto)
+      document.querySelectorAll('#nombres, #ciudad, #disponibilidad, input[name=\"otros_texto\"]').forEach(input => {
+        input.addEventListener('keydown', function(e) {
+          // Allow navigation keys
+          const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+          if (allowedKeys.includes(e.key)) return;
+          
+          // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+          if (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) return;
+          
+          // Only allow letters, spaces, and accented characters
+          const regex = /^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]$/;
+          if (!regex.test(e.key)) {
+            e.preventDefault();
+          }
+        });
+      });
+      
+      // Input filtering for phone number (only numbers and allowed symbols)
+      document.getElementById('telefono').addEventListener('keydown', function(e) {
+        // Allow navigation keys
+        const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+        if (allowedKeys.includes(e.key)) return;
+        
+        // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+        if (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) return;
+        
+        // Only allow numbers and phone symbols
+        const regex = /^[0-9\+\-\(\)\s]$/;
+        if (!regex.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, initializing form');
+      setupIntersectionObserver();
+      setupMultiStepForm();
+      setupInputFiltering();
+      
+      // Initialize first step
+      setTimeout(() => {
+        showStep(1);
+        console.log('Initial step set to 1');
+      }, 100);
+    });
+  </script>
+</Layout>
+
+<style>
+  .step-indicator {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #d1d5db;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .step-indicator.active {
+    border-color: #4a08b2;
+    background: #4a08b2;
+    color: white;
+  }
+  
+  .step-indicator.completed {
+    border-color: #4a08b2;
+    background: #4a08b2;
+    color: white;
+  }
+  
+  .step-line {
+    flex: 1;
+    height: 4px;
+    background: #d1d5db;
+    margin: 0 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .step-line.active {
+    background: #4a08b2;
+  }
+  
+  .step-content {
+    display: none;
+  }
+  
+  .step-content.active {
+    display: block;
+  }
+  
+  .step-number {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  /* Form field focus styles */
+  .form-input:focus {
+    border-color: #4a08b2 !important;
+    background: white !important;
+    outline: none;
+  }
+  
+  .form-input.error {
+    border-color: #ef4444 !important;
+    background: #fef2f2 !important;
+  }
+  
+  /* HTML5 Validation States */
+  .form-input:valid:not(:focus):not(:placeholder-shown) {
+    border-color: #22c55e !important;
+    background: #f0fdf4 !important;
+  }
+  
+  .form-input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: #ef4444 !important;
+    background: #fef2f2 !important;
+  }
+  
+  .form-input:user-valid {
+    border-color: #22c55e !important;
+  }
+  
+  .form-input:user-invalid {
+    border-color: #ef4444 !important;
+  }
+  
+  /* Toast Styles */
+  .toast {
+    min-width: 300px;
+    max-width: 400px;
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), 0 4px 6px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .toast-success {
+    background: #22c55e !important;
+    color: white !important;
+    border-left: 4px solid #16a34a;
+  }
+  
+  .toast-error {
+    background: #ef4444 !important;
+    color: white !important;
+    border-left: 4px solid #dc2626;
+  }
+  
+  .toast-info {
+    background: #4a08b2 !important;
+    color: white !important;
+    border-left: 4px solid #5b21b6;
+  }
+  
+  .toast-close {
+    cursor: pointer;
+  }
+  
+  /* Toast container responsive */
+  @media (max-width: 640px) {
+    #toast-container {
+      top: 1rem;
+      right: 1rem;
+      left: 1rem;
+    }
+    
+    .toast {
+      min-width: auto;
+      max-width: none;
+    }
+  }
+</style>

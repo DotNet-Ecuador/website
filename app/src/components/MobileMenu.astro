@@ -1,0 +1,119 @@
+---
+import { NavigationLinks } from '../config';
+
+export interface Props {
+  isOpen?: boolean;
+}
+
+const { isOpen = false } = Astro.props;
+---
+
+<!-- Mobile Menu Overlay -->
+<div 
+  id="mobile-menu-overlay" 
+  class={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 lg:hidden ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+  onclick="toggleMobileMenu()"
+>
+</div>
+
+<!-- Mobile Menu Sidebar -->
+<nav 
+  id="mobile-menu" 
+  class={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-primary-900 z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+>
+  <div class="flex flex-col h-full">
+    <!-- Header con botón cerrar -->
+    <div class="flex items-center justify-between p-6 border-b border-primary-700">
+      <h2 class="text-xl font-semibold text-white">Menú</h2>
+      <button 
+        onclick="toggleMobileMenu()"
+        class="text-white hover:text-primary-200 transition-colors p-2"
+        aria-label="Cerrar menú"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Enlaces de navegación -->
+    <div class="flex-1 py-6">
+      {NavigationLinks.map((link) => (
+        <a 
+          href={link.url} 
+          class="block px-6 py-4 text-white text-lg font-medium hover:bg-primary-700 hover:text-primary-100 transition-all duration-200 border-b border-primary-800"
+          onclick="toggleMobileMenu()"
+        >
+          {link.name}
+        </a>
+      ))}
+      
+      <!-- GitHub Link -->
+      <a 
+        href="https://github.com/DotNet-Ecuador" 
+        target="_blank" 
+        rel="noopener"
+        class="flex items-center px-6 py-4 text-white text-lg font-medium hover:bg-primary-700 hover:text-primary-100 transition-all duration-200"
+        onclick="toggleMobileMenu()"
+      >
+        <img src="/logo.png" alt="GitHub" class="w-8 h-8 mr-3 rounded-full" />
+        GitHub
+      </a>
+    </div>
+
+    <!-- Footer del menú -->
+    <div class="p-6 border-t border-primary-700">
+      <p class="text-primary-200 text-sm text-center">
+        DotNet Ecuador
+      </p>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  function toggleMobileMenu() {
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const menu = document.getElementById('mobile-menu');
+    const hamburger = document.getElementById('mobile-menu-button');
+    
+    if (!overlay || !menu || !hamburger) return;
+    
+    const isOpen = !overlay.classList.contains('opacity-0');
+    
+    if (isOpen) {
+      // Cerrar menú
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      overlay.classList.remove('opacity-100');
+      menu.classList.add('translate-x-full');
+      menu.classList.remove('translate-x-0');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('overflow-hidden');
+    } else {
+      // Abrir menú
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      overlay.classList.add('opacity-100');
+      menu.classList.remove('translate-x-full');
+      menu.classList.add('translate-x-0');
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('overflow-hidden');
+    }
+  }
+
+  // Cerrar menú al redimensionar ventana a desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1024) {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.getElementById('mobile-menu-button');
+      
+      if (overlay && menu && hamburger) {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        overlay.classList.remove('opacity-100');
+        menu.classList.add('translate-x-full');
+        menu.classList.remove('translate-x-0');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+  });
+</script>

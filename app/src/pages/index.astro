@@ -1,79 +1,315 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Accordion from '../components/Accordion.astro';
+import Button from '../components/Button.astro';
 ---
 
 <Layout
-  title=""
-  description="">
-  <div class="container">
-    <section class="hero">
-      <div class="banner">
-        <h2>Bienvenido a la Comunidad DotNet Ecuador</h2>
-        <p>Únete a nuestra comunidad y aprende sobre DotNet y tecnologías relacionadas.</p>
-      </div>
-
-      <div class="formulario">
-        
-        <form>
-           
-          <button type="submit" id="btnQuieroSerVoluntario">¡Quiero ser voluntario!</button>
-        </form>
-      </div>
-    </section>
-
-    <div class="container-social">
+  title="Inicio"
+  description="Comunidad de desarrolladores .NET, estudiantes y empresas tecnológicas enfocada en el crecimiento profesional colectivo en Ecuador.">
+    <!-- Hero Section -->
+    <section class="relative py-8 sm:py-12 lg:py-20 overflow-hidden"
+             style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);"
+    >
+      <!-- Background with gradients and glass effect -->
+      <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-neutral-50 to-primary-100"></div>
+      <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/5 via-transparent to-primary-600/10"></div>
       
-      <section class="social-media">
-        <h3>Síguenos en Redes Sociales</h3>
-        <a href="https://www.tiktok.com/@dotnetecuador" target="_blank">
-          <img src="/src/assets/icons/tik_tok.png" alt="tiktok" width="50" />
-        </a>
-        <a href="https://www.instagram.com/dotnet_ecuador/" target="_blank">
-          <img src="/src/assets/icons/instagram.png" alt="instagram" width="50" />
-        </a>
-        <a href="https://www.youtube.com/@dotnet-ecuador" target="_blank">
-          <img src="/src/assets/icons/youtube.png" alt="youtube" width="50"/>
-        </a>
-        <a href="https://www.linkedin.com/company/dotnet-ecuador/?originalSubdomain=ec" target="_blank">
-          <img src="/src/assets/icons/linkedin.png" alt="linkedin" width="50" />
-        </a>
-        <a href="#" target="_blank">
-          <img src="/src/assets/icons/whatsapp.png" alt="whatsapp" width="50" loading="eager" />
-        </a>
-        <a href="https://open.spotify.com/show/0UUXZpDtW89OFGxmcy08RI?si=3f19ba238de2464e" target="_blank">
-          <img src="/src/assets/icons/spotify.png" alt="spotify" width="50" />
-        </a>
-      </section>
-  
+      <!-- Decorative blobs -->
+      <div class="absolute -top-20 -right-20 w-60 h-60 bg-gradient-to-br from-primary-400/20 to-primary-600/30 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-tr from-primary-700/20 to-primary-500/30 rounded-full blur-3xl"></div>
+      <div class="absolute top-20 left-1/2 transform -translate-x-1/2 w-40 h-40 bg-gradient-to-br from-primary-300/10 to-primary-800/20 rounded-full blur-2xl"></div>
+      
+      <div class="relative z-10 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 animation-fade-in">
+          <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-800 bg-clip-text text-transparent leading-tight">
+            Bienvenido a DotNet Ecuador
+          </h1>
+          <p class="text-lg sm:text-xl lg:text-2xl text-neutral-700 max-w-3xl mx-auto mb-8 leading-relaxed">
+            La comunidad de desarrolladores .NET más grande de Ecuador. Conecta, aprende y crece profesionalmente con nosotros.
+          </p>
+        </div>
 
-  </div>
-    <section class="acordeon">
-      <h3 >Preguntas Frecuentes</h3>
-      <Accordion
-        title="¿Cómo puedo unirme a la comunidad .NET Ecuador?"
-        desc="Puedes unirte a nuestra comunidad asistiendo a nuestros eventos, participando en nuestros proyectos y uniéndote a nuestros canales de comunicación como redes sociales y grupos de chat."
-      />
-      <Accordion
-        title="¿Cómo puedo estar al tanto de los próximos eventos?"
-        desc="Puedes seguirnos en nuestras redes sociales, suscribirte a nuestro boletín de noticias, y visitar nuestra página web para obtener información actualizada sobre los próximos eventos."
-      />
-      <Accordion
-        title="¿Puedo colaborar como presentador en algún evento?"
-        desc="¡Sí! Siempre estamos buscando nuevos presentadores. Si tienes una charla o taller que te gustaría compartir, por favor contáctanos a través de nuestro formulario de contacto en la página web."
-      />
-      <Accordion
-        title="¿Qué habilidades necesito para ser parte de la comunidad?"
-        desc="Nuestra comunidad está abierta tanto a principiantes como a desarrolladores experimentados. Lo importante es tu interés en aprender y compartir sobre .NET y tecnologías relacionadas."
-      />
-      <Accordion
-        title="¿Cómo puedo contribuir a los proyectos de la comunidad?"
-        desc="Puedes unirte a los proyectos de la comunidad a través de nuestro repositorio de GitHub. https://github.com/DotNet-Ecuador "
-      />
-      <Accordion 
-        title="¿La comunidad ofrece algún tipo de mentoría?"
-        desc="Sí, tenemos un programa de mentoría donde miembros experimentados ayudan a guiar a los nuevos desarrolladores en su camino profesional."
-      />
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+          <!-- Innovación Card -->
+          <div class="relative bg-gradient-to-br from-white/40 via-white/30 to-white/20 backdrop-blur-xl border border-white/30 rounded-3xl p-8 text-center hover:from-white/50 hover:via-white/40 hover:to-white/30 transition-all duration-500 animation-fade-in group overflow-hidden">
+            <!-- Glowing gradient border -->
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/60 via-primary-500/40 to-primary-600/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-300/30 to-primary-700/30 opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10">
+              <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-500/40 group-hover:shadow-primary-500/60">
+                <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-primary-900 mb-4 group-hover:text-primary-800 transition-colors">Innovación</h3>
+              <p class="text-neutral-700 group-hover:text-neutral-800 transition-colors">
+                Fomentamos la creatividad y nuevas ideas en el ecosistema .NET, explorando tecnologías emergentes y soluciones innovadoras que impulsan el futuro del desarrollo.
+              </p>
+            </div>
+            
+            <!-- Glowing orb -->
+            <div class="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-primary-400/20 to-primary-600/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+
+          <!-- Colaboración Card -->
+          <div class="relative bg-gradient-to-br from-white/40 via-white/30 to-white/20 backdrop-blur-xl border border-white/30 rounded-3xl p-8 text-center hover:from-white/50 hover:via-white/40 hover:to-white/30 transition-all duration-500 animation-fade-in group overflow-hidden">
+            <!-- Glowing gradient border -->
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-500/60 via-primary-600/40 to-primary-700/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-400/30 to-primary-800/30 opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10">
+              <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-600/40 group-hover:shadow-primary-600/60">
+                <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-primary-900 mb-4 group-hover:text-primary-800 transition-colors">Colaboración</h3>
+              <p class="text-neutral-700 group-hover:text-neutral-800 transition-colors">
+                Creamos espacios para compartir conocimientos y experiencias, conectando desarrolladores, estudiantes y empresas para el crecimiento colectivo de la comunidad.
+              </p>
+            </div>
+            
+            <!-- Glowing orb -->
+            <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-br from-primary-500/20 to-primary-700/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+
+          <!-- Aprendizaje Continuo Card -->
+          <div class="relative bg-gradient-to-br from-white/40 via-white/30 to-white/20 backdrop-blur-xl border border-white/30 rounded-3xl p-8 text-center hover:from-white/50 hover:via-white/40 hover:to-white/30 transition-all duration-500 animation-fade-in group overflow-hidden">
+            <!-- Glowing gradient border -->
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-600/60 via-primary-700/40 to-primary-800/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-500/30 to-primary-900/30 opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10">
+              <div class="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-primary-700 to-primary-900 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary-700/40 group-hover:shadow-primary-700/60">
+                <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-primary-900 mb-4 group-hover:text-primary-800 transition-colors">Aprendizaje Continuo</h3>
+              <p class="text-neutral-700 group-hover:text-neutral-800 transition-colors">
+                Ofrecemos mentorías, workshops, conferencias técnicas y recursos educativos para potenciar las habilidades de nuestros miembros en tecnologías Microsoft.
+              </p>
+            </div>
+            
+            <!-- Glowing orb -->
+            <div class="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-primary-600/20 to-primary-800/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center mt-16 animation-fade-in">
+          <div class="relative">
+            <!-- Glass container -->
+            <div class="bg-white/20 backdrop-blur-xl border border-white/30 rounded-3xl p-12 max-w-4xl mx-auto shadow-2xl shadow-primary-900/20">
+              <!-- Inner gradient overlay -->
+              <div class="absolute inset-0 bg-gradient-to-br from-primary-600/90 to-primary-900/90 rounded-3xl"></div>
+              <div class="relative z-10">
+                <h3 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+                  ¿Listo para formar parte?
+                </h3>
+                <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                  Únete como voluntario y ayuda a hacer crecer la comunidad tech más importante de Ecuador
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button href="/voluntariado" variant="primary" size="lg" class="text-lg px-8 py-4 !bg-white !text-primary-900 hover:!bg-neutral-100 font-semibold shadow-lg border-2 border-white">
+                    Ser Voluntario
+                  </Button>
+                  <Button href="/sobre-nosotros" variant="outline" size="lg" class="text-lg px-8 py-4 border-white text-white hover:bg-white/20 backdrop-blur-sm">
+                    Conocer Más
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <div class="container-custom p-8">
+    <!-- Social Media Section -->
+    <div class="gradient-primary mt-8 sm:mt-12 p-8 sm:p-12 rounded-3xl animation-fade-in">
+      <section class="text-center">
+        <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-white">
+          Conecta con Nosotros
+        </h3>
+        <p class="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
+          Únete a nuestra comunidad en todas las plataformas y mantente al día con eventos, recursos y contenido exclusivo
+        </p>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 max-w-4xl mx-auto">
+          <!-- TikTok -->
+          <a href="https://www.tiktok.com/@dotnetecuador" target="_blank" class="group animation-fade-in">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-xl">
+              <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-pink-500 to-red-500 rounded-xl flex items-center justify-center">
+                <img src="/src/assets/icons/tik_tok.png" alt="TikTok" class="w-6 h-6" />
+              </div>
+              <span class="text-white font-medium text-sm group-hover:text-white/90 transition-colors">TikTok</span>
+            </div>
+          </a>
+
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/dotnet_ecuador/" target="_blank" class="group animation-fade-in">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-xl">
+              <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </div>
+              <span class="text-white font-medium text-sm group-hover:text-white/90 transition-colors">Instagram</span>
+            </div>
+          </a>
+
+          <!-- YouTube -->
+          <a href="https://www.youtube.com/@dotnet-ecuador" target="_blank" class="group animation-fade-in">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-xl">
+              <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <span class="text-white font-medium text-sm group-hover:text-white/90 transition-colors">YouTube</span>
+            </div>
+          </a>
+
+          <!-- Meetup -->
+          <a href="https://www.meetup.com/es/dotnet-ecuador" target="_blank" class="group animation-fade-in">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-xl">
+              <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6.9 0C4.7 0 2.9 1.8 2.9 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zM17.1 24c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-10.2 0C4.7 24 2.9 22.2 2.9 20s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4zM17.1 8c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4z"/>
+                </svg>
+              </div>
+              <span class="text-white font-medium text-sm group-hover:text-white/90 transition-colors">Meetup</span>
+            </div>
+          </a>
+
+          <!-- Spotify -->
+          <a href="https://open.spotify.com/show/0UUXZpDtW89OFGxmcy08RI?si=3f19ba238de2464e" target="_blank" class="group animation-fade-in">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-xl">
+              <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.959-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.361 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+              </div>
+              <span class="text-white font-medium text-sm group-hover:text-white/90 transition-colors">Spotify</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- LinkedIn moved to separate row as featured -->
+        <div class="mt-8 flex justify-center animation-fade-in">
+          <a href="https://www.linkedin.com/company/dotnet-ecuador/?originalSubdomain=ec" target="_blank" class="group">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:bg-white/20 hover:scale-105 hover:shadow-xl inline-flex items-center gap-4">
+              <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <span class="text-white font-semibold text-lg block group-hover:text-white/90 transition-colors">LinkedIn</span>
+                <span class="text-white/80 text-sm">Conecta profesionalmente</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+    <!-- FAQ Section -->
+    <section class="mt-8 sm:mt-12 lg:mt-16">
+      <div class="text-center mb-12 animation-fade-in">
+        <h3 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-900 mb-4">
+          Preguntas Frecuentes
+        </h3>
+        <p class="text-lg text-neutral-600 max-w-2xl mx-auto">
+          Encuentra respuestas a las preguntas más comunes sobre nuestra comunidad
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto space-y-4">
+        <div class="animation-fade-in">
+          <Accordion
+            id="faq-1"
+            groupId="faq-home"
+            title="¿Cómo puedo unirme a la comunidad .NET Ecuador?"
+            desc="Puedes unirte a nuestra comunidad asistiendo a nuestros eventos, participando en nuestros proyectos y uniéndote a nuestros canales de comunicación como redes sociales y grupos de chat. También puedes registrarte como voluntario y comenzar a contribuir activamente."
+          />
+        </div>
+        
+        <div class="animation-fade-in">
+          <Accordion
+            id="faq-2"
+            groupId="faq-home"
+            title="¿Cómo puedo estar al tanto de los próximos eventos?"
+            desc="Puedes seguirnos en nuestras redes sociales (LinkedIn, Instagram, TikTok, YouTube, Spotify y Meetup), suscribirte a nuestro boletín de noticias, y visitar nuestra página web para obtener información actualizada sobre los próximos eventos y actividades de la comunidad."
+          />
+        </div>
+        
+        <div class="animation-fade-in">
+          <Accordion
+            id="faq-3"
+            groupId="faq-home"
+            title="¿Puedo colaborar como presentador en algún evento?"
+            desc="¡Por supuesto! Siempre estamos buscando nuevos presentadores y ponentes. Si tienes experiencia en tecnologías .NET, una charla técnica que compartir, o un taller que te gustaría presentar, contáctanos a través de nuestro formulario de voluntariado o por nuestros canales oficiales."
+          />
+        </div>
+        
+        <div class="animation-fade-in">
+          <Accordion
+            id="faq-4"
+            groupId="faq-home"
+            title="¿Qué habilidades necesito para ser parte de la comunidad?"
+            desc="Nuestra comunidad está abierta tanto a principiantes como a desarrolladores experimentados. No necesitas tener un nivel específico - lo más importante es tu interés genuino en aprender, compartir conocimientos sobre .NET y tecnologías Microsoft, y contribuir al crecimiento de la comunidad tech en Ecuador."
+          />
+        </div>
+        
+        <div class="animation-fade-in">
+          <Accordion
+            id="faq-5"
+            groupId="faq-home"
+            title="¿Cómo puedo contribuir a los proyectos de la comunidad?"
+            desc="Puedes contribuir a nuestros proyectos open source a través de nuestro repositorio de GitHub en https://github.com/DotNet-Ecuador. Allí encontrarás diversos proyectos donde puedes hacer pull requests, reportar bugs, proponer mejoras o crear nuevas funcionalidades. ¡Tu contribución es muy valiosa!"
+          />
+        </div>
+        
+        <div class="animation-fade-in">
+          <Accordion
+            id="faq-6"
+            groupId="faq-home"
+            title="¿La comunidad ofrece algún tipo de mentoría?"
+            desc="Sí, tenemos un programa de mentoría donde desarrolladores experimentados ayudan a guiar a los nuevos miembros en su crecimiento profesional. Esto incluye revisión de código, orientación en proyectos, consejos de carrera y conexiones con oportunidades laborales en el ecosistema .NET."
+          />
+        </div>
+      </div>
     </section>
   </div>
+
+  <script>
+    function setupIntersectionObserver() {
+      const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      const elementsToAnimate = document.querySelectorAll('.animation-fade-in');
+      elementsToAnimate.forEach((el) => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
+  </script>
 </Layout>

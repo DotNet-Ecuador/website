@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+import TeamMember from "../components/TeamMember.astro";
+import Button from "../components/Button.astro";
+import whatsappIcon from "../assets/icons/whatsapp.png";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Equipo"
+  description="Conoce al increíble equipo detrás de DotNet Ecuador. Profesionales apasionados por la tecnología y el crecimiento de la comunidad.">
+  
+  <div class="container-custom p-8">
+    <!-- Header Section -->
+    <div class="text-center mb-8 sm:mb-12 lg:mb-16">
+      <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary-900 mb-4 sm:mb-6 animation-fade-in">
+        Conoce al gran equipo de <span class="text-secondary-600">DotNet Ecuador</span>
+      </h1>
+      <p class="text-neutral-600 text-base sm:text-lg max-w-2xl mx-auto animation-fade-in">
+        Un equipo diverso de profesionales comprometidos con el crecimiento de la comunidad .NET en Ecuador
+      </p>
+    </div>
+
+    <!-- Team Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-12 sm:mb-16 lg:mb-20">
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/GaxB6y4.jpeg" name="Byron Duarte" role="Founder" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/Tvqk8kS.jpeg" name="Kevin Santacruz" role="Software Engineer" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/qdLPSjf.jpeg" name="Cristopher Coronado" role="Software Engineer" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/KVXu8G0.jpeg" name="Josiel Ramos" role="Diseñador Gráfico" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/b712nbL.jpeg" name="Daniel Jaramillo" role="Desarrollador Web" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/a7BCKzB.jpeg" name="Jose Villavicencio" role="Software Engineer" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/IrgGlMR.jpeg" name="Esleiter Fajardo" role="Desarrollador Web" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/IXP5Qxk.jpeg" name="Anthony San Lucas" role="Desarrollador Web" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="https://i.imgur.com/vkoVSGX.jpeg" name="Samuel Murillo" role="Unity Game Developer" /></div>
+      <div class="animation-fade-in"><TeamMember imageUrl="/darlin_vite.jpg" name="Darlin Vite" role="Desarrollador Web" /></div>
+    </section>
+
+    <!-- Call to Action -->
+    <div class="text-center">
+      <div class="card p-6 sm:p-8 lg:p-10 max-w-md mx-auto gradient-primary text-white animation-fade-in">
+        <h3 class="text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">
+          ¿Quieres unirte?
+        </h3>
+        <p class="text-base sm:text-lg mb-6 opacity-95">
+          Forma parte de nuestro equipo y ayuda a hacer crecer la comunidad .NET en Ecuador
+        </p>
+        <a 
+          href="#" 
+          target="_blank" 
+          class="inline-flex items-center gap-3 bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors"
+        >
+          <span>Únete al equipo</span>
+          <Image src={whatsappIcon} alt="WhatsApp" width={20} height={20} />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setupIntersectionObserver() {
+      const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      const elementsToAnimate = document.querySelectorAll('.animation-fade-in');
+      elementsToAnimate.forEach((el) => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', setupIntersectionObserver);
+  </script>
+</Layout>

@@ -1,85 +1,45 @@
 ---
-// layout/BaseLayout.astro
 import { SITE } from '../config'
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
+import '../assets/styles/base.css';
 
-interface Props {
+export interface Props {
   title: string
   description: string
   lang?: string
   structuredData?: object
 }
 
-const { title, description = SITE.description, lang } = Astro.props
-const normalizeTitle = !title ? SITE.title : `${title} | ${SITE.title}`
+const { title, description = SITE.description, lang = 'es' } = Astro.props
 ---
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <meta name="generator" content={Astro.generator} /> 
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>{normalizeTitle}</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/styles/global.css" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&display=swap" 
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <SEO title={title} description={description} />
   </head>
-  <body>
-    <div class="layout-wrapper">
+  <body class="font-sans bg-neutral-100 text-neutral-800 overflow-x-hidden">
+    <div class="min-h-screen flex flex-col">
       <Header />
-      <main class="main-content">
+      <main class="flex-1 mb-40">
         <slot />
       </main>
 
-      <footer class="main-footer">
-        <div class="footer-content">
-          <p>&copy; 2025 Donet Ecuador. Todos los derechos reservados.</p>
-          <p>
-            <a href="mailto:equipo@donetecuador.com">equipo@donetecuador.com</a>
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   </body>
 </html>
 
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-    background-color: #fff;
-  }
-
-  .layout-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .main-content {
-    flex: 1;
-    padding: 2rem;
-  }
-
-  .main-footer {
-    background-color: #1f085a;
-    color: white;
-    padding: 2rem 1rem;
-    text-align: center;
-  }
-
-  .footer-content a {
-    color: #ffffff;
-    text-decoration: underline;
-  }
-
-  .footer-content p {
-    margin: 0.5rem 0;
-  }
-</style>
