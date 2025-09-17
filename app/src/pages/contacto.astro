@@ -1,9 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { SEO_PAGES_CONFIG } from "../config/seo";
+
+const pageConfig = SEO_PAGES_CONFIG['/contacto'];
 ---
 <Layout
-  title="Contacto"
-  description="Contáctanos para unirte a la comunidad DotNet Ecuador. Estamos aquí para ayudarte en tu crecimiento profesional.">
+  title={pageConfig.title}
+  description={pageConfig.description}
+  keywords={pageConfig.keywords.join(', ')}>
+  
+  <Breadcrumbs 
+    items={[
+      { name: 'Contacto', url: '/contacto' }
+    ]} 
+  />
   
   <div class="container-custom text-center p-8">
     <h1 class="mt-10 text-4xl font-bold text-primary-900 mb-8 animation-fade-in">Contáctanos</h1>

@@ -2,11 +2,49 @@
 import Layout from '../layouts/Layout.astro';
 import Accordion from '../components/Accordion.astro';
 import Button from '../components/Button.astro';
+import LocalBusinessSchema from '../components/LocalBusinessSchema.astro';
+import { SEO_KEYWORDS } from '../config';
 ---
 
 <Layout
-  title="Inicio"
-  description="Comunidad de desarrolladores .NET, estudiantes y empresas tecnológicas enfocada en el crecimiento profesional colectivo en Ecuador.">
+  title="Comunidad de Desarrolladores .NET Ecuador - Programación C# y ASP.NET"
+  description="Comunidad líder de desarrolladores .NET en Ecuador. Aprende C#, ASP.NET Core, Azure y tecnologías Microsoft. Eventos, cursos y networking para programadores ecuatorianos."
+  keywords={[...SEO_KEYWORDS.primary, ...SEO_KEYWORDS.local].join(', ')}>
+  
+  <LocalBusinessSchema />
+  
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo puedo unirme a la comunidad .NET Ecuador?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Puedes unirte a nuestra comunidad asistiendo a nuestros eventos, participando en nuestros proyectos y uniéndote a nuestros canales de comunicación como redes sociales y grupos de chat. También puedes registrarte como voluntario y comenzar a contribuir activamente."
+          }
+        },
+        {
+          "@type": "Question", 
+          "name": "¿Cómo puedo estar al tanto de los próximos eventos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Puedes seguirnos en nuestras redes sociales (LinkedIn, Instagram, TikTok, YouTube, Spotify y Meetup), suscribirte a nuestro boletín de noticias, y visitar nuestra página web para obtener información actualizada sobre los próximos eventos y actividades de la comunidad."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo colaborar como presentador en algún evento?", 
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "¡Por supuesto! Siempre estamos buscando nuevos presentadores y ponentes. Si tienes experiencia en tecnologías .NET, una charla técnica que compartir, o un taller que te gustaría presentar, contáctanos a través de nuestro formulario de voluntariado o por nuestros canales oficiales."
+          }
+        }
+      ]
+    }
+  </script>
     <!-- Hero Section -->
     <section class="relative py-8 sm:py-12 lg:py-20 overflow-hidden"
              style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);"

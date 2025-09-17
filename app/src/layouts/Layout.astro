@@ -3,6 +3,7 @@ import { SITE } from '../config'
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SEO from '../components/SEO.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import '../assets/styles/base.css';
 
 export interface Props {
@@ -10,9 +11,11 @@ export interface Props {
   description: string
   lang?: string
   structuredData?: object
+  keywords?: string
+  gaId?: string
 }
 
-const { title, description = SITE.description, lang = 'es' } = Astro.props
+const { title, description = SITE.description, lang = 'es', structuredData, keywords, gaId } = Astro.props
 ---
 <!doctype html>
 <html lang={lang}>
@@ -29,7 +32,8 @@ const { title, description = SITE.description, lang = 'es' } = Astro.props
       media="print"
       onload="this.media='all'"
     />
-    <SEO title={title} description={description} />
+    <SEO title={title} description={description} keywords={keywords} structuredData={structuredData} />
+    <GoogleAnalytics id={gaId} />
   </head>
   <body class="font-sans bg-neutral-100 text-neutral-800 overflow-x-hidden">
     <div class="min-h-screen flex flex-col">

@@ -8,6 +8,8 @@ export interface Props {
   canonical?: string;
   noindex?: boolean;
   nofollow?: boolean;
+  keywords?: string;
+  structuredData?: object;
 }
 
 const {
@@ -17,6 +19,8 @@ const {
   canonical,
   noindex = false,
   nofollow = false,
+  keywords = 'DotNet, .NET, Ecuador, programación, desarrollo, comunidad, Microsoft, C#, ASP.NET, desarrolladores Ecuador',
+  structuredData,
 } = Astro.props;
 
 const makeTitle = title ? `${title} | ${SITE.title}` : SITE.title;
@@ -27,7 +31,11 @@ const socialImageURL = new URL(image, Astro.site || SITE.url).href;
 <title>{makeTitle}</title>
 <meta name="title" content={makeTitle} />
 <meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
 <meta name="author" content={SITE.author} />
+<meta name="geo.region" content="EC" />
+<meta name="geo.placename" content="Ecuador" />
+<meta name="language" content="es" />
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Open Graph / Facebook -->
@@ -55,10 +63,27 @@ const socialImageURL = new URL(image, Astro.site || SITE.url).href;
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "{SITE.title}",
-    "url": "{SITE.url}",
-    "description": "{SITE.description}",
-    "logo": "{SITE.url}/logo.png",
+    "name": "${SITE.title}",
+    "url": "${SITE.url}",
+    "description": "${SITE.description}",
+    "logo": "${SITE.url}/logo.png",
+    "foundingDate": "2020",
+    "foundingLocation": {
+      "@type": "Place",
+      "name": "Ecuador"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Ecuador"
+    },
+    "knowsAbout": [
+      ".NET Framework",
+      "C# Programming",
+      "ASP.NET",
+      "Microsoft Technologies",
+      "Software Development",
+      "Programming Education"
+    ],
     "sameAs": [
       "https://github.com/DotNet-Ecuador",
       "https://www.linkedin.com/company/dotnet-ecuador/",
@@ -68,3 +93,7 @@ const socialImageURL = new URL(image, Astro.site || SITE.url).href;
     ]
   }
 </script>
+
+{structuredData && (
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+)}

@@ -4,10 +4,22 @@ import TeamMember from "../components/TeamMember.astro";
 import Button from "../components/Button.astro";
 import whatsappIcon from "../assets/icons/whatsapp.png";
 import Layout from "../layouts/Layout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { SEO_PAGES_CONFIG } from "../config/seo";
+
+const pageConfig = SEO_PAGES_CONFIG['/equipo'];
 ---
 
 <Layout
-  title="Equipo"
+  title={pageConfig.title}
+  description={pageConfig.description}
+  keywords={pageConfig.keywords.join(', ')}>
+  
+  <Breadcrumbs 
+    items={[
+      { name: 'Nuestro Equipo', url: '/equipo' }
+    ]} 
+  />
   description="Conoce al increíble equipo detrás de DotNet Ecuador. Profesionales apasionados por la tecnología y el crecimiento de la comunidad.">
   
   <!-- Hero Section with modern design -->

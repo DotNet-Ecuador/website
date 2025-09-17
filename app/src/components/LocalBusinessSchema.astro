@@ -1,0 +1,73 @@
+---
+import { SITE } from '../config';
+
+export interface Props {
+  location?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+}
+
+const {
+  location = "Quito, Ecuador",
+  address = "Ecuador",
+  phone = "+593",
+  email = "equipo@dotnetecuador.com"
+} = Astro.props;
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": SITE.title,
+  "description": SITE.description,
+  "url": SITE.url,
+  "logo": `${SITE.url}/logo.png`,
+  "email": email,
+  "telephone": phone,
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "EC",
+    "addressRegion": "Pichincha",
+    "addressLocality": location
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Ecuador"
+  },
+  "founder": {
+    "@type": "Person",
+    "name": "Comunidad DotNet Ecuador"
+  },
+  "knowsAbout": [
+    ".NET Development",
+    "C# Programming", 
+    "ASP.NET Core",
+    "Microsoft Azure",
+    "Software Architecture",
+    "Clean Code",
+    "SOLID Principles",
+    "Microservices",
+    "Entity Framework",
+    "Blazor",
+    "Web API",
+    "Software Development Ecuador"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Desarrolladores de software, estudiantes de programación, profesionales IT"
+  },
+  "memberOf": {
+    "@type": "Organization",
+    "name": "Microsoft Developer Community"
+  },
+  "sameAs": [
+    "https://github.com/DotNet-Ecuador",
+    "https://www.linkedin.com/company/dotnet-ecuador/",
+    "https://www.instagram.com/dotnet_ecuador/",
+    "https://www.tiktok.com/@dotnetecuador",
+    "https://www.youtube.com/@dotnet-ecuador"
+  ]
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)}></script>
