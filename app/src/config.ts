@@ -4,8 +4,39 @@ export const SITE: Site = {
     author: 'DotNet Ecuador - Comunidad',
     url: 'https://dotnetecuador.com',
     title: 'DotNet Ecuador - Comunidad Tecnológica del ecosistema Microsoft',
-    description: 'Es una comunidad de desarrolladores .NET, estudiantes y empresas tecnológicas enfocada en el crecimiento profesional colectivo en tecnologías Microsoft. Basada en colaboración, innovación y aprendizaje continuo.',
-    shortDescription: 'Comunidad de desarrolladores .NET, estudiantes y empresas tecnológicas enfocada en el crecimiento profesional colectivo.',
+    description: 'Comunidad líder de desarrolladores .NET en Ecuador. Aprende C#, ASP.NET Core, Azure y tecnologías Microsoft. Eventos, cursos y networking para programadores ecuatorianos.',
+    shortDescription: 'Comunidad de desarrolladores .NET Ecuador - Programación C#, ASP.NET, cursos y eventos tecnológicos',
+}
+
+export const SEO_KEYWORDS = {
+    primary: [
+        'DotNet Ecuador',
+        'desarrolladores .NET Ecuador',
+        'programación C# Ecuador',
+        'ASP.NET Core Ecuador',
+        'comunidad programadores Ecuador',
+        'cursos programación Quito',
+        'eventos tecnología Ecuador',
+        'Microsoft MVP Ecuador'
+    ],
+    secondary: [
+        'bootcamp programación Ecuador',
+        'desarrolladores software Quito',
+        'Entity Framework Ecuador',
+        'Blazor Ecuador',
+        'Azure Ecuador',
+        'desarrollo web Ecuador',
+        'programadores Guayaquil',
+        'tecnología Microsoft Ecuador'
+    ],
+    local: [
+        'programadores Quito',
+        'desarrolladores Guayaquil',
+        'tecnología Cuenca',
+        'software Ecuador',
+        'IT Ecuador',
+        'programación Ambato'
+    ]
 }
 
 export const NavigationLinks: NavigationLink[] = [

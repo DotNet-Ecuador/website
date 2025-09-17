@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+
+export interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  quality?: number;
+  sizes?: string;
+  format?: 'webp' | 'avif' | 'png' | 'jpg' | 'jpeg';
+}
+
+const {
+  src,
+  alt,
+  width = 800,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  quality = 80,
+  sizes,
+  format = 'webp'
+} = Astro.props;
+
+// Para imágenes externas usar img tag normal
+const isExternal = src.startsWith('http') || src.startsWith('//') || src.startsWith('data:');
+---
+
+{isExternal ? (
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    class={`${className} fade-in-image`}
+  />
+) : (
+  <Image
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    quality={quality}
+    format={format}
+    sizes={sizes}
+    class={`${className} fade-in-image`}
+    decoding="async"
+  />
+)}
+
+<style>
+  .fade-in-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .fade-in-image[loading="lazy"] {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+  
+  .fade-in-image.loaded {
+    opacity: 1;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in-image {
+      transition: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.fade-in-image');
+    
+    images.forEach(img => {
+      if (img.complete) {
+        img.classList.add('loaded');
+      } else {
+        img.addEventListener('load', function() {
+          this.classList.add('loaded');
+        });
+      }
+    });
+  });
+</script>

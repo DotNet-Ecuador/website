@@ -1,11 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Accordion from '../components/Accordion.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SEO_PAGES_CONFIG } from '../config/seo';
+
+const pageConfig = SEO_PAGES_CONFIG['/proyectos'];
 ---
 
 <Layout
-  title="Proyectos"
-  description="Explora los proyectos open source de DotNet Ecuador. Contribuye con pull requests y forma parte del desarrollo comunitario.">
+  title={pageConfig.title}
+  description={pageConfig.description}
+  keywords={pageConfig.keywords.join(', ')}>
+  
+  <Breadcrumbs 
+    items={[
+      { name: 'Proyectos', url: '/proyectos' }
+    ]} 
+  />
   
   <!-- Hero Section with modern design -->
   <section class="relative py-16 sm:py-20 lg:py-28 overflow-hidden"

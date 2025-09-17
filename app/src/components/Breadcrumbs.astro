@@ -1,0 +1,55 @@
+---
+import { SITE } from '../config';
+
+export interface Props {
+  items: Array<{
+    name: string;
+    url: string;
+  }>;
+}
+
+const { items } = Astro.props;
+
+const allItems = [
+  { name: 'Inicio', url: '/' },
+  ...items
+];
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": allItems.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": `${SITE.url}${item.url}`
+  }))
+};
+---
+
+<nav aria-label="Navegación de migas de pan" class="mb-4">
+  <ol class="flex items-center space-x-2 text-sm text-neutral-600">
+    {allItems.map((item, index) => (
+      <li class="flex items-center">
+        {index > 0 && (
+          <svg class="w-4 h-4 mx-2 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+        )}
+        {index === allItems.length - 1 ? (
+          <span class="font-medium text-neutral-900" aria-current="page">{item.name}</span>
+        ) : (
+          <a 
+            href={item.url} 
+            class="hover:text-neutral-900 transition-colors duration-200"
+            itemprop="item"
+          >
+            <span itemprop="name">{item.name}</span>
+          </a>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
