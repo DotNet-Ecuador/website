@@ -1,0 +1,157 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Button from '../components/Button.astro';
+import { SEO_PAGES_CONFIG } from '../config/seo';
+
+const pageConfig = SEO_PAGES_CONFIG['/marca'];
+
+const brandAssets = [
+  {
+    category: 'Isotipos',
+    items: [
+      { name: 'Isotipo v1', file: '/marca/isotipos/DotnetEcuador2026_isotipo_transparent_v1.png', bg: 'checker' },
+      { name: 'Isotipo v2', file: '/marca/isotipos/DotnetEcuador2026_isotipo_transparent_v2.png', bg: 'checker' },
+      { name: 'Isotipo v3', file: '/marca/isotipos/DotnetEcuador2026_isotipo_transparent_v3.png', bg: 'checker' },
+      { name: 'Isotipo v4', file: '/marca/isotipos/DotnetEcuador2026_isotipo_transparent_v4.png', bg: 'light' },
+      { name: 'Isotipo v5', file: '/marca/isotipos/DotnetEcuador2026_isotipo_transparent_v5.png', bg: 'light' },
+      { name: 'Isotipo v6', file: '/marca/isotipos/DotnetEcuador2026_isotipo_transparent_v6.png', bg: 'dark' },
+      { name: 'Isotipo v7', file: '/marca/isotipos/DotnetEcuador2026_isotipo_transparent_v7.png', bg: 'dark' },
+    ]
+  },
+  {
+    category: 'Logotipos',
+    items: [
+      { name: 'Logotipo v1', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v1.png', bg: 'light' },
+      { name: 'Logotipo v2', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v2.png', bg: 'light' },
+      { name: 'Logotipo v3', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v3.png', bg: 'light' },
+      { name: 'Logotipo v4', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v4.png', bg: 'light' },
+      { name: 'Logotipo v5', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v5.png', bg: 'light' },
+      { name: 'Logotipo v6', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v6.png', bg: 'light' },
+      { name: 'Logotipo v6 Transparente', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v6_transparent.png', bg: 'checker' },
+      { name: 'Logotipo v7', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v7.png', bg: 'light' },
+      { name: 'Logotipo v7 Transparente', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v7_transparent.png', bg: 'checker' },
+      { name: 'Logotipo v8', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v8.png', bg: 'light' },
+      { name: 'Logotipo v8 Transparente', file: '/marca/logotipos/DotnetEcuador2026_logotipo_v8_transparent.png', bg: 'checker' },
+    ]
+  }
+];
+
+const ZIP_URL = '/marca/dotnetecuador-brand-assets.zip';
+---
+
+<Layout
+  title={pageConfig.title}
+  description={pageConfig.description}
+  keywords={pageConfig.keywords.join(', ')}>
+
+  <!-- Hero Section -->
+  <section class="relative pb-16 sm:pb-20 lg:pb-28 pt-4 overflow-hidden"
+           style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-neutral-50 to-primary-100"></div>
+    <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/5 via-transparent to-primary-600/10"></div>
+
+    <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-primary-400/15 to-primary-600/25 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-gradient-to-tr from-primary-700/15 to-primary-500/25 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+
+    <div class="relative z-10 container-custom">
+      <Breadcrumbs
+        items={[{ name: 'Recursos de Marca', url: '/marca' }]}
+        variant="light"
+      />
+      <div class="text-center mt-8">
+        <div class="animation-fade-scale">
+          <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+            <span class="animate-gradient-text font-extrabold">Recursos de Marca</span>
+          </h1>
+        </div>
+        <div class="animation-fade-scale" style="animation-delay: 200ms;">
+          <p class="text-lg sm:text-xl lg:text-2xl text-neutral-700 max-w-3xl mx-auto leading-relaxed mb-8">
+            Descarga los assets oficiales de <span class="text-primary-600 font-medium">DotNet Ecuador</span>.
+          </p>
+        </div>
+        <div class="animation-fade-scale" style="animation-delay: 400ms;">
+          <a href={ZIP_URL} download>
+            <Button variant="primary" size="lg">
+              Descargar todo (.zip)
+            </Button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assets Grid -->
+  <div class="container-custom px-4 sm:px-6 lg:px-8 py-12">
+    {brandAssets.map((group) => (
+      <section class="mb-16">
+        <h2 class="text-2xl sm:text-3xl font-bold text-neutral-800 mb-8 pb-3 border-b border-neutral-200">
+          {group.category}
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {group.items.map((item, index) => (
+            <div
+              class="card group overflow-hidden animation-fade-scale"
+              style={`animation-delay: ${index * 100}ms`}
+            >
+              <div
+                class="relative flex items-center justify-center p-4 min-h-[90px]"
+                style={
+                  item.bg === 'checker'
+                    ? 'background-color:#fff;background-image:linear-gradient(45deg,#d1d5db 25%,transparent 25%),linear-gradient(-45deg,#d1d5db 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#d1d5db 75%),linear-gradient(-45deg,transparent 75%,#d1d5db 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0'
+                    : item.bg === 'dark' ? 'background-color:#262626' : 'background-color:#f5f5f5'
+                }
+              >
+                <img
+                  src={item.file}
+                  alt={item.name}
+                  class="max-h-16 object-contain"
+                  loading="lazy"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+                />
+                <span class="absolute inset-0 hidden items-center justify-center flex-col gap-1 text-xs text-neutral-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Sin imagen
+                </span>
+              </div>
+              <div class="p-3 flex items-center justify-between gap-2">
+                <span class="text-xs font-medium text-neutral-700 truncate">{item.name}</span>
+                <a
+                  href={item.file}
+                  download
+                  class="shrink-0 inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 px-4 py-2 text-sm"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  <span class="sr-only">Descargar {item.name}</span>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('.animation-fade-scale').forEach(el => observer.observe(el));
+    });
+  </script>
+</Layout>
