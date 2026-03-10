@@ -131,6 +131,21 @@ export const SEO_PAGES_CONFIG: Record<string, SEOMetrics> = {
     competitorAnalysis: [],
     monthlySearchVolume: 80,
     difficulty: 'low'
+  },
+  '/marca': {
+    title: 'Recursos de Marca | DotNet Ecuador',
+    description: 'Descarga los assets oficiales de DotNet Ecuador: logotipos, isotipos y recursos gráficos en alta calidad.',
+    keywords: [
+      'logo DotNet Ecuador',
+      'descargar logo',
+      'brand assets',
+      'recursos marca DotNet'
+    ],
+    targetCTR: 3,
+    targetPosition: 10,
+    competitorAnalysis: [],
+    monthlySearchVolume: 100,
+    difficulty: 'low'
   }
 };
 

@@ -6,9 +6,10 @@ export interface Props {
     name: string;
     url: string;
   }>;
+  variant?: 'dark' | 'light';
 }
 
-const { items } = Astro.props;
+const { items, variant = 'dark' } = Astro.props;
 
 const allItems = [
   { name: 'Inicio', url: '/' },
@@ -25,30 +26,104 @@ const breadcrumbSchema = {
     "item": `${SITE.url}${item.url}`
   }))
 };
+
+const isDark = variant === 'dark';
+
+// Token sets per variant
+const linkClass = isDark
+  ? 'text-white/60 hover:text-primary-300 focus-visible:text-primary-300'
+  : 'text-neutral-500 hover:text-primary-600 focus-visible:text-primary-600';
+
+const separatorClass = isDark
+  ? 'text-primary-500/60'
+  : 'text-primary-400/70';
+
+const homeIconClass = isDark
+  ? 'text-white/60 group-hover:text-primary-300 group-focus-visible:text-primary-300'
+  : 'text-neutral-500 group-hover:text-primary-600 group-focus-visible:text-primary-600';
+
+const currentPillClass = isDark
+  ? 'bg-primary-500/20 text-primary-300 ring-1 ring-primary-400/30'
+  : 'bg-primary-100 text-primary-600 ring-1 ring-primary-300/60';
 ---
 
-<nav aria-label="Navegación de migas de pan" class="mb-4">
-  <ol class="flex items-center space-x-2 text-sm text-neutral-600">
-    {allItems.map((item, index) => (
-      <li class="flex items-center">
-        {index > 0 && (
-          <svg class="w-4 h-4 mx-2 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-          </svg>
-        )}
-        {index === allItems.length - 1 ? (
-          <span class="font-medium text-neutral-900" aria-current="page">{item.name}</span>
-        ) : (
-          <a 
-            href={item.url} 
-            class="hover:text-neutral-900 transition-colors duration-200"
-            itemprop="item"
-          >
-            <span itemprop="name">{item.name}</span>
-          </a>
-        )}
-      </li>
-    ))}
+<nav
+  aria-label="Navegación de migas de pan"
+  class="mb-4 animate-fade-in"
+>
+  <ol
+    class="flex flex-wrap items-center gap-x-1 gap-y-1 text-xs font-sans tracking-wide"
+    itemscope
+    itemtype="https://schema.org/BreadcrumbList"
+  >
+    {allItems.map((item, index) => {
+      const isLast = index === allItems.length - 1;
+      const isHome = index === 0;
+
+      return (
+        <li
+          class="flex items-center gap-x-1"
+          itemprop="itemListElement"
+          itemscope
+          itemtype="https://schema.org/ListItem"
+        >
+          {/* Separator — skip before the first item */}
+          {index > 0 && (
+            <svg
+              class={`w-3 h-3 flex-shrink-0 select-none ${separatorClass}`}
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 3.5L10.5 8 6 12.5"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          )}
+
+          {/* Current page pill */}
+          {isLast ? (
+            <span
+              class={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-medium transition-colors duration-200 ${currentPillClass}`}
+              aria-current="page"
+              itemprop="name"
+            >
+              {item.name}
+            </span>
+          ) : (
+            /* Ancestor link */
+            <a
+              href={item.url}
+              class={`group inline-flex items-center gap-1.5 rounded-md px-1 py-0.5
+                      font-medium transition-colors duration-200 outline-none
+                      focus-visible:ring-2 focus-visible:ring-primary-400/70
+                      focus-visible:ring-offset-1
+                      ${linkClass}`}
+              itemprop="item"
+            >
+              {/* Home icon — only on the "Inicio" item */}
+              {isHome && (
+                <svg
+                  class={`w-3.5 h-3.5 flex-shrink-0 transition-colors duration-200 ${homeIconClass}`}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v6a1 1 0 001 1h4a1 1 0 001-1v-3h2v3a1 1 0 001 1h4a1 1 0 001-1v-6h1a1 1 0 00.707-1.707l-7-7z" />
+                </svg>
+              )}
+              <span itemprop="name">{item.name}</span>
+            </a>
+          )}
+
+          <meta itemprop="position" content={String(index + 1)} />
+        </li>
+      );
+    })}
   </ol>
 </nav>
 

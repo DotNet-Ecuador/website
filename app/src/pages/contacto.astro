@@ -10,13 +10,11 @@ const pageConfig = SEO_PAGES_CONFIG['/contacto'];
   description={pageConfig.description}
   keywords={pageConfig.keywords.join(', ')}>
   
-  <Breadcrumbs 
-    items={[
-      { name: 'Contacto', url: '/contacto' }
-    ]} 
-  />
-  
   <div class="container-custom text-center p-8">
+    <Breadcrumbs
+      items={[{ name: 'Contacto', url: '/contacto' }]}
+      variant="light"
+    />
     <h1 class="mt-10 text-4xl font-bold text-primary-900 mb-8 animation-fade-in">Contáctanos</h1>
     <p class="text-lg text-neutral-600 mb-12 animation-fade-in">
       Puedes contactarnos a través de nuestro correo electrónico o número celular. ¡Estamos para ayudarte!
@@ -24,12 +22,12 @@ const pageConfig = SEO_PAGES_CONFIG['/contacto'];
 
     <div class="flex flex-col md:flex-row gap-6 justify-center max-w-4xl mx-auto">
       <div class="flex-1 animation-fade-in">
-        <a href="mailto:equipo@dotnetecuador.com" class="block">
+        <a href="mailto:dotnet@duartium.com" class="block">
           <div class="card p-8 bg-primary-900 text-white hover:bg-primary-800 transition-all duration-300 cursor-pointer">
             <h2 class="text-2xl font-semibold mb-6">Correo Electrónico</h2>
             <div class="flex items-center justify-center">
               <img src="/correo.png" alt="Correo" class="w-8 h-8 mr-3" />
-              <span class="text-lg">equipo@dotnetecuador.com</span>
+              <span class="text-lg">dotnet@duartium.com</span>
             </div>
           </div>
         </a>

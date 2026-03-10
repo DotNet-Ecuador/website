@@ -4,9 +4,10 @@ export interface Props {
   name: string;
   role: string;
   delay?: string;
+  imageScale?: number;
 }
 
-const { imageUrl, name, role, delay = "0ms" } = Astro.props;
+const { imageUrl, name, role, delay = "0ms", imageScale = 1 } = Astro.props;
 ---
 
 <div class="team-member-card group" style={`animation-delay: ${delay}`}>
@@ -23,12 +24,15 @@ const { imageUrl, name, role, delay = "0ms" } = Astro.props;
         <div class="absolute inset-0.5 rounded-full bg-white"></div>
         
         <!-- Avatar image -->
-        <img 
-          src={imageUrl} 
-          alt={name} 
-          class="relative w-full h-full rounded-full object-cover z-10 transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
+        <div class="absolute inset-0 rounded-full overflow-hidden z-10 transition-transform duration-500 group-hover:scale-105">
+          <img
+            src={imageUrl}
+            alt={name}
+            class="w-full h-full object-cover"
+            style={imageScale !== 1 ? `transform: scale(${imageScale}); transform-origin: center center;` : undefined}
+            loading="lazy"
+          />
+        </div>
         
         <!-- Floating particles effect -->
         <div class="absolute -inset-4 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
