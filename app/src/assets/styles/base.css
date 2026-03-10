@@ -178,4 +178,32 @@
   .stagger-8 { animation-delay: 800ms; }
   .stagger-9 { animation-delay: 900ms; }
   .stagger-10 { animation-delay: 1000ms; }
+
+  /* ─── Skeleton shimmer ─────────────────────────────────────── */
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #f4f4f5 25%,
+      #e4e4e7 50%,
+      #f4f4f5 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  .skeleton-dark {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
 }

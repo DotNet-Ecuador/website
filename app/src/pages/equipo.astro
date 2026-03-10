@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import TeamMember from "../components/TeamMember.astro";
+import TeamMemberSkeleton from "../components/TeamMemberSkeleton.astro";
 import Button from "../components/Button.astro";
 import whatsappIcon from "../assets/icons/whatsapp.png";
 import Layout from "../layouts/Layout.astro";
@@ -15,28 +16,25 @@ const pageConfig = SEO_PAGES_CONFIG['/equipo'];
   description={pageConfig.description}
   keywords={pageConfig.keywords.join(', ')}>
   
-  <Breadcrumbs 
-    items={[
-      { name: 'Nuestro Equipo', url: '/equipo' }
-    ]} 
-  />
-  description="Conoce al increíble equipo detrás de DotNet Ecuador. Profesionales apasionados por la tecnología y el crecimiento de la comunidad.">
-  
   <!-- Hero Section with modern design -->
-  <section class="relative py-16 sm:py-20 lg:py-28 overflow-hidden"
+  <section class="relative pb-16 sm:pb-20 lg:pb-28 pt-4 overflow-hidden"
            style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);">
     <!-- Background with gradients and glass effect -->
     <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-neutral-50 to-primary-100"></div>
     <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/5 via-transparent to-primary-600/10"></div>
-    
+
     <!-- Decorative elements -->
     <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-primary-400/15 to-primary-600/25 rounded-full blur-3xl animate-pulse"></div>
     <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-gradient-to-tr from-primary-700/15 to-primary-500/25 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-primary-300/10 to-primary-800/20 rounded-full blur-2xl animate-float"></div>
-    
+
     <div class="relative z-10 container-custom">
+      <Breadcrumbs
+        items={[{ name: 'Nuestro Equipo', url: '/equipo' }]}
+        variant="light"
+      />
       <!-- Header Section -->
-      <div class="text-center">
+      <div class="text-center mt-8">
         <div class="animation-fade-scale">
           <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
 <span class="animate-gradient-text font-extrabold">
@@ -57,66 +55,81 @@ const pageConfig = SEO_PAGES_CONFIG['/equipo'];
   
   <div class="container-custom px-4 sm:px-6 lg:px-8 py-8">
 
+    <!-- Team Grid Skeleton -->
+    <section data-skeleton class="team-grid-stagger mb-16 sm:mb-20 lg:mb-24">
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+      <TeamMemberSkeleton />
+    </section>
+
     <!-- Team Grid -->
-    <section class="team-grid-stagger mb-16 sm:mb-20 lg:mb-24">
-      <TeamMember 
-        imageUrl="https://i.imgur.com/GaxB6y4.jpeg" 
-        name="Byron Duarte" 
-        role="Founder" 
+    <section data-content class="team-grid-stagger mb-16 sm:mb-20 lg:mb-24">
+      <TeamMember
+        imageUrl="/equipo/byron_duarte.png"
+        name="Byron Duarte"
+        role="Founder"
         delay="100ms"
+        imageScale={1.4}
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/Tvqk8kS.jpeg" 
-        name="Kevin Santacruz" 
-        role="Software Engineer" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/Tvqk8kS.jpeg"
+        name="Kevin Santacruz"
+        role="Software Engineer"
         delay="200ms"
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/qdLPSjf.jpeg" 
-        name="Cristopher Coronado" 
-        role="Software Engineer" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/qdLPSjf.jpeg"
+        name="Cristopher Coronado"
+        role="Software Engineer"
         delay="300ms"
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/KVXu8G0.jpeg" 
-        name="Josiel Ramos" 
-        role="Diseñador Gráfico" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/KVXu8G0.jpeg"
+        name="Josiel Ramos"
+        role="Diseñador Gráfico"
         delay="400ms"
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/b712nbL.jpeg" 
-        name="Daniel Jaramillo" 
-        role="Desarrollador Web" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/b712nbL.jpeg"
+        name="Daniel Jaramillo"
+        role="Desarrollador Web"
         delay="500ms"
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/a7BCKzB.jpeg" 
-        name="Jose Villavicencio" 
-        role="Software Engineer" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/a7BCKzB.jpeg"
+        name="Jose Villavicencio"
+        role="Software Engineer"
         delay="600ms"
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/IrgGlMR.jpeg" 
-        name="Esleiter Fajardo" 
-        role="Desarrollador Web" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/IrgGlMR.jpeg"
+        name="Esleiter Fajardo"
+        role="Desarrollador Web"
         delay="700ms"
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/IXP5Qxk.jpeg" 
-        name="Anthony San Lucas" 
-        role="Desarrollador Web" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/IXP5Qxk.jpeg"
+        name="Anthony San Lucas"
+        role="Desarrollador Web"
         delay="800ms"
       />
-      <TeamMember 
-        imageUrl="https://i.imgur.com/vkoVSGX.jpeg" 
-        name="Samuel Murillo" 
-        role="Unity Game Developer" 
+      <TeamMember
+        imageUrl="https://i.imgur.com/vkoVSGX.jpeg"
+        name="Samuel Murillo"
+        role="Unity Game Developer"
         delay="900ms"
       />
-      <TeamMember 
-        imageUrl="/darlin_vite.jpg" 
-        name="Darlin Vite" 
-        role="Desarrollador Web" 
+      <TeamMember
+        imageUrl="/equipo/darlin_vite.jpg"
+        name="Darlin Vite"
+        role="Desarrollador Web"
         delay="1000ms"
       />
     </section>

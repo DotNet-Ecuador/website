@@ -1,0 +1,119 @@
+---
+/**
+ * PageHeroSkeleton.astro
+ *
+ * A skeleton placeholder for the hero sections used across the site
+ * (equipo, eventos, proyectos, etc.).
+ *
+ * variant: 'dark'  → primary-900/800/700 gradient  (default)
+ *          'light' → primary-50 / neutral-50 / primary-100 gradient
+ *
+ * On dark variant  skeleton lines use `.skeleton-dark`
+ * On light variant skeleton lines use `.skeleton`
+ *
+ * Usage:
+ *   <div data-skeleton>
+ *     <PageHeroSkeleton variant="dark" />
+ *   </div>
+ *   <div data-skeleton>
+ *     <PageHeroSkeleton variant="light" />
+ *   </div>
+ */
+
+export interface Props {
+  variant?: 'dark' | 'light';
+}
+
+const { variant = 'dark' } = Astro.props;
+
+const isDark = variant === 'dark';
+
+/*
+  Background gradient classes
+  ─────────────────────────────
+  dark  → from-primary-900 via-primary-800 to-primary-700
+  light → from-primary-50  via-neutral-50  to-primary-100
+*/
+const bgGradient = isDark
+  ? 'bg-gradient-to-br from-[#100123] via-[#1a0535] to-[#2d0a5e]'
+  : 'bg-gradient-to-br from-[#f8f7ff] via-[#fafafa] to-[#ede9ff]';
+
+/*
+  Shimmer class for skeleton lines
+  ──────────────────────────────────
+  dark  → .skeleton-dark  (light-on-dark shimmer)
+  light → .skeleton       (grey-on-white shimmer)
+*/
+const shimmer = isDark ? 'skeleton-dark' : 'skeleton';
+
+/*
+  Decorative orb opacity — softer on light, bolder on dark
+*/
+const orbOpacity = isDark ? 'opacity-20' : 'opacity-30';
+---
+
+<!--
+  Section shell mirrors the real hero sections:
+  relative, full-bleed via negative margin trick,
+  pb-16 sm:pb-20 lg:pb-28 pt-4 overflow-hidden
+-->
+<section
+  class={`relative pb-16 sm:pb-20 lg:pb-28 pt-4 overflow-hidden ${bgGradient}`}
+  style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%);
+         padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);"
+  aria-hidden="true"
+>
+
+  <!-- ── Decorative ambient orbs (non-interactive, purely visual) ── -->
+  <div
+    class={`absolute -top-20 -right-20 w-72 h-72 rounded-full blur-3xl pointer-events-none
+            ${isDark ? 'bg-primary-400/15' : 'bg-primary-300/20'} ${orbOpacity}`}
+  ></div>
+  <div
+    class={`absolute -bottom-20 -left-20 w-72 h-72 rounded-full blur-3xl pointer-events-none
+            ${isDark ? 'bg-primary-500/20' : 'bg-primary-400/15'} ${orbOpacity}`}
+  ></div>
+
+  <!-- ── Content container ─────────────────────────────────────── -->
+  <div class="relative z-10 container-custom">
+
+    <!-- Breadcrumb line -->
+    <!--
+      Real breadcrumb: text-xs pill + separator + pill
+      We fake it as two short rounded bars with a tiny gap.
+    -->
+    <div class="mb-4 flex items-center gap-2">
+      <!-- "Inicio" crumb -->
+      <div class={`${shimmer} h-5 w-12 rounded-full`}></div>
+      <!-- Separator chevron -->
+      <div class={`${shimmer} h-3 w-3 rounded-sm`}></div>
+      <!-- Current-page pill — slightly wider, pill shape -->
+      <div class={`${shimmer} h-5 w-24 rounded-full`}></div>
+    </div>
+
+    <!-- ── Centered title / subtitle block ───────────────────────── -->
+    <div class="text-center mt-8 flex flex-col items-center gap-5">
+
+      <!--
+        Title block:
+        Real: text-4xl sm:text-5xl lg:text-7xl font-bold
+        We use a tall bar (~50% page width) to approximate that visual weight.
+        Height scales with the responsive text size.
+      -->
+      <div class={`${shimmer} h-10 sm:h-14 lg:h-20 w-1/2 rounded-2xl`}></div>
+
+      <!--
+        Subtitle paragraph (two lines, ~70% width each):
+        Real: text-lg sm:text-xl lg:text-2xl, max-w-4xl
+        Each line is a bar; the second is slightly shorter for a
+        natural paragraph feel.
+      -->
+      <div class="flex flex-col items-center gap-3 w-full max-w-4xl mx-auto">
+        <div class={`${shimmer} h-5 sm:h-6 rounded-full w-[70%]`}></div>
+        <div class={`${shimmer} h-5 sm:h-6 rounded-full w-[58%]`}></div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

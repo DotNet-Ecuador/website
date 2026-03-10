@@ -1,0 +1,59 @@
+---
+/**
+ * TeamMemberSkeleton.astro
+ *
+ * Mirrors the layout and dimensions of TeamMember.astro exactly.
+ * Shown while real content is loading; hidden once the `load`
+ * event fires (see the skeleton JS in Layout.astro).
+ *
+ * Usage:
+ *   <div data-skeleton>
+ *     <TeamMemberSkeleton />
+ *   </div>
+ */
+---
+
+<!-- Outer wrapper matches .team-member-card sizing/spacing -->
+<div class="relative overflow-hidden" aria-hidden="true">
+
+  <!-- Glassmorphism card shell — same rounding and border as the real card -->
+  <div
+    class="relative bg-gradient-to-br from-white/60 via-white/40 to-white/30
+           backdrop-blur-xl border border-white/40 rounded-3xl p-6 text-center"
+  >
+
+    <!-- ── Avatar circle ────────────────────────────────────────── -->
+    <!--
+      Real card: w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40
+      We add a thin ring wrapper (inset-0.5) just like the original
+      to preserve the exact visual footprint.
+    -->
+    <div class="relative mx-auto mb-6 w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40">
+      <!-- Outer ring shell -->
+      <div class="absolute inset-0 rounded-full bg-neutral-200"></div>
+      <!-- Shimmer circle sits inside the 0.5-unit inset, identical to the real avatar -->
+      <div class="absolute inset-0.5 rounded-full skeleton"></div>
+    </div>
+
+    <!-- ── Name line (~60 % width) ──────────────────────────────── -->
+    <!--
+      Real card: <h2 class="text-xl sm:text-2xl font-bold mb-2">
+      h-5 approximates a bold text-xl / text-2xl cap-height.
+    -->
+    <div class="skeleton h-5 sm:h-6 rounded-full w-3/5 mx-auto mb-3"></div>
+
+    <!-- ── Role line (~40 % width) ──────────────────────────────── -->
+    <!--
+      Real card: <p class="text-base sm:text-lg font-medium mb-4">
+      h-4 approximates the slightly smaller role text.
+    -->
+    <div class="skeleton h-4 sm:h-5 rounded-full w-2/5 mx-auto mb-4"></div>
+
+    <!-- ── Social-icons placeholder (matches the hidden hover row) ── -->
+    <div class="flex justify-center gap-3">
+      <div class="skeleton w-8 h-8 rounded-full"></div>
+      <div class="skeleton w-8 h-8 rounded-full"></div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,86 @@
+---
+/**
+ * EventCardSkeleton.astro
+ *
+ * Mirrors the layout and dimensions of EventCard.astro exactly.
+ * Shown while real content is loading; hidden once the `load`
+ * event fires (see the skeleton JS in Layout.astro).
+ *
+ * Accepts an optional `reverse` prop so the skeleton can mirror
+ * the reversed (image-right) variant of the real EventCard.
+ *
+ * Usage:
+ *   <div data-skeleton>
+ *     <EventCardSkeleton />
+ *     <EventCardSkeleton reverse={true} />
+ *   </div>
+ */
+
+export interface Props {
+  reverse?: boolean;
+}
+
+const { reverse = false } = Astro.props;
+---
+
+<!-- Outer spacing wrapper matches EventCard's animation-fade-in div -->
+<div class="mb-6 sm:mb-8" aria-hidden="true">
+
+  <!--
+    Inner card:
+      .card  →  bg-white rounded-2xl shadow-card
+      flex flex-col lg:flex-row  →  stacks on mobile, side-by-side on lg
+      max-w-5xl mx-auto
+      p-4 sm:p-6 lg:p-8
+      min-h-[400px] sm:min-h-[450px] lg:min-h-[300px]
+  -->
+  <div
+    class={`card max-w-5xl mx-auto flex flex-col
+            ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'}
+            items-center gap-6 p-4 sm:p-6 lg:p-8
+            min-h-[400px] sm:min-h-[450px] lg:min-h-[300px]`}
+  >
+
+    <!-- ── Left / image column ──────────────────────────────────── -->
+    <!--
+      Real card: w-full lg:w-1/2, aspect-video image inside rounded-2xl
+    -->
+    <div class="w-full lg:w-1/2 flex-shrink-0">
+      <div class="relative max-w-md mx-auto lg:max-w-none overflow-hidden rounded-2xl">
+        <div class="skeleton aspect-video w-full rounded-2xl"></div>
+      </div>
+    </div>
+
+    <!-- ── Right / content column ───────────────────────────────── -->
+    <!--
+      Real card: w-full lg:w-1/2, flex flex-col justify-center space-y-4
+      Contents: meta row (location + date), title h2, description p
+    -->
+    <div class="w-full lg:w-1/2 flex flex-col justify-center space-y-4">
+
+      <!-- Meta row: two short pill lines side by side (location + date) -->
+      <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-6">
+        <!-- Location pill (~96 px) -->
+        <div class="skeleton h-4 rounded-full w-24"></div>
+        <!-- Date pill (~80 px) -->
+        <div class="skeleton h-4 rounded-full w-20"></div>
+      </div>
+
+      <!-- Title block: tall line ~75 % width -->
+      <!--
+        Real card: text-xl sm:text-2xl lg:text-3xl font-bold
+        h-7 / h-8 approximates the cap-height of text-2xl / text-3xl bold.
+      -->
+      <div class="skeleton h-7 sm:h-8 rounded-lg w-3/4 mx-auto lg:mx-0"></div>
+
+      <!-- Description paragraph: three lines of decreasing width -->
+      <div class="space-y-2.5">
+        <div class="skeleton h-4 rounded-full w-full"></div>
+        <div class="skeleton h-4 rounded-full w-11/12"></div>
+        <div class="skeleton h-4 rounded-full w-4/5"></div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

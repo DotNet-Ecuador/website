@@ -1,5 +1,6 @@
 ---
 import EventCard from '../components/EventCard.astro';
+import EventCardSkeleton from '../components/EventCardSkeleton.astro';
 import Layout from '../layouts/Layout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SEO_PAGES_CONFIG } from '../config/seo';
@@ -12,13 +13,11 @@ const pageConfig = SEO_PAGES_CONFIG['/eventos'];
   description={pageConfig.description}
   keywords={pageConfig.keywords.join(', ')}>
   
-  <Breadcrumbs 
-    items={[
-      { name: 'Eventos', url: '/eventos' }
-    ]} 
-  />
-  
   <div class="container-custom">
+    <Breadcrumbs
+      items={[{ name: 'Eventos', url: '/eventos' }]}
+      variant="light"
+    />
     <!-- Header Section -->
     <div class="text-center mb-8 sm:mb-12 lg:mb-16">
       <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary-900 mb-4 sm:mb-6">
@@ -29,8 +28,15 @@ const pageConfig = SEO_PAGES_CONFIG['/eventos'];
       </p>
     </div>
 
+    <!-- Events Grid Skeleton -->
+    <div data-skeleton class="space-y-8 lg:space-y-12">
+      <EventCardSkeleton />
+      <EventCardSkeleton reverse={true} />
+      <EventCardSkeleton />
+    </div>
+
     <!-- Events Grid -->
-    <div class="space-y-8 lg:space-y-12">
+    <div data-content class="space-y-8 lg:space-y-12">
       <EventCard 
         idImage={["csharp1", "csharp2", "csharp3"]} 
         images={[

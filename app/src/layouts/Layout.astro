@@ -44,6 +44,34 @@ const { title, description = SITE.description, lang = 'es', structuredData, keyw
 
       <Footer />
     </div>
+
+    <!-- ─── Skeleton loader orchestration ───────────────────────────
+         Skeletons are marked with  data-skeleton
+         Real content is marked with data-content
+
+         On DOMContentLoaded: real content is immediately hidden (opacity 0)
+         so it does not flash before images/resources are ready.
+
+         On load: skeletons are hidden and real content fades in
+         via a 0.4 s opacity transition.
+    ─────────────────────────────────────────────────────────────── -->
+    <script>
+      // Hide real content immediately so it does not flash before load
+      document.querySelectorAll<HTMLElement>('[data-content]').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.4s ease';
+      });
+
+      // Once all resources are ready: hide skeletons, reveal real content
+      window.addEventListener('load', () => {
+        document.querySelectorAll<HTMLElement>('[data-skeleton]').forEach((el) => {
+          el.style.display = 'none';
+        });
+        document.querySelectorAll<HTMLElement>('[data-content]').forEach((el) => {
+          el.style.opacity = '1';
+        });
+      });
+    </script>
   </body>
 </html>
 

@@ -12,27 +12,25 @@ const pageConfig = SEO_PAGES_CONFIG['/proyectos'];
   description={pageConfig.description}
   keywords={pageConfig.keywords.join(', ')}>
   
-  <Breadcrumbs 
-    items={[
-      { name: 'Proyectos', url: '/proyectos' }
-    ]} 
-  />
-  
   <!-- Hero Section with modern design -->
-  <section class="relative py-16 sm:py-20 lg:py-28 overflow-hidden"
+  <section class="relative pb-16 sm:pb-20 lg:pb-28 pt-4 overflow-hidden"
            style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);">
     <!-- Background with gradients and glass effect -->
     <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-neutral-50 to-primary-100"></div>
     <div class="absolute inset-0 bg-gradient-to-tr from-primary-900/5 via-transparent to-primary-600/10"></div>
-    
+
     <!-- Decorative elements -->
     <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-primary-400/15 to-primary-600/25 rounded-full blur-3xl animate-pulse"></div>
     <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-gradient-to-tr from-primary-700/15 to-primary-500/25 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-primary-300/10 to-primary-800/20 rounded-full blur-2xl animate-float"></div>
-    
+
     <div class="relative z-10 container-custom">
+      <Breadcrumbs
+        items={[{ name: 'Proyectos', url: '/proyectos' }]}
+        variant="light"
+      />
       <!-- Header Section -->
-      <div class="text-center">
+      <div class="text-center mt-8">
         <div class="animation-fade-scale">
           <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
             <span class="animate-gradient-text font-extrabold">
