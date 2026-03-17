@@ -1,0 +1,171 @@
+---
+import type { NFT } from '../data/nfts'
+
+export interface Props {
+  nft: NFT
+  index: number
+}
+
+const { nft, index } = Astro.props
+const staggerClass = `stagger-${(index % 10) + 1}`
+---
+
+<article
+  class={`nft-card ${staggerClass}`}
+  data-nft-id={nft.id}
+  role="button"
+  tabindex="0"
+  aria-label={`Ver detalles de ${nft.name}`}
+>
+  <div class="nft-card__image-wrapper">
+    <!-- Token badge -->
+    <span class="nft-card__token-badge" aria-hidden="true">{nft.tokenId}</span>
+    <!-- Network badge -->
+    <span class="nft-card__network-badge" aria-hidden="true">
+      <svg width="10" height="10" viewBox="0 0 38 33" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M19 0L37.5 10.5V21.5L19 32L0.5 21.5V10.5L19 0Z" fill="#8247E5"/>
+      </svg>
+      Polygon
+    </span>
+
+    <img
+      src={nft.image}
+      alt={nft.name}
+      loading="lazy"
+      decoding="async"
+      class="nft-card__image"
+      width="400"
+      height="400"
+    />
+  </div>
+
+  <div class="nft-card__body">
+    <h3 class="nft-card__name">{nft.name}</h3>
+    <p class="nft-card__role">{nft.role}</p>
+  </div>
+</article>
+
+<style>
+  @keyframes cardAppear {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+
+  .nft-card {
+    background: rgba(29, 4, 72, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    will-change: transform;
+    animation: cardAppear 0.4s ease-out both;
+  }
+
+  .nft-card:hover,
+  .nft-card:focus-visible {
+    transform: translateY(-8px);
+    box-shadow: 0 0 20px rgba(139, 93, 255, 0.3), 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(139, 93, 255, 0.4);
+    outline: none;
+  }
+
+  .nft-card:focus-visible {
+    outline: 2px solid rgba(139, 93, 255, 0.7);
+    outline-offset: 2px;
+  }
+
+  .nft-card__image-wrapper {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(16, 1, 35, 0.8);
+  }
+
+  .nft-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .nft-card:hover .nft-card__image {
+    transform: scale(1.05);
+  }
+
+  .nft-card__token-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 1;
+    background: rgba(16, 1, 35, 0.85);
+    color: rgba(166, 136, 255, 0.9);
+    font-family: 'Exo 2', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(139, 93, 255, 0.3);
+    backdrop-filter: blur(4px);
+  }
+
+  .nft-card__network-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+    background: rgba(16, 1, 35, 0.85);
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 0.2rem 0.45rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(130, 71, 229, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .nft-card__body {
+    padding: 0.75rem 1rem;
+  }
+
+  .nft-card__name {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: #ffffff;
+    margin: 0 0 0.2rem 0;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nft-card__role {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(196, 181, 255, 0.8);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nft-card {
+      transition: none;
+    }
+    .nft-card:hover,
+    .nft-card:focus-visible {
+      transform: none;
+    }
+    .nft-card:hover .nft-card__image {
+      transform: none;
+    }
+  }
+</style>

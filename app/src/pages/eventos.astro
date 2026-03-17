@@ -1,93 +1,220 @@
 ---
-import EventCard from '../components/EventCard.astro';
-import EventCardSkeleton from '../components/EventCardSkeleton.astro';
-import Layout from '../layouts/Layout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { SEO_PAGES_CONFIG } from '../config/seo';
+import Layout from '../layouts/Layout.astro'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
+import Button from '../components/Button.astro'
+import EventCardV2 from '../components/EventCardV2.astro'
+import { SEO_PAGES_CONFIG } from '../config/seo'
+import { EVENTS } from '../data/events'
 
-const pageConfig = SEO_PAGES_CONFIG['/eventos'];
+const pageConfig = SEO_PAGES_CONFIG['/eventos']
+
+const confirmedEvents = EVENTS.filter(e => e.status === 'confirmed')
+const tentativeEvents = EVENTS.filter(e => e.status === 'tentative')
 ---
 
 <Layout
   title={pageConfig.title}
   description={pageConfig.description}
-  keywords={pageConfig.keywords.join(', ')}>
-  
-  <div class="container-custom">
-    <Breadcrumbs
-      items={[{ name: 'Eventos', url: '/eventos' }]}
-      variant="light"
-    />
-    <!-- Header Section -->
-    <div class="text-center mb-8 sm:mb-12 lg:mb-16">
-      <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-primary-900 mb-4 sm:mb-6">
-        Próximos eventos en <span class="text-secondary-600">DotNet Ecuador</span>
-      </h1>
-      <p class="text-neutral-600 text-base sm:text-lg max-w-2xl mx-auto">
-        Participa en nuestros eventos presenciales y virtuales para aprender, compartir y conectar con la comunidad .NET
-      </p>
-    </div>
+  keywords={pageConfig.keywords.join(', ')}
+>
 
-    <!-- Events Grid Skeleton -->
-    <div data-skeleton class="space-y-8 lg:space-y-12">
-      <EventCardSkeleton />
-      <EventCardSkeleton reverse={true} />
-      <EventCardSkeleton />
-    </div>
+  <!-- ─── Hero ─────────────────────────────────────────────────────────── -->
+  <section
+    class="relative pb-16 sm:pb-20 pt-4 overflow-hidden"
+    style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);"
+  >
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-neutral-50 to-primary-100"></div>
+    <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-primary-400/15 to-primary-600/25 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-gradient-to-tr from-primary-700/15 to-primary-500/25 rounded-full blur-3xl"></div>
 
-    <!-- Events Grid -->
-    <div data-content class="space-y-8 lg:space-y-12">
-      <EventCard 
-        idImage={["csharp1", "csharp2", "csharp3"]} 
-        images={[
-          'https://media.licdn.com/dms/image/v2/C4E1BAQGD8r2Pv9iPpg/company-background_10000/company-background_10000/0/1609965184925/csharpcorner_cover?e=2147483647&v=beta&t=p1xvHK2SI1o2c8rwXGCyVjpF7INq4CfAxVZhPcSGs_A', 
-          "https://conferencealert.com/blog/wp-content/uploads/2020/03/poster2.jpg",
-          "https://www.unr.edu/main/images/news/2024/October/shamik-sengupta.jpg"
-        ]} 
-        title='Conferencia C# - Desarrollo Moderno'
-        description='Descubre las últimas novedades de C# y .NET en esta conferencia imperdible. Aprende sobre patrones modernos, arquitecturas escalables y las mejores prácticas para el desarrollo profesional.'
-        date='03 de Marzo' 
-        location='Escuela Politécnica Nacional' 
-        reverse={false}
-      />
-      
-      <EventCard 
-        idImage={["aspnet-workshop"]} 
-        images={['https://lh3.googleusercontent.com/proxy/Aw0nH5dOq4z6H3sSpXkMfSXNmjr-RgA-JHoSX8I_SOxo0_Q9Zxr8B6hBkV2fr861YQyyyxcaBS8gY8lQ8d8Du4oegd_jdpiv8dv9ytPU3MjfTsbHWxoig4dDk5SdqBmByOf8cdnzjgQLeo8P_-1o98I16jfs7A64zg']} 
-        title='Workshop ASP.NET Core'
-        description='Taller práctico sobre el desarrollo de APIs REST con ASP.NET Core. Incluye autenticación JWT, Entity Framework, y despliegue en la nube.'
-        date='10 al 15 de Marzo' 
-        location='ESPOL' 
-        reverse={true}
-      />
-      
-      <EventCard 
-        idImage={["blazor-meetup-1", "blazor-meetup-2"]} 
-        images={[
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVKmNnMgV1uZgP78VCGzTy1a9jt2VzMZwmXQ&s',
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJVI-B0UkbRdxxlZf_-NKqC2LVOBIM6UzAHA&s'
-        ]} 
-        title='Meetup Blazor - Aplicaciones Web Interactivas'
-        description='Explora el poder de Blazor para crear aplicaciones web interactivas con C#. Desde los conceptos básicos hasta técnicas avanzadas de optimización y deployment.'
-        date='25 de Marzo' 
-        location='CC. Quicentro' 
-        reverse={false}
-      />
-    </div>
+    <div class="relative z-10 container-custom">
+      <Breadcrumbs items={[{ name: 'Eventos', url: '/eventos' }]} variant="light" />
 
-    <!-- Call to Action -->
-    <div class="text-center mt-12 sm:mt-16 lg:mt-20">
-      <div class="card p-6 sm:p-8 lg:p-10 max-w-2xl mx-auto gradient-primary text-white">
-        <h3 class="text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">
+      <div class="text-center mt-8">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-5 leading-tight font-display">
+          <span class="animate-gradient-text">Próximos Eventos</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-neutral-600 max-w-2xl mx-auto leading-relaxed">
+          Meetups, paneles y workshops para la comunidad .NET y los líderes empresariales del Ecuador.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-custom px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ─── Confirmed events ───────────────────────────────────────────── -->
+    {confirmedEvents.length > 0 && (
+      <section aria-labelledby="confirmed-heading" class="mb-14">
+        <h2 id="confirmed-heading" class="section-heading mb-8">
+          <span class="section-heading__dot section-heading__dot--cyan"></span>
+          Eventos confirmados
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {confirmedEvents.map(event => (
+            <EventCardV2 event={event} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- ─── Divider (only when both sections exist) ────────────────────── -->
+    {confirmedEvents.length > 0 && tentativeEvents.length > 0 && (
+      <hr class="border-neutral-200 mb-14" />
+    )}
+
+    <!-- ─── Tentative events ───────────────────────────────────────────── -->
+    {tentativeEvents.length > 0 && (
+      <section aria-labelledby="tentative-heading" class="mb-14">
+        <h2 id="tentative-heading" class="section-heading mb-2">
+          <span class="section-heading__dot section-heading__dot--purple"></span>
+          En planificación
+        </h2>
+        <p class="text-sm text-neutral-500 mb-8 ml-5">
+          Fechas por confirmar — activa las notificaciones para no perderte nada.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {tentativeEvents.map(event => (
+            <EventCardV2 event={event} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- ─── Sponsor CTA ────────────────────────────────────────────────── -->
+    <section class="mb-14">
+      <div class="sponsor-cta">
+        <div class="sponsor-cta__content">
+          <span class="sponsor-cta__eyebrow">Para empresas</span>
+          <h3 class="sponsor-cta__title">¿Tu empresa quiere estar presente?</h3>
+          <p class="sponsor-cta__text">
+            Conecta con cientos de desarrolladores .NET. Nuestros eventos son el espacio ideal para
+            presentar tu marca, producto o iniciativa ante la comunidad tech más activa del Ecuador.
+          </p>
+        </div>
+        <div class="sponsor-cta__action">
+          <Button variant="outline" href="/contacto">
+            Hablar con el equipo
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Speaker CTA ────────────────────────────────────────────────── -->
+    <section class="text-center mb-12">
+      <div class="card p-8 max-w-xl mx-auto gradient-primary text-white">
+        <h3 class="text-xl sm:text-2xl font-semibold font-display mb-3">
           ¿Quieres ser ponente?
         </h3>
-        <p class="text-base sm:text-lg mb-6 opacity-95">
+        <p class="text-base mb-6 opacity-90">
           Comparte tu conocimiento con la comunidad. Contáctanos para proponer tu charla o taller.
         </p>
-        <a href="/contacto" class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors">
+        <a
+          href="/contacto"
+          class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors min-h-[44px]"
+        >
           Proponer Charla
         </a>
       </div>
-    </div>
+    </section>
+
   </div>
 </Layout>
+
+<style>
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #100123;
+  }
+
+  .section-heading__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    flex-shrink: 0;
+  }
+
+  .section-heading__dot--cyan   { background: #0ea5e9; }
+  .section-heading__dot--purple { background: #8b5dff; }
+
+  /* ─── Sponsor CTA ────────────────────────────────────── */
+  .sponsor-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: white;
+    border: 1px solid #e4e4e7;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+  }
+
+  @media (min-width: 768px) {
+    .sponsor-cta {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .sponsor-cta__content {
+    flex: 1;
+  }
+
+  .sponsor-cta__eyebrow {
+    display: inline-block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0ea5e9;
+    margin-bottom: 0.5rem;
+  }
+
+  .sponsor-cta__title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #100123;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .sponsor-cta__text {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    color: #52525b;
+    line-height: 1.6;
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  .sponsor-cta__action {
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    )
+
+    document.querySelectorAll('.animation-fade-up').forEach(el => observer.observe(el))
+  })
+</script>

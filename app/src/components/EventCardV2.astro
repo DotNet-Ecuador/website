@@ -1,0 +1,432 @@
+---
+import type { Event } from '../data/events'
+
+export interface Props {
+  event: Event
+}
+
+const { event } = Astro.props
+
+const MONTHS_ES = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']
+
+let dateDay = ''
+let dateMonth = ''
+let dateYear = ''
+
+if (event.status === 'confirmed' && event.date) {
+  const [y, m, d] = event.date.split('-')
+  dateDay = d
+  dateMonth = MONTHS_ES[parseInt(m) - 1]
+  dateYear = y
+}
+
+function buildCalendarUrl(event: Event): string {
+  if (!event.date) return '#'
+  const dateStr = event.date.replace(/-/g, '')
+  const start = event.time ? `${dateStr}T${event.time.replace(':', '')}00` : dateStr
+  const end = event.endTime ? `${dateStr}T${event.endTime.replace(':', '')}00` : dateStr
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: event.title,
+    dates: `${start}/${end}`,
+    details: event.description,
+    location: event.location ?? '',
+  })
+  return `https://calendar.google.com/calendar/render?${params}`
+}
+
+const calendarUrl = event.status === 'confirmed' ? buildCalendarUrl(event) : ''
+
+const formatLabel: Record<string, string> = {
+  presencial: 'Presencial',
+  virtual: 'Virtual',
+  híbrido: 'Híbrido',
+}
+
+const formatStyle: Record<string, string> = {
+  presencial: 'badge--presencial',
+  virtual: 'badge--virtual',
+  híbrido: 'badge--hibrido',
+}
+
+const typeLabel: Record<string, string> = {
+  meetup: 'Meetup',
+  workshop: 'Workshop',
+  conference: 'Conferencia',
+  webinar: 'Webinar',
+  panel: 'Panel',
+}
+---
+
+<article class={`event-card-v2 animation-fade-up ${event.status === 'confirmed' ? 'event-card-v2--confirmed' : 'event-card-v2--tentative'}`}>
+
+  <!-- Top row: date block + badges -->
+  <div class="flex items-start gap-4 mb-4">
+    {event.status === 'confirmed' ? (
+      <div class="event-date event-date--confirmed flex-shrink-0" aria-label={`${dateDay} de ${dateMonth} ${dateYear}`}>
+        <span class="event-date__day">{dateDay}</span>
+        <span class="event-date__month">{dateMonth}</span>
+        <span class="event-date__year">{dateYear}</span>
+      </div>
+    ) : (
+      <div class="event-date event-date--tentative flex-shrink-0" aria-label={`Fecha tentativa: ${event.tentativeDate}`}>
+        <span class="event-date__tentative">{event.tentativeDate ?? '?'}</span>
+      </div>
+    )}
+
+    <div class="flex flex-wrap gap-1.5 pt-1">
+      <span class={`event-badge ${event.status === 'confirmed' ? 'event-badge--confirmed' : 'event-badge--tentative'}`}>
+        {event.status === 'confirmed' ? '● Confirmado' : '◌ Tentativo'}
+      </span>
+      <span class={`event-badge ${formatStyle[event.format]}`}>
+        {formatLabel[event.format]}
+      </span>
+      <span class="event-badge badge--type">
+        {typeLabel[event.type]}
+      </span>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <h2 class="event-title">{event.title}</h2>
+
+  <!-- Speakers -->
+  {event.speakers && event.speakers.length > 0 && (
+    <p class="event-speakers">
+      {event.speakers.map(s => `${s.name} · ${s.role}`).join('  ·  ')}
+    </p>
+  )}
+
+  <!-- Description -->
+  <p class="event-description">{event.description}</p>
+
+  <!-- Meta row -->
+  <div class="event-meta">
+    {event.location && (
+      <span class="event-meta__item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+        {event.location}
+      </span>
+    )}
+    {event.time && (
+      <span class="event-meta__item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        {event.time}{event.endTime ? ` – ${event.endTime}` : ''}
+      </span>
+    )}
+  </div>
+
+  <!-- Tags -->
+  {event.tags && event.tags.length > 0 && (
+    <div class="event-tags">
+      {event.tags.map(tag => (
+        <span class="event-tag">#{tag}</span>
+      ))}
+    </div>
+  )}
+
+  <!-- Footer CTAs -->
+  <div class="event-footer">
+    {event.status === 'confirmed' ? (
+      <div class="flex items-center gap-3 flex-wrap">
+        {event.registrationUrl && (
+          <a
+            href={event.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary text-sm px-4 py-2.5 inline-flex items-center gap-2 min-h-[44px]"
+          >
+            Registrarse
+          </a>
+        )}
+        <a
+          href={calendarUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-calendar inline-flex items-center gap-2 min-h-[44px]"
+          aria-label={`Agregar "${event.title}" a Google Calendar`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Agregar al calendario
+        </a>
+      </div>
+    ) : (
+      <a
+        href={`mailto:equipo@dotnetecuador.com?subject=Notificarme%3A%20${encodeURIComponent(event.title)}`}
+        class="btn-notify inline-flex items-center gap-2 min-h-[44px]"
+      >
+        Notificarme cuando se confirme
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    )}
+  </div>
+
+</article>
+
+<style>
+  /* ─── Card wrapper ───────────────────────────────────── */
+  .event-card-v2 {
+    background: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    border-left: 4px solid transparent;
+  }
+
+  .event-card-v2:hover {
+    box-shadow: 0 8px 24px rgba(74, 8, 178, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .event-card-v2--confirmed {
+    border-left-color: #0ea5e9;
+  }
+
+  .event-card-v2--tentative {
+    border-left-color: #c4b5ff;
+  }
+
+  /* ─── Date block ─────────────────────────────────────── */
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    min-height: 80px;
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .event-date--confirmed {
+    background: #100123;
+    color: white;
+  }
+
+  .event-date--tentative {
+    border: 2px dashed #c4b5ff;
+    color: #4a08b2;
+  }
+
+  .event-date__day {
+    display: block;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .event-date__month {
+    display: block;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+    opacity: 0.75;
+  }
+
+  .event-date__year {
+    display: block;
+    font-size: 0.6rem;
+    opacity: 0.55;
+    margin-top: 0.1rem;
+  }
+
+  .event-date__tentative {
+    display: block;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.3;
+    padding: 0.25rem;
+  }
+
+  /* ─── Badges ─────────────────────────────────────────── */
+  .event-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: 'Jost', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .event-badge--confirmed {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+
+  .event-badge--tentative {
+    background: #ede9ff;
+    color: #4a08b2;
+    border: 1px dashed #c4b5ff;
+  }
+
+  .badge--presencial {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+
+  .badge--virtual {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+  }
+
+  .badge--hibrido {
+    background: #f5f3ff;
+    color: #4a08b2;
+    border: 1px solid #ddd6fe;
+  }
+
+  .badge--type {
+    background: #f4f4f5;
+    color: #52525b;
+    border: 1px solid #e4e4e7;
+  }
+
+  /* ─── Typography ─────────────────────────────────────── */
+  .event-title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #100123;
+    line-height: 1.3;
+    margin: 0 0 0.5rem 0;
+  }
+
+  @media (min-width: 640px) {
+    .event-title { font-size: 1.375rem; }
+  }
+
+  .event-speakers {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    color: #4a08b2;
+    font-weight: 500;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .event-description {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    color: #52525b;
+    line-height: 1.65;
+    margin: 0 0 0.75rem 0;
+  }
+
+  /* ─── Meta ───────────────────────────────────────────── */
+  .event-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .event-meta__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    color: #71717a;
+  }
+
+  /* ─── Tags ───────────────────────────────────────────── */
+  .event-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .event-tag {
+    font-size: 0.7rem;
+    font-family: 'Jost', sans-serif;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.375rem;
+    background: #f5f3ff;
+    color: #4a08b2;
+    border: 1px solid #ede9ff;
+  }
+
+  /* ─── Footer ─────────────────────────────────────────── */
+  .event-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #f4f4f5;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+  }
+
+  /* ─── CTAs ───────────────────────────────────────────── */
+  .btn-calendar {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.6rem;
+    background: #4a08b2;
+    color: white;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .btn-calendar:hover {
+    background: #33057a;
+    transform: translateY(-1px);
+  }
+
+  .btn-notify {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.6rem;
+    border: 2px solid #8b5dff;
+    color: #4a08b2;
+    background: transparent;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .btn-notify:hover {
+    background: #f5f3ff;
+  }
+
+  /* ─── Entrance animation ─────────────────────────────── */
+  .animation-fade-up {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+
+  .animation-fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animation-fade-up {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

@@ -40,9 +40,18 @@ export const SEO_KEYWORDS = {
 }
 
 export const NavigationLinks: NavigationLink[] = [
-    { name: 'Inicio', url: '/' },
+    { name: 'Eventos', url: '/eventos' },
     { name: 'Voluntariado', url: '/voluntariado' },
     { name: 'Nuestro Equipo', url: '/equipo' },
-    { name: 'Proyectos', url: '/proyectos' },
-    { name: 'Sobre Nosotros', url: '/sobre-nosotros' },
+    { name: 'Contacto', url: '/contacto' },
+    {
+        name: 'Más',
+        url: '#',
+        children: [
+            { name: 'Proyectos', url: '/proyectos' },
+            { name: 'Sobre Nosotros', url: '/sobre-nosotros' },
+            { name: 'NFTs', url: '/nfts' },
+            { name: 'Marca', url: '/marca' },
+        ],
+    },
 ]
