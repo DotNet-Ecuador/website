@@ -44,5 +44,6 @@ export const NavigationLinks: NavigationLink[] = [
     { name: 'Voluntariado', url: '/voluntariado' },
     { name: 'Nuestro Equipo', url: '/equipo' },
     { name: 'Proyectos', url: '/proyectos' },
+    { name: 'NFTs', url: '/nfts' },
     { name: 'Sobre Nosotros', url: '/sobre-nosotros' },
 ]

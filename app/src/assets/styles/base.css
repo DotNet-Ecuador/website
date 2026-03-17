@@ -206,4 +206,29 @@
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;
   }
+
+  /* NFT Grid layout */
+  .nft-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .nft-grid-layout {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .nft-grid-layout {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .nft-grid-layout {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
 }

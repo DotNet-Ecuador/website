@@ -146,6 +146,23 @@ export const SEO_PAGES_CONFIG: Record<string, SEOMetrics> = {
     competitorAnalysis: [],
     monthlySearchVolume: 100,
     difficulty: 'low'
+  },
+  '/nfts': {
+    title: 'NFT Collection DotNet Ecuador Developers - First Edition 2026',
+    description: 'Explora la colección NFT exclusiva de DotNet Ecuador: 31 arquetipos únicos de desarrolladores .NET en Polygon. First Edition 2026 en OpenSea.',
+    keywords: [
+      'NFT DotNet Ecuador',
+      'colección NFT desarrolladores',
+      'NFT Polygon Ecuador',
+      'DotNet Ecuador Developers NFT',
+      'NFT programadores Ecuador',
+      'First Edition 2026 NFT'
+    ],
+    targetCTR: 5,
+    targetPosition: 5,
+    competitorAnalysis: [],
+    monthlySearchVolume: 150,
+    difficulty: 'low'
   }
 };
 

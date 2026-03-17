@@ -1,0 +1,702 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
+import Button from '../components/Button.astro'
+import NFTCard from '../components/NFTCard.astro'
+import { SEO_PAGES_CONFIG } from '../config/seo'
+import { NFTS, NFT_COLLECTION } from '../data/nfts'
+
+const pageConfig = SEO_PAGES_CONFIG['/nfts']
+
+// First NFT used as hero featured image
+const featuredNFT = NFTS[0]
+---
+
+<Layout
+  title={pageConfig.title}
+  description={pageConfig.description}
+  keywords={pageConfig.keywords.join(', ')}
+>
+
+  <!-- ─── Hero ─────────────────────────────────────────────────────────── -->
+  <section
+    class="nft-hero relative overflow-hidden"
+    style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);"
+  >
+    <!-- Dark background full-bleed -->
+    <div class="absolute inset-0" style="background: #100123;"></div>
+    <!-- Subtle radial glows -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full opacity-20" style="background: radial-gradient(circle, #8b5dff 0%, transparent 70%); filter: blur(40px);"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full opacity-15" style="background: radial-gradient(circle, #0ea5e9 0%, transparent 70%); filter: blur(40px);"></div>
+
+    <div class="relative z-10 container-custom py-12 lg:py-20">
+      <Breadcrumbs items={[{ name: 'NFTs', url: '/nfts' }]} variant="dark" />
+
+      <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 mt-8">
+        <!-- Left: Text -->
+        <div class="flex-1 text-left">
+          <p class="nft-hero__edition mb-4">First Edition 2026</p>
+
+          <h1 class="nft-hero__title mb-4">
+            <span class="animate-gradient-text-light">Dotnet Ecuador</span><br />
+            <span class="text-white">Developers</span>
+          </h1>
+
+          <p class="nft-hero__subtitle mb-8">
+            31 arquetipos únicos que representan la diversidad del ecosistema .NET en Polygon.
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <Button
+              variant="primary"
+              size="lg"
+              href={NFT_COLLECTION.openseaUrl}
+              target="_blank"
+            >
+              Ver en OpenSea
+            </Button>
+            <a
+              href={NFT_COLLECTION.openseaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 px-6 py-3 text-lg"
+              style="border: 2px solid rgba(139,93,255,0.6); color: rgba(166,136,255,1); background: rgba(139,93,255,0.08);"
+            >
+              Ver Colección Completa
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Featured NFT image -->
+        <div class="flex-shrink-0 w-56 sm:w-72 lg:w-80">
+          <div class="nft-hero__image-ring animate-pulse-glow rounded-2xl overflow-hidden">
+            <img
+              src={featuredNFT.image}
+              alt={featuredNFT.name}
+              class="animate-float w-full aspect-square object-cover"
+              width="400"
+              height="400"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Stats Bar ─────────────────────────────────────────────────────── -->
+  <section class="nft-stats-bar" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);">
+    <div style="background: #100123; padding: 1px;">
+      <div class="container-custom">
+        <div class="nft-stats-grid">
+          <div class="nft-stat">
+            <span class="nft-stat__value">{NFT_COLLECTION.totalItems}</span>
+            <span class="nft-stat__label">Items</span>
+          </div>
+          <div class="nft-stat">
+            <span class="nft-stat__value nft-stat__value--cyan">{NFT_COLLECTION.floorPrice}</span>
+            <span class="nft-stat__label">Floor {NFT_COLLECTION.currency}</span>
+          </div>
+          <div class="nft-stat">
+            <span class="nft-stat__value">{NFT_COLLECTION.network}</span>
+            <span class="nft-stat__label">Network</span>
+          </div>
+          <div class="nft-stat">
+            <span class="nft-stat__value">2026</span>
+            <span class="nft-stat__label">First Edition</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-custom px-4 sm:px-6 lg:px-8">
+
+    <!-- ─── About section ─────────────────────────────────────────────────── -->
+    <section class="max-w-3xl mx-auto text-center py-12">
+      <p class="text-lg sm:text-xl text-neutral-600 leading-relaxed">
+        31 arquetipos que representan la diversidad del ecosistema .NET: desde arquitectos backend
+        hasta diseñadores de UI, cada token es una historia única de la comunidad
+        <span class="text-primary-600 font-semibold">DotNet Ecuador</span>.
+      </p>
+    </section>
+
+    <!-- ─── NFT Grid ─────────────────────────────────────────────────────── -->
+    <section id="nft-collection" aria-label="Colección de NFTs">
+      <div class="nft-grid-layout mb-16">
+        {NFTS.slice(0, 10).map((nft, i) => (
+          <NFTCard nft={nft} index={i} />
+        ))}
+      </div>
+    </section>
+
+    <!-- ─── CTA final ─────────────────────────────────────────────────────── -->
+    <section class="text-center py-12 pb-16">
+      <Button
+        variant="primary"
+        size="lg"
+        href={NFT_COLLECTION.openseaUrl}
+        target="_blank"
+      >
+        Explora la colección completa en OpenSea
+      </Button>
+    </section>
+
+  </div>
+
+  <!-- ─── NFT Modal ─────────────────────────────────────────────────────── -->
+  <div class="nft-modal micromodal-slide" id="nft-modal" aria-hidden="true">
+    <div class="nft-modal__overlay" tabindex="-1" data-micromodal-close>
+      <div
+        class="nft-modal__container"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="nft-modal-title"
+      >
+        <!-- Close button -->
+        <button class="nft-modal__close" aria-label="Cerrar modal" data-micromodal-close>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <div class="nft-modal__body">
+          <!-- Image side -->
+          <div class="nft-modal__image-wrapper">
+            <img id="modal-image" src="" alt="" class="nft-modal__image" width="400" height="400" />
+          </div>
+
+          <!-- Details side -->
+          <div class="nft-modal__details">
+            <p id="modal-token" class="nft-modal__token"></p>
+            <h2 id="nft-modal-title" class="nft-modal__title"></h2>
+            <p id="modal-role" class="nft-modal__role"></p>
+            <p id="modal-description" class="nft-modal__description"></p>
+
+            <!-- Traits -->
+            <div id="modal-traits" class="nft-modal__traits"></div>
+
+            <!-- Meta -->
+            <p class="nft-modal__meta">
+              <span id="modal-blockchain"></span> · <span id="modal-edition"></span>
+            </p>
+
+            <!-- CTA -->
+            <a
+              id="modal-opensea-link"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="nft-modal__cta"
+            >
+              <svg width="16" height="16" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M45 0C20.151 0 0 20.151 0 45C0 69.849 20.151 90 45 90C69.849 90 90 69.849 90 45C90 20.151 69.849 0 45 0ZM22.203 46.512L22.392 46.206L34.101 27.891C34.272 27.63 34.677 27.657 34.803 27.945C36.756 32.328 38.448 37.782 37.656 41.175C37.323 42.57 36.396 44.46 35.352 46.206C35.217 46.458 35.073 46.71 34.911 46.953C34.839 47.061 34.713 47.124 34.578 47.124H22.545C22.221 47.124 22.032 46.773 22.203 46.512ZM74.376 52.812C74.376 52.983 74.277 53.127 74.133 53.19C73.224 53.577 70.119 55.008 68.832 56.799C65.538 61.38 63.027 67.932 57.402 67.932H33.948C25.632 67.932 18.9 61.173 18.9 52.83V52.56C18.9 52.344 19.08 52.164 19.305 52.164H32.373C32.634 52.164 32.823 52.398 32.805 52.659C32.706 53.505 32.868 54.378 33.273 55.17C34.047 56.745 35.667 57.726 37.395 57.726H43.866V52.677H37.467C37.143 52.677 36.945 52.299 37.134 52.029C37.206 51.921 37.278 51.813 37.368 51.687C37.971 50.823 38.835 49.491 39.699 47.97C40.284 46.944 40.851 45.846 41.31 44.748C41.4 44.55 41.472 44.343 41.553 44.145C41.679 43.776 41.805 43.425 41.895 43.083C41.985 42.795 42.066 42.489 42.138 42.201C42.354 41.274 42.444 40.284 42.444 39.249C42.444 38.862 42.426 38.457 42.390 38.070C42.372 37.656 42.318 37.242 42.264 36.828C42.228 36.477 42.174 36.135 42.102 35.784C42.012 35.199 41.859 34.614 41.715 34.029L41.661 33.813C41.553 33.390 41.454 32.985 41.328 32.571C40.959 31.284 40.545 30.024 40.113 28.836C39.960 28.395 39.789 27.972 39.618 27.549C39.357 26.892 39.087 26.289 38.826 25.713C38.700 25.443 38.592 25.200 38.484 24.948C38.358 24.669 38.223 24.390 38.088 24.129C37.989 23.925 37.872 23.739 37.791 23.535L36.9 21.960C36.774 21.735 36.999 21.456 37.242 21.537L42.984 23.400H43.002C43.011 23.400 43.020 23.409 43.029 23.409L43.767 23.643L44.568 23.904L44.856 23.994V20.709C44.856 19.071 46.215 17.730 47.871 17.730C48.699 17.730 49.455 18.069 49.986 18.618C50.517 19.167 50.856 19.923 50.856 20.709V25.605L51.444 25.794C51.489 25.812 51.543 25.839 51.588 25.875C51.750 25.998 51.984 26.175 52.281 26.397C52.515 26.574 52.767 26.79 53.073 27.009C53.676 27.459 54.396 28.044 55.188 28.728C55.386 28.899 55.575 29.079 55.755 29.259C56.700 30.132 57.762 31.149 58.770 32.274C59.049 32.589 59.319 32.913 59.589 33.255C59.859 33.597 60.147 33.939 60.390 34.281C60.705 34.740 61.047 35.217 61.335 35.712C61.461 35.946 61.605 36.189 61.722 36.423C62.073 37.080 62.352 37.746 62.523 38.412C62.577 38.601 62.613 38.799 62.631 38.988V39.042C62.685 39.240 62.703 39.447 62.721 39.663C62.793 40.590 62.748 41.517 62.550 42.444C62.469 42.795 62.361 43.128 62.235 43.470C62.100 43.803 61.974 44.154 61.803 44.487C61.461 45.162 61.065 45.846 60.579 46.485C60.435 46.683 60.273 46.890 60.120 47.079C59.958 47.277 59.787 47.457 59.625 47.637C59.409 47.862 59.193 48.078 58.968 48.285C58.761 48.492 58.545 48.681 58.311 48.852C57.996 49.095 57.6 49.290 57.267 49.482C57.069 49.590 56.826 49.689 56.628 49.779C56.430 49.869 56.259 49.941 56.052 50.001L55.188 50.253V57.726H62.217C63.828 57.726 65.367 57.147 66.564 56.085C66.978 55.725 68.625 54.279 70.389 52.335C70.443 52.272 70.515 52.227 70.596 52.209L74.142 51.183C74.394 51.111 74.628 51.3 74.628 51.552V52.812H74.376Z" fill="white"/>
+              </svg>
+              Ver en OpenSea
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Embed NFT data for JS -->
+  <script type="application/json" id="nfts-data" set:html={JSON.stringify(NFTS)}></script>
+
+</Layout>
+
+<style>
+  /* ─── Hero ────────────────────────────────────────────────────────────── */
+  .nft-hero__edition {
+    font-family: 'Exo 2', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-variant: small-caps;
+    color: #0ea5e9;
+  }
+
+  .nft-hero__title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .nft-hero__subtitle {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.125rem;
+    color: rgba(161, 161, 170, 0.9);
+    max-width: 42ch;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .nft-hero__image-ring {
+    border: 2px solid rgba(139, 93, 255, 0.4);
+    box-shadow: 0 0 30px rgba(139, 93, 255, 0.2), 0 0 60px rgba(14, 165, 233, 0.1);
+  }
+
+  /* ─── Stats ───────────────────────────────────────────────────────────── */
+  .nft-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    overflow: hidden;
+    margin: 0 0 2rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .nft-stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .nft-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 0.25rem;
+  }
+
+  .nft-stat:last-child {
+    border-right: none;
+  }
+
+  @media (max-width: 640px) {
+    .nft-stat:nth-child(2) {
+      border-right: none;
+    }
+    .nft-stat:nth-child(3),
+    .nft-stat:nth-child(4) {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  .nft-stat__value {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  .nft-stat__value--cyan {
+    color: #0ea5e9;
+  }
+
+  .nft-stat__label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(161, 161, 170, 0.8);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ─── NFT Grid Layout ─────────────────────────────────────────────────── */
+  .nft-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .nft-grid-layout {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .nft-grid-layout {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .nft-grid-layout {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  /* ─── Skeleton cards ──────────────────────────────────────────────────── */
+  .nft-skeleton {
+    border-radius: 1rem;
+    overflow: hidden;
+    background: rgba(29, 4, 72, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .nft-skeleton__image {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .nft-skeleton__body {
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .nft-skeleton__line {
+    height: 0.75rem;
+    border-radius: 0.25rem;
+  }
+
+  /* ─── NFT Modal ───────────────────────────────────────────────────────── */
+  .nft-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: none;
+  }
+
+  .nft-modal.is-open {
+    display: flex;
+  }
+
+  .nft-modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .nft-modal__container {
+    background: #100123;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.25rem;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(139, 93, 255, 0.15);
+    width: 100%;
+    max-width: 56rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .nft-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .nft-modal__close:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: white;
+  }
+
+  .nft-modal__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 24rem;
+  }
+
+  @media (max-width: 640px) {
+    .nft-modal__body {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .nft-modal__image-wrapper {
+    border-radius: 1.25rem 0 0 1.25rem;
+    overflow: hidden;
+    background: rgba(16, 1, 35, 0.9);
+  }
+
+  @media (max-width: 640px) {
+    .nft-modal__image-wrapper {
+      border-radius: 1.25rem 1.25rem 0 0;
+    }
+  }
+
+  .nft-modal__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 1 / 1;
+  }
+
+  .nft-modal__details {
+    padding: 2rem 2rem 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .nft-modal__token {
+    font-family: 'Exo 2', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0ea5e9;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .nft-modal__title {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .nft-modal__role {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.875rem;
+    color: rgba(196, 181, 255, 0.8);
+    margin: 0;
+  }
+
+  .nft-modal__description {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.875rem;
+    color: rgba(161, 161, 170, 0.85);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .nft-modal__traits {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .nft-trait {
+    background: rgba(51, 5, 122, 0.5);
+    border: 1px solid rgba(139, 93, 255, 0.3);
+    border-radius: 0.75rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .nft-trait__type {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem;
+    color: rgba(166, 136, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .nft-trait__value {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: block;
+  }
+
+  .nft-modal__meta {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(113, 113, 122, 0.9);
+    margin: 0;
+  }
+
+  .nft-modal__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #0284c7;
+    color: white;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+    align-self: flex-start;
+    margin-top: auto;
+  }
+
+  .nft-modal__cta:hover {
+    background: #0369a1;
+    transform: translateY(-1px);
+  }
+
+  /* ─── MicroModal animations ────────────────────────────────────────────── */
+  @keyframes mmfadeIn  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes mmfadeOut { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes mmslideIn { from { transform: translateY(-12%) scale(0.96); } to { transform: translateY(0) scale(1); } }
+  @keyframes mmslideOut { from { transform: translateY(0) scale(1); } to { transform: translateY(-12%) scale(0.96); } }
+
+  .micromodal-slide { display: none; }
+  .micromodal-slide.is-open { display: flex; }
+
+  .micromodal-slide[aria-hidden="false"] .nft-modal__overlay {
+    animation: mmfadeIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+  }
+  .micromodal-slide[aria-hidden="false"] .nft-modal__container {
+    animation: mmslideIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+  }
+  .micromodal-slide[aria-hidden="true"] .nft-modal__overlay {
+    animation: mmfadeOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+  }
+  .micromodal-slide[aria-hidden="true"] .nft-modal__container {
+    animation: mmslideOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* ─── Reduced motion ─────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .nft-card,
+    .animate-float,
+    .animate-pulse-glow,
+    .animation-fade-scale {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .micromodal-slide[aria-hidden="false"] .nft-modal__overlay,
+    .micromodal-slide[aria-hidden="false"] .nft-modal__container,
+    .micromodal-slide[aria-hidden="true"] .nft-modal__overlay,
+    .micromodal-slide[aria-hidden="true"] .nft-modal__container {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import MicroModal from 'micromodal'
+
+  interface NFTTrait {
+    trait_type: string
+    value: string
+  }
+
+  interface NFT {
+    id: number
+    tokenId: string
+    name: string
+    role: string
+    description: string
+    image: string
+    openseaUrl: string
+    traits: NFTTrait[]
+    edition: string
+    blockchain: string
+    price?: string
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Parse embedded data
+    const dataEl = document.getElementById('nfts-data')
+    if (!dataEl) return
+    const nfts: NFT[] = JSON.parse(dataEl.textContent || '[]')
+
+    // MicroModal init
+    MicroModal.init({
+      openTrigger: 'data-micromodal-trigger',
+      closeTrigger: 'data-micromodal-close',
+      disableScroll: true,
+      awaitCloseAnimation: true,
+      debugMode: false,
+    })
+
+    // Helper to populate modal
+    function populateModal(nft: NFT) {
+      const img = document.getElementById('modal-image') as HTMLImageElement | null
+      const token = document.getElementById('modal-token')
+      const title = document.getElementById('nft-modal-title')
+      const role = document.getElementById('modal-role')
+      const desc = document.getElementById('modal-description')
+      const traitsEl = document.getElementById('modal-traits')
+      const blockchain = document.getElementById('modal-blockchain')
+      const edition = document.getElementById('modal-edition')
+      const link = document.getElementById('modal-opensea-link') as HTMLAnchorElement | null
+
+      if (img) { img.src = nft.image; img.alt = nft.name }
+      if (token) token.textContent = nft.tokenId
+      if (title) title.textContent = nft.name
+      if (role) role.textContent = nft.role
+      if (desc) desc.textContent = nft.description
+      if (blockchain) blockchain.textContent = nft.blockchain
+      if (edition) edition.textContent = nft.edition
+      if (link) link.href = nft.openseaUrl
+
+      if (traitsEl) {
+        traitsEl.innerHTML = nft.traits.map(t => `
+          <div class="nft-trait">
+            <span class="nft-trait__type">${t.trait_type}</span>
+            <span class="nft-trait__value">${t.value}</span>
+          </div>
+        `).join('')
+      }
+    }
+
+    // Attach click handlers to cards
+    const cards = document.querySelectorAll<HTMLElement>('.nft-card')
+    cards.forEach(card => {
+      const handler = () => {
+        const id = Number(card.dataset.nftId)
+        const nft = nfts.find(n => n.id === id)
+        if (!nft) return
+        populateModal(nft)
+        MicroModal.show('nft-modal')
+      }
+      card.addEventListener('click', handler)
+      card.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handler()
+        }
+      })
+    })
+
+    // IntersectionObserver for card animations
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    )
+
+    document.querySelectorAll('.nft-card, .animation-fade-scale').forEach(el => {
+      observer.observe(el)
+    })
+  })
+</script>
