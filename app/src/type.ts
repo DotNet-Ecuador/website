@@ -9,6 +9,7 @@ export interface Site {
 export interface NavigationLink {
     name: string
     url: string
+    children?: NavigationLink[]
 }
 
 export interface PickUpPost {
