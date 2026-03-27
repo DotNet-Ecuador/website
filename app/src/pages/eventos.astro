@@ -8,8 +8,16 @@ import { EVENTS } from '../data/events'
 
 const pageConfig = SEO_PAGES_CONFIG['/eventos']
 
-const confirmedEvents = EVENTS.filter(e => e.status === 'confirmed')
-const tentativeEvents = EVENTS.filter(e => e.status === 'tentative')
+function sortEvents(events: typeof EVENTS) {
+  return [...events].sort((a, b) => {
+    if (a.pinned && !b.pinned) return -1
+    if (!a.pinned && b.pinned) return 1
+    return (a.date ?? '').localeCompare(b.date ?? '')
+  })
+}
+
+const confirmedEvents = sortEvents(EVENTS.filter(e => e.status === 'confirmed'))
+const tentativeEvents = sortEvents(EVENTS.filter(e => e.status === 'tentative'))
 ---
 
 <Layout
@@ -18,130 +26,127 @@ const tentativeEvents = EVENTS.filter(e => e.status === 'tentative')
   keywords={pageConfig.keywords.join(', ')}
 >
 
-  <!-- ─── Hero ─────────────────────────────────────────────────────────── -->
-  <section
-    class="relative pb-16 sm:pb-20 pt-4 overflow-hidden"
-    style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); padding-left: calc(50vw - 50%); padding-right: calc(50vw - 50%);"
-  >
-    <div class="absolute inset-0 bg-gradient-to-br from-primary-50 via-neutral-50 to-primary-100"></div>
-    <div class="absolute -top-20 -right-20 w-72 h-72 bg-gradient-to-br from-primary-400/15 to-primary-600/25 rounded-full blur-3xl"></div>
-    <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-gradient-to-tr from-primary-700/15 to-primary-500/25 rounded-full blur-3xl"></div>
+  <h1 class="sr-only">Eventos de la comunidad DotNet Ecuador</h1>
 
-    <div class="relative z-10 container-custom">
-      <Breadcrumbs items={[{ name: 'Eventos', url: '/eventos' }]} variant="light" />
+  <section class="relative overflow-hidden pb-16 pt-4">
+    <!-- Background gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700"></div>
 
-      <div class="text-center mt-8">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-5 leading-tight font-display">
-          <span class="animate-gradient-text">Próximos Eventos</span>
-        </h1>
-        <p class="text-lg sm:text-xl text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-          Meetups, paneles y workshops para la comunidad .NET y los líderes empresariales del Ecuador.
-        </p>
+    <!-- Decorative elements -->
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-primary-600/20 to-primary-500/30 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-primary-700/25 to-primary-600/35 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 right-1/3 w-64 h-64 bg-gradient-to-br from-primary-600/15 to-primary-500/25 rounded-full blur-2xl"></div>
+
+    <div class="relative z-10">
+
+      <div class="container-custom px-4 sm:px-6 lg:px-8 pb-6">
+        <Breadcrumbs items={[{ name: 'Eventos', url: '/eventos' }]} variant="dark" />
+      </div>
+
+      <div class="container-custom px-4 sm:px-6 lg:px-8 pb-4">
+
+        <!-- ─── Confirmed events ───────────────────────────────────────────── -->
+        {confirmedEvents.length > 0 && (
+          <section aria-labelledby="confirmed-heading" class="mb-14">
+            <h2 id="confirmed-heading" class="sr-only">Eventos confirmados</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {confirmedEvents.map(event => (
+                <div class={`h-full ${event.featured ? 'md:col-span-2' : ''}`}>
+                  <EventCardV2 event={event} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- ─── Divider (only when both sections exist) ────────────────────── -->
+        {confirmedEvents.length > 0 && tentativeEvents.length > 0 && (
+          <hr class="border-white/15 mb-14" />
+        )}
+
+        <!-- ─── Tentative events ───────────────────────────────────────────── -->
+        {tentativeEvents.length > 0 && (
+          <section aria-labelledby="tentative-heading" class="mb-14">
+            <h2 id="tentative-heading" class="section-heading mb-2">
+              <span class="section-heading__dot section-heading__dot--purple"></span>
+              En planificación
+            </h2>
+            <p class="text-sm text-white/60 mb-8 ml-5">
+              Fechas por confirmar — activa las notificaciones para no perderte nada.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {tentativeEvents.map(event => (
+                <EventCardV2 event={event} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- ─── Sponsor CTA ────────────────────────────────────────────────── -->
+        <section class="mb-14">
+          <div class="sponsor-cta">
+            <div class="sponsor-cta__content">
+              <span class="sponsor-cta__eyebrow">Para empresas</span>
+              <h3 class="sponsor-cta__title">¿Tu empresa quiere estar presente?</h3>
+              <p class="sponsor-cta__text">
+                Conecta con desarrolladores .NET. Nuestros eventos son el espacio ideal para
+                presentar tu marca, producto o iniciativa ante la comunidad tech más activa del Ecuador.
+              </p>
+            </div>
+            <div class="sponsor-cta__action">
+              <a href="/contacto" class="btn-sponsor">
+                Hablar con el equipo
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── Speaker CTA ────────────────────────────────────────────────── -->
+        <section class="text-center mb-4">
+          <div class="card p-8 max-w-xl mx-auto gradient-primary text-white">
+            <h3 class="text-xl sm:text-2xl font-semibold font-display mb-3">
+              ¿Quieres ser ponente?
+            </h3>
+            <p class="text-base mb-6 opacity-90">
+              Comparte tu conocimiento con la comunidad. Contáctanos para proponer tu charla o taller.
+            </p>
+            <a
+              href="/contacto"
+              class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors min-h-[44px]"
+            >
+              Proponer Charla
+            </a>
+          </div>
+        </section>
+
       </div>
     </div>
   </section>
 
-  <div class="container-custom px-4 sm:px-6 lg:px-8 py-12">
-
-    <!-- ─── Confirmed events ───────────────────────────────────────────── -->
-    {confirmedEvents.length > 0 && (
-      <section aria-labelledby="confirmed-heading" class="mb-14">
-        <h2 id="confirmed-heading" class="section-heading mb-8">
-          <span class="section-heading__dot section-heading__dot--cyan"></span>
-          Eventos confirmados
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {confirmedEvents.map(event => (
-            <EventCardV2 event={event} />
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- ─── Divider (only when both sections exist) ────────────────────── -->
-    {confirmedEvents.length > 0 && tentativeEvents.length > 0 && (
-      <hr class="border-neutral-200 mb-14" />
-    )}
-
-    <!-- ─── Tentative events ───────────────────────────────────────────── -->
-    {tentativeEvents.length > 0 && (
-      <section aria-labelledby="tentative-heading" class="mb-14">
-        <h2 id="tentative-heading" class="section-heading mb-2">
-          <span class="section-heading__dot section-heading__dot--purple"></span>
-          En planificación
-        </h2>
-        <p class="text-sm text-neutral-500 mb-8 ml-5">
-          Fechas por confirmar — activa las notificaciones para no perderte nada.
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {tentativeEvents.map(event => (
-            <EventCardV2 event={event} />
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- ─── Sponsor CTA ────────────────────────────────────────────────── -->
-    <section class="mb-14">
-      <div class="sponsor-cta">
-        <div class="sponsor-cta__content">
-          <span class="sponsor-cta__eyebrow">Para empresas</span>
-          <h3 class="sponsor-cta__title">¿Tu empresa quiere estar presente?</h3>
-          <p class="sponsor-cta__text">
-            Conecta con cientos de desarrolladores .NET. Nuestros eventos son el espacio ideal para
-            presentar tu marca, producto o iniciativa ante la comunidad tech más activa del Ecuador.
-          </p>
-        </div>
-        <div class="sponsor-cta__action">
-          <Button variant="outline" href="/contacto">
-            Hablar con el equipo
-          </Button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── Speaker CTA ────────────────────────────────────────────────── -->
-    <section class="text-center mb-12">
-      <div class="card p-8 max-w-xl mx-auto gradient-primary text-white">
-        <h3 class="text-xl sm:text-2xl font-semibold font-display mb-3">
-          ¿Quieres ser ponente?
-        </h3>
-        <p class="text-base mb-6 opacity-90">
-          Comparte tu conocimiento con la comunidad. Contáctanos para proponer tu charla o taller.
-        </p>
-        <a
-          href="/contacto"
-          class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors min-h-[44px]"
-        >
-          Proponer Charla
-        </a>
-      </div>
-    </section>
-
-  </div>
 </Layout>
 
 <style>
   .section-heading {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
     font-family: 'Exo 2', sans-serif;
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #100123;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.01em;
   }
 
   .section-heading__dot {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.625rem;
+    height: 0.625rem;
     border-radius: 9999px;
     flex-shrink: 0;
   }
 
-  .section-heading__dot--cyan   { background: #0ea5e9; }
+  .section-heading__dot--cyan   { background: #4a08b2; }
   .section-heading__dot--purple { background: #8b5dff; }
 
   /* ─── Sponsor CTA ────────────────────────────────────── */
@@ -149,11 +154,11 @@ const tentativeEvents = EVENTS.filter(e => e.status === 'tentative')
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background: white;
-    border: 1px solid #e4e4e7;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 1.25rem;
     padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
   }
 
   @media (min-width: 768px) {
@@ -175,7 +180,7 @@ const tentativeEvents = EVENTS.filter(e => e.status === 'tentative')
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #0ea5e9;
+    color: #c4b5ff;
     margin-bottom: 0.5rem;
   }
 
@@ -183,14 +188,14 @@ const tentativeEvents = EVENTS.filter(e => e.status === 'tentative')
     font-family: 'Exo 2', sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
-    color: #100123;
+    color: white;
     margin: 0 0 0.5rem 0;
   }
 
   .sponsor-cta__text {
     font-family: 'Jost', sans-serif;
     font-size: 0.9rem;
-    color: #52525b;
+    color: rgba(255, 255, 255, 0.7);
     line-height: 1.6;
     max-width: 52ch;
     margin: 0;
@@ -198,6 +203,29 @@ const tentativeEvents = EVENTS.filter(e => e.status === 'tentative')
 
   .sponsor-cta__action {
     flex-shrink: 0;
+  }
+
+  .btn-sponsor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.65rem 1.4rem;
+    border-radius: 0.6rem;
+    min-height: 44px;
+    background: white;
+    color: #1f085a;
+    border: 2px solid white;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .btn-sponsor:hover {
+    background: transparent;
+    color: white;
   }
 </style>
 
