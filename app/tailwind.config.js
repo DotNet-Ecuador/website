@@ -54,6 +54,12 @@ export default {
           800: '#075985',
           900: '#0c4a6e'
         },
+        brand: {
+          blue: '#1A3FE8',
+          purple: '#7B2FBE',
+          green: '#22C55E',
+          pink: '#C2185B',
+        },
         neutral: {
           50: '#ffffff',
           100: '#fafafa',
@@ -72,6 +78,8 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Exo 2', 'Inter', 'system-ui', 'sans-serif'],
         heading: ['Jost', 'Inter', 'system-ui', 'sans-serif'],
+        syne: ['Syne', 'Inter', 'system-ui', 'sans-serif'],
+        dmsans: ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],

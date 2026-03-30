@@ -102,16 +102,32 @@ export const SEO_PAGES_CONFIG: Record<string, SEOMetrics> = {
     difficulty: 'low'
   },
   '/eventos': {
-    title: 'Eventos de Programación Ecuador - Meetups, Conferencias y Talleres .NET',
-    description: 'Próximos eventos de programación en Ecuador. Meetups, conferencias, talleres y webinars sobre .NET, C#, Azure y tecnologías Microsoft.',
+    title: 'Eventos .NET Ecuador 2026 | Meetups, Talleres y Conferencias',
+    description: 'Los eventos de programación .NET más importantes del Ecuador. Meetups presenciales en Quito, talleres de C# y Azure, y la DotNet Developer Conf anual. Empresas y devs bienvenidos.',
     keywords: [
+      // Dev discovery
+      'eventos .NET Ecuador 2026',
+      'meetup .NET Ecuador',
+      'meetup C# Quito',
+      'taller Azure Ecuador',
+      'taller Azure Quito',
+      'conferencia .NET Ecuador',
+      'DotNet Developer Conf Ecuador',
       'eventos programación Ecuador',
-      'meetups desarrolladores Ecuador',
-      'conferencias tech Ecuador',
+      'comunidad .NET Ecuador',
+      // B2B / empresa
+      'patrocinar evento tech Ecuador',
+      'sponsor comunidad desarrolladores Ecuador',
+      'convenio empresa tecnología Ecuador',
+      'alianza estratégica tech Ecuador',
+      'contratar talento .NET Ecuador',
+      'visibilidad desarrolladores Ecuador',
+      // Generic
+      'eventos Microsoft Ecuador',
       'talleres .NET Ecuador',
-      'eventos Microsoft Ecuador'
+      'conferencias tech Ecuador'
     ],
-    targetCTR: 7,
+    targetCTR: 8,
     targetPosition: 2,
     competitorAnalysis: ['DevDay Ecuador', 'Tech Talks Ecuador', 'AWS Events Ecuador'],
     monthlySearchVolume: 800,
@@ -171,7 +187,7 @@ export const LOCAL_SEO_CONFIG: LocalSEOConfig = {
   businessName: 'DotNet Ecuador',
   address: 'Ecuador',
   phone: '+593',
-  email: 'equipo@dotnetecuador.com',
+  email: 'contacto@dotnetecuador.com',
   coordinates: {
     lat: -0.1807,
     lng: -78.4678
@@ -226,7 +242,7 @@ export const CITY_KEYWORDS = {
 export const SEO_TRACKING_CONFIG = {
   googleSearchConsole: {
     siteUrl: 'https://dotnetecuador.com',
-    ownerEmail: 'equipo@dotnetecuador.com'
+    ownerEmail: 'contacto@dotnetecuador.com'
   },
   targetMetrics: {
     organicTraffic: {

@@ -1,0 +1,184 @@
+---
+import logo from '../../assets/dotnet_logo.png';
+import '../../assets/styles/base.css';
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — DotNet Ecuador</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
+  />
+</head>
+<body class="font-dmsans min-h-screen flex items-center justify-center bg-primary-900">
+
+  <div class="login-card">
+    <div class="login-card__header">
+      <img src={logo.src} alt="DotNet Ecuador" class="login-card__logo" />
+      <h1 class="login-card__title">Acceso Administrador</h1>
+    </div>
+
+    <form id="login-form" class="login-form" novalidate>
+      <div class="login-field">
+        <label for="email" class="login-label">Email</label>
+        <input
+          type="email" id="email" name="email"
+          placeholder="admin@dotnetecuador.com"
+          autocomplete="email"
+          required
+          class="login-input"
+        />
+      </div>
+      <div class="login-field">
+        <label for="password" class="login-label">Contraseña</label>
+        <input
+          type="password" id="password" name="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+          class="login-input"
+        />
+      </div>
+
+      <div class="login-error" id="login-error" role="alert" aria-live="polite"></div>
+
+      <button type="submit" class="login-btn" id="login-btn">
+        <span id="login-btn-label">Ingresar</span>
+        <span id="login-btn-spinner" class="hidden">
+          <svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        </span>
+      </button>
+    </form>
+  </div>
+
+  <script>
+    import { apiService } from '../../services/api';
+
+    // Redirect if already logged in
+    if (sessionStorage.getItem('adminJwt')) {
+      window.location.replace('/admin/registros');
+    }
+
+    const form    = document.getElementById('login-form') as HTMLFormElement;
+    const errEl   = document.getElementById('login-error') as HTMLDivElement;
+    const btn     = document.getElementById('login-btn') as HTMLButtonElement;
+    const btnLabel   = document.getElementById('login-btn-label')!;
+    const btnSpinner = document.getElementById('login-btn-spinner')!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errEl.textContent = '';
+
+      const email    = (document.getElementById('email') as HTMLInputElement).value.trim();
+      const password = (document.getElementById('password') as HTMLInputElement).value;
+
+      if (!email || !password) {
+        errEl.textContent = 'Completa todos los campos.';
+        return;
+      }
+
+      btn.disabled = true;
+      btnLabel.classList.add('hidden');
+      btnSpinner.classList.remove('hidden');
+
+      const result = await apiService.adminLogin({ email, password });
+
+      btn.disabled = false;
+      btnLabel.classList.remove('hidden');
+      btnSpinner.classList.add('hidden');
+
+      if (!result.success || !result.data?.accessToken) {
+        errEl.textContent = result.message ?? 'Credenciales incorrectas. Intenta nuevamente.';
+        return;
+      }
+
+      sessionStorage.setItem('adminJwt', result.data.accessToken);
+      window.location.replace('/admin/registros');
+    });
+  </script>
+
+</body>
+</html>
+
+<style>
+  .login-card {
+    background: #fff;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    margin: 1.5rem;
+  }
+  .login-card__header { text-align: center; margin-bottom: 2rem; }
+  .login-card__logo { height: 40px; width: auto; margin: 0 auto 1rem; display: block; }
+  .login-card__title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #100123;
+  }
+
+  .login-form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .login-field { display: flex; flex-direction: column; gap: 0.375rem; }
+  .login-label { font-size: 0.8125rem; font-weight: 600; color: #1d0448; }
+  .login-input {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #c4b5ff;
+    border-radius: 0.75rem;
+    font-size: 0.9375rem;
+    color: #100123;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #faf8ff;
+  }
+  .login-input:focus {
+    outline: none;
+    border-color: #8b5dff;
+    box-shadow: 0 0 0 3px rgba(139,93,255,0.12);
+    background: #fff;
+  }
+
+  .login-error {
+    min-height: 1.25rem;
+    font-size: 0.8125rem;
+    color: #dc2626;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.875rem;
+    border-radius: 9999px;
+    background: #4a08b2;
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s;
+    min-height: 48px;
+  }
+  .login-btn:hover:not(:disabled) { background: #33057a; }
+  .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .spin { animation: spin 0.8s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .hidden { display: none !important; }
+</style>

@@ -1,0 +1,256 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { EVENT_SLUGS } from '../../data/events';
+
+export function getStaticPaths() {
+  return EVENT_SLUGS.map(slug => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+---
+
+<Layout
+  title="Evento — DotNet Ecuador"
+  description="Información y registro del evento de DotNet Ecuador."
+>
+  <!-- Hero skeleton → populated by JS -->
+  <section class="relative overflow-hidden" id="ev-hero">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700"></div>
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-primary-600/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-primary-700/25 rounded-full blur-3xl"></div>
+
+    <div id="ev-hero-img-wrap" class="hidden absolute inset-0 opacity-10">
+      <img id="ev-hero-img" src="" alt="" class="w-full h-full object-cover" aria-hidden="true" />
+    </div>
+
+    <div class="relative z-10 container-custom pt-6 pb-16">
+      <Breadcrumbs
+        items={[
+          { name: 'Eventos', url: '/eventos' },
+          { name: '…', url: `/eventos/${slug}` },
+        ]}
+        variant="dark"
+      />
+
+      <!-- Skeleton title area -->
+      <div id="ev-hero-skeleton" class="mt-10">
+        <div class="ev-skel ev-skel--badge w-24 mb-5"></div>
+        <div class="ev-skel ev-skel--title w-2/3 mb-4"></div>
+        <div class="ev-skel ev-skel--title w-1/2 mb-8"></div>
+        <div class="flex gap-6 mb-8">
+          <div class="ev-skel ev-skel--meta w-40"></div>
+          <div class="ev-skel ev-skel--meta w-32"></div>
+          <div class="ev-skel ev-skel--meta w-20"></div>
+        </div>
+        <div class="ev-skel ev-skel--btn w-36"></div>
+      </div>
+
+      <!-- Real content -->
+      <div id="ev-hero-content" class="hidden mt-10 max-w-3xl">
+        <div class="flex flex-wrap gap-2 mb-5" id="ev-badges"></div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 font-display leading-tight" id="ev-title"></h1>
+        <div class="flex flex-wrap gap-5 text-white/70 text-sm mb-8" id="ev-meta"></div>
+        <a id="ev-cta" href={`/registro/${slug}`}
+          class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-green text-white font-bold text-base hover:bg-brand-green/90 transition-colors min-h-[52px]">
+          Registrarse
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body skeleton → populated by JS -->
+  <section class="container-custom py-14 max-w-4xl">
+    <!-- Skeleton -->
+    <div id="ev-body-skeleton">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2 space-y-3">
+          <div class="ev-skel ev-skel--line w-full"></div>
+          <div class="ev-skel ev-skel--line w-5/6"></div>
+          <div class="ev-skel ev-skel--line w-full"></div>
+          <div class="ev-skel ev-skel--line w-4/6"></div>
+        </div>
+        <div class="space-y-4">
+          <div class="ev-skel ev-skel--card h-48"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real content -->
+    <div id="ev-body-content" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div class="lg:col-span-2">
+        <h2 class="text-xl font-bold text-primary-900 mb-6 font-display">Sobre el evento</h2>
+        <div id="ev-desc" class="space-y-4 text-neutral-700 leading-relaxed"></div>
+        <div id="ev-tags" class="flex flex-wrap gap-2 mt-8"></div>
+      </div>
+      <aside class="space-y-6">
+        <div id="ev-speakers"></div>
+        <div id="ev-details" class="bg-primary-50 border border-primary-100 rounded-2xl p-5 space-y-4">
+          <h3 class="text-sm font-semibold text-neutral-500 uppercase tracking-wider">Detalles</h3>
+        </div>
+        <a id="ev-cal-btn" href="#" target="_blank" rel="noopener noreferrer"
+          class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-primary-200 text-primary-700 text-sm font-semibold hover:border-primary-400 hover:bg-primary-50 transition-colors hidden">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Agregar al calendario
+        </a>
+        <a href={`/registro/${slug}`}
+          class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-brand-green text-white font-bold text-sm hover:bg-brand-green/90 transition-colors">
+          Reservar mi lugar
+        </a>
+      </aside>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .ev-skel {
+    background: linear-gradient(90deg, #ede9ff 25%, #ddd6ff 50%, #ede9ff 75%);
+    background-size: 200% 100%;
+    animation: skel-shimmer 1.4s infinite;
+    border-radius: 0.5rem;
+  }
+  @keyframes skel-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .ev-skel--badge  { height: 24px; }
+  .ev-skel--title  { height: 40px; }
+  .ev-skel--meta   { height: 18px; }
+  .ev-skel--btn    { height: 52px; border-radius: 9999px; }
+  .ev-skel--line   { height: 16px; margin-bottom: 0.5rem; }
+  .ev-skel--card   { border-radius: 1rem; }
+</style>
+
+<script>
+  import { apiService } from '../../services/api';
+
+  const slug = window.location.pathname.split('/').filter(Boolean).pop()!;
+
+  const MONTHS_ES_LONG = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const TYPE_LABEL: Record<string,string> = { taller:'Taller', charla:'Charla', meetup:'Meetup', conference:'Conferencia', workshop:'Workshop', webinar:'Webinar', panel:'Panel' };
+  const FORMAT_LABEL: Record<string,string> = { presencial:'Presencial', virtual:'Virtual', hibrido:'Híbrido' };
+
+  function parseFechaECT(iso: string) {
+    const d = new Date(iso);
+    const ect = new Date(d.getTime() - 5 * 60 * 60 * 1000);
+    return {
+      day: ect.getUTCDate(),
+      month: MONTHS_ES_LONG[ect.getUTCMonth()],
+      year: ect.getUTCFullYear(),
+      time: `${String(ect.getUTCHours()).padStart(2,'0')}:${String(ect.getUTCMinutes()).padStart(2,'0')}`,
+    };
+  }
+
+  function buildCalUrl(e: any): string {
+    if (!e.fechaEvento) return '#';
+    const start = new Date(e.fechaEvento).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+    const end   = e.fechaFin ? new Date(e.fechaFin).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z' : start;
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.nombre)}&dates=${start}/${end}&location=${encodeURIComponent(e.lugar??'')}`;
+  }
+
+  (async () => {
+    const result = await apiService.getEvento(slug);
+    if (!result.success || !result.data) return;
+    const e = result.data;
+
+    // Update page title
+    document.title = `${e.nombre} — DotNet Ecuador`;
+
+    const fecha = e.fechaEvento ? parseFechaECT(e.fechaEvento) : null;
+    const fechaFin = e.fechaFin ? parseFechaECT(e.fechaFin) : null;
+    const precio = e.precio === 0 ? 'Gratis' : e.precio ? `$${e.precio}` : null;
+
+    // Hero image
+    if (e.imagen) {
+      (document.getElementById('ev-hero-img') as HTMLImageElement).src = e.imagen;
+      document.getElementById('ev-hero-img-wrap')!.classList.remove('hidden');
+    }
+
+    // Badges
+    const badgesEl = document.getElementById('ev-badges')!;
+    [
+      e.tipo    && `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/80 uppercase tracking-wider">${TYPE_LABEL[e.tipo]??e.tipo}</span>`,
+      e.formato && `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/80 uppercase tracking-wider">${FORMAT_LABEL[e.formato]??e.formato}</span>`,
+      e.networking && `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-brand-green/20 text-brand-green uppercase tracking-wider">Networking</span>`,
+    ].filter(Boolean).forEach(b => badgesEl.insertAdjacentHTML('beforeend', b as string));
+
+    // Title
+    document.getElementById('ev-title')!.textContent = e.nombre;
+
+    // Meta
+    const metaEl = document.getElementById('ev-meta')!;
+    if (fecha) {
+      metaEl.insertAdjacentHTML('beforeend', `
+        <span class="flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${fecha.day} de ${fecha.month} de ${fecha.year}, ${fecha.time}${fechaFin ? ` – ${fechaFin.time}` : ''}
+        </span>`);
+    }
+    if (e.lugar) {
+      metaEl.insertAdjacentHTML('beforeend', `
+        <span class="flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${e.lugar}
+        </span>`);
+    }
+    if (precio) {
+      metaEl.insertAdjacentHTML('beforeend', `
+        <span class="flex items-center gap-2 font-semibold text-white">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          ${precio}
+        </span>`);
+    }
+
+    // Description
+    const descEl = document.getElementById('ev-desc')!;
+    if (e.descripcion) {
+      e.descripcion.split('\n').filter(Boolean).forEach((p: string) => {
+        const el = document.createElement('p');
+        el.textContent = p;
+        descEl.appendChild(el);
+      });
+    }
+
+    // Tags
+    const tagsEl = document.getElementById('ev-tags')!;
+    e.tags?.forEach((t: string) => {
+      tagsEl.insertAdjacentHTML('beforeend', `<span class="px-3 py-1 rounded-full text-xs bg-primary-100 text-primary-700 font-medium">${t}</span>`);
+    });
+
+    // Speakers
+    if (e.speakers?.length) {
+      const speakersEl = document.getElementById('ev-speakers')!;
+      speakersEl.innerHTML = `
+        <h3 class="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-4">${e.speakers.length === 1 ? 'Speaker' : 'Speakers'}</h3>
+        <div class="space-y-4">
+          ${e.speakers.map((s: any) => `
+            <div class="flex items-center gap-3">
+              ${s.avatar ? `<div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 bg-primary-100"><img src="${s.avatar}" alt="${s.nombre}" class="w-full h-full object-cover" loading="lazy" /></div>` : ''}
+              <div>
+                <p class="text-sm font-semibold text-neutral-900">${s.nombre}</p>
+                <p class="text-xs text-neutral-500">${s.rol}</p>
+              </div>
+            </div>`).join('')}
+        </div>`;
+    }
+
+    // Details card
+    const detailsEl = document.getElementById('ev-details')!;
+    if (fecha) detailsEl.insertAdjacentHTML('beforeend', `<div><p class="text-xs text-neutral-400 mb-1">Fecha</p><p class="text-sm font-medium text-primary-900">${fecha.day} de ${fecha.month} de ${fecha.year}</p></div>`);
+    if (fecha) detailsEl.insertAdjacentHTML('beforeend', `<div><p class="text-xs text-neutral-400 mb-1">Hora</p><p class="text-sm font-medium text-primary-900">${fecha.time}${fechaFin ? ` – ${fechaFin.time}` : ''}</p></div>`);
+    if (e.lugar) detailsEl.insertAdjacentHTML('beforeend', `<div><p class="text-xs text-neutral-400 mb-1">Lugar</p><p class="text-sm font-medium text-primary-900">${e.lugar}</p></div>`);
+    if (precio) detailsEl.insertAdjacentHTML('beforeend', `<div><p class="text-xs text-neutral-400 mb-1">Inversión</p><p class="text-sm font-bold text-primary-700">${precio}</p></div>`);
+
+    // Calendar button
+    const calBtn = document.getElementById('ev-cal-btn') as HTMLAnchorElement;
+    const calUrl = buildCalUrl(e);
+    if (calUrl !== '#') { calBtn.href = calUrl; calBtn.classList.remove('hidden'); }
+
+    // Show/hide
+    document.getElementById('ev-hero-skeleton')!.classList.add('hidden');
+    document.getElementById('ev-hero-content')!.classList.remove('hidden');
+    document.getElementById('ev-body-skeleton')!.classList.add('hidden');
+    document.getElementById('ev-body-content')!.classList.remove('hidden');
+  })();
+</script>
