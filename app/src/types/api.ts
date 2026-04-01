@@ -147,6 +147,15 @@ export interface EstadoRegistro {
   idCorto: string;
 }
 
+export interface RecuperarRegistroResponse {
+  registroId: string;
+  idCorto: string;
+  monto: number;
+  nombreEvento: string;
+  estado: 'pendiente' | 'pagado' | 'rechazado' | 'cancelado';
+  sessionToken: string | null;
+}
+
 // ─── Admin Types ─────────────────────────────────────────────────────────────
 
 export interface AdminRegistro {

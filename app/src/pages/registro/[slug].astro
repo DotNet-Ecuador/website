@@ -69,6 +69,16 @@ const { slug } = Astro.params;
       <!-- Step counter -->
       <div class="reg-step-label" id="reg-step-label" aria-live="polite">Paso 1 de 3</div>
 
+      <!-- Resume banner (shown when existing registration detected) -->
+      <div class="resume-banner hidden" id="resume-banner" role="status">
+        <div class="resume-banner__icon" id="resume-banner-icon" aria-hidden="true"></div>
+        <div class="resume-banner__content">
+          <p class="resume-banner__title" id="resume-banner-title"></p>
+          <p class="resume-banner__body" id="resume-banner-body"></p>
+        </div>
+        <div class="resume-banner__actions" id="resume-banner-actions"></div>
+      </div>
+
       <!-- Steps container -->
       <div class="reg-steps" id="reg-steps">
 
@@ -81,17 +91,6 @@ const { slug } = Astro.params;
             <form id="form-step1" class="reg-form" novalidate>
               <div class="reg-form__row reg-form__row--2">
                 <div class="reg-field">
-                  <label for="nombre" class="reg-label">Nombre completo <span aria-hidden="true">*</span></label>
-                  <input
-                    type="text" id="nombre" name="nombre"
-                    placeholder="Ej: Carlos Mendoza"
-                    autocomplete="name"
-                    required minlength="2" maxlength="80"
-                    class="reg-input"
-                  />
-                  <span class="reg-error" id="err-nombre"></span>
-                </div>
-                <div class="reg-field">
                   <label for="email" class="reg-label">Email <span aria-hidden="true">*</span></label>
                   <input
                     type="email" id="email" name="email"
@@ -102,6 +101,29 @@ const { slug } = Astro.params;
                   />
                   <span class="reg-error" id="err-email"></span>
                 </div>
+                <div class="reg-field">
+                  <label for="nombre" class="reg-label">Nombre completo <span aria-hidden="true">*</span></label>
+                  <input
+                    type="text" id="nombre" name="nombre"
+                    placeholder="Ej: Carlos Mendoza"
+                    autocomplete="name"
+                    required minlength="2" maxlength="80"
+                    class="reg-input"
+                  />
+                  <span class="reg-error" id="err-nombre"></span>
+                </div>
+              </div>
+
+              <div class="reg-field">
+                <label for="telefono" class="reg-label">Teléfono <span aria-hidden="true">*</span></label>
+                <input
+                  type="tel" id="telefono" name="telefono"
+                  placeholder="+593 99 000 0000"
+                  autocomplete="tel"
+                  required maxlength="20"
+                  class="reg-input reg-input--half"
+                />
+                <span class="reg-error" id="err-telefono"></span>
               </div>
 
               <div class="reg-form__row reg-form__row--2">
@@ -127,18 +149,6 @@ const { slug } = Astro.params;
                 </div>
               </div>
 
-              <div class="reg-field">
-                <label for="telefono" class="reg-label">Teléfono <span aria-hidden="true">*</span></label>
-                <input
-                  type="tel" id="telefono" name="telefono"
-                  placeholder="+593 99 000 0000"
-                  autocomplete="tel"
-                  required maxlength="20"
-                  class="reg-input reg-input--half"
-                />
-                <span class="reg-error" id="err-telefono"></span>
-              </div>
-
               <label class="reg-checkbox">
                 <input type="checkbox" id="aceptaMarketing" name="aceptaMarketing" />
                 <span class="reg-checkbox__box"></span>
@@ -162,7 +172,7 @@ const { slug } = Astro.params;
         <div class="reg-step" id="step-2" role="group" aria-labelledby="step2-title">
           <div class="reg-step__content">
             <h1 class="reg-step__title" id="step2-title">Realiza tu pago</h1>
-            <p class="reg-step__subtitle">Transfiere exactamente el monto indicado usando el concepto de tu registro.</p>
+            <p class="reg-step__subtitle">Transfiere exactamente el monto indicado y sube tu comprobante para confirmar el pago.</p>
 
             <!-- Bank details card -->
             <div class="pay-card" id="pay-card">
@@ -177,53 +187,39 @@ const { slug } = Astro.params;
                 <div class="pay-row">
                   <span class="pay-row__key">Banco</span>
                   <span class="pay-row__val" id="pay-banco">—</span>
+                  <span></span>
                 </div>
                 <div class="pay-row">
                   <span class="pay-row__key">Tipo de cuenta</span>
                   <span class="pay-row__val" id="pay-tipo">—</span>
+                  <span></span>
                 </div>
                 <div class="pay-row">
                   <span class="pay-row__key">Número de cuenta</span>
                   <span class="pay-row__val pay-row__val--mono" id="pay-numero">—</span>
+                  <button type="button" class="pay-copy-num" id="btn-copy-num" aria-label="Copiar número de cuenta">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span id="copy-num-label">Copiar</span>
+                  </button>
                 </div>
                 <div class="pay-row">
                   <span class="pay-row__key">Titular</span>
                   <span class="pay-row__val" id="pay-titular">—</span>
+                  <span></span>
                 </div>
                 <div class="pay-row pay-row--highlight">
                   <span class="pay-row__key">Monto exacto</span>
                   <span class="pay-row__val pay-row__val--amount" id="pay-monto">—</span>
-                </div>
-                <div class="pay-row pay-row--concept">
-                  <span class="pay-row__key">Concepto / Referencia</span>
-                  <span class="pay-row__val pay-row__val--mono pay-row__val--concept" id="pay-concepto">—</span>
+                  <span></span>
                 </div>
               </div>
             </div>
 
-            <p class="pay-hint">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              Usa exactamente el concepto indicado para que podamos identificar tu pago.
-            </p>
-
             <!-- Proof upload -->
             <form id="form-step2" class="reg-form" novalidate>
               <div class="reg-field">
-                <label for="referenciaPago" class="reg-label">
-                  Referencia de transferencia <span aria-hidden="true">*</span>
-                </label>
-                <input
-                  type="text" id="referenciaPago" name="referenciaPago"
-                  placeholder="Ej: TXN-12345 o número de comprobante"
-                  required maxlength="80"
-                  class="reg-input"
-                />
-                <span class="reg-error" id="err-referencia"></span>
-              </div>
-
-              <div class="reg-field">
                 <label for="comprobante" class="reg-label">
-                  Comprobante de pago <span class="reg-label__optional">(opcional pero recomendado)</span>
+                  Comprobante de pago <span aria-hidden="true">*</span>
                 </label>
                 <label class="upload-zone" id="upload-zone" for="comprobante">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="upload-zone__icon" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -264,17 +260,18 @@ const { slug } = Astro.params;
             </div>
             <h1 class="reg-step__title" id="step3-title">¡Registro recibido!</h1>
             <p class="reg-step__subtitle">
-              Revisaremos tu comprobante en un plazo de <strong>24–48 horas</strong>.<br/>
+              Revisaremos tu comprobante a la brevedad.<br/>
               Si todo está en orden, recibirás tu QR de entrada por email.
             </p>
 
             <div class="confirm-code">
               <p class="confirm-code__label">Tu código de registro</p>
+              <canvas id="confirm-qr-canvas" style="display:block;margin:0.75rem auto 0.25rem;border-radius:0.5rem;"></canvas>
               <p class="confirm-code__value" id="confirm-id-corto">—</p>
             </div>
 
             <p class="confirm-note">
-              Guarda este código. Lo necesitarás si nos contactas sobre tu registro.
+              Recibirás este QR en tu correo. Preséntalo en la entrada del evento.
             </p>
           </div>
 
@@ -311,12 +308,129 @@ const { slug } = Astro.params;
 
   <script>
     import { apiService } from '../../services/api';
+    import confetti from 'canvas-confetti';
+    import QRCode from 'qrcode';
 
     // ── State ──────────────────────────────────────────────────────────────
     let currentStep = 1;
     let registroId: string | null = null;
     let sessionToken: string | null = null;
     const eventSlug = window.location.pathname.split('/').filter(Boolean).pop()!;
+    const LS_KEY = `dotnet_reg_${eventSlug}`;
+
+    type StoredReg = { registroId: string; sessionToken: string; idCorto: string; monto: number; email: string; nombre?: string; telefono?: string; empresa?: string; cargo?: string; comprobanteEnviado?: boolean };
+
+    function saveRegistration(data: StoredReg) {
+      localStorage.setItem(LS_KEY, JSON.stringify(data));
+    }
+
+    function clearRegistration() {
+      localStorage.removeItem(LS_KEY);
+    }
+
+    function loadRegistration(): StoredReg | null {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        clearRegistration();
+        return null;
+      }
+    }
+
+    async function populateStep2(idCorto: string, monto: number) {
+      document.getElementById('pay-monto')!.textContent = `$${monto.toFixed(2)}`;
+      const cuentaRes = await apiService.getDatosCuenta();
+      if (cuentaRes.success && cuentaRes.data) {
+        const dt = cuentaRes.data;
+        document.getElementById('pay-banco')!.textContent   = dt.banco;
+        document.getElementById('pay-tipo')!.textContent    = dt.tipoCuenta;
+        document.getElementById('pay-numero')!.textContent  = dt.numeroCuenta;
+        document.getElementById('pay-titular')!.textContent = dt.titular;
+      }
+    }
+
+    async function resumeToStep2(stored: StoredReg) {
+      registroId   = stored.registroId;
+      sessionToken = stored.sessionToken;
+      sessionStorage.setItem('reg_session', JSON.stringify({ registroId: stored.registroId, sessionToken: stored.sessionToken, idCorto: stored.idCorto }));
+      // Pre-fill step 1 so going back shows the original data
+      fEmail.value    = stored.email    ?? '';
+      fNombre.value   = stored.nombre   ?? '';
+      fTelefono.value = stored.telefono ?? '';
+      fEmpresa.value  = stored.empresa  ?? '';
+      fCargo.value    = stored.cargo    ?? '';
+      await populateStep2(stored.idCorto, stored.monto);
+      goToStep(2);
+    }
+
+    async function showTicketScreen(stored: StoredReg, confirmed: boolean) {
+      document.getElementById('reg-steps')!.classList.add('hidden');
+      document.querySelector('.reg-progress')?.classList.add('hidden');
+      document.getElementById('reg-step-label')!.classList.add('hidden');
+
+      const main = document.getElementById('reg-main')!;
+      const canvas = document.createElement('canvas');
+      await QRCode.toCanvas(canvas, stored.idCorto, { width: 260, margin: 2, color: { dark: '#1f085a', light: '#ffffff' } });
+
+      const screen = document.createElement('div');
+      screen.className = 'ticket-screen';
+      screen.innerHTML = confirmed
+        ? `<div class="ticket-screen__icon ticket-screen__icon--success">
+             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+           </div>
+           <h2 class="ticket-screen__title">¡Tienes tu entrada!</h2>
+           <p class="ticket-screen__subtitle">Tu pago fue confirmado. Presenta este QR en la entrada del evento.</p>`
+        : `<div class="ticket-screen__icon ticket-screen__icon--pending">
+             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+           </div>
+           <h2 class="ticket-screen__title">Comprobante enviado</h2>
+           <p class="ticket-screen__subtitle">Estamos verificando tu pago. Recibirás confirmación a la brevedad por email.</p>`;
+
+      const qrWrap = document.createElement('div');
+      qrWrap.className = 'ticket-screen__qr';
+      qrWrap.appendChild(canvas);
+      const code = document.createElement('p');
+      code.className = 'ticket-screen__code';
+      code.textContent = stored.idCorto;
+      qrWrap.appendChild(code);
+      screen.appendChild(qrWrap);
+
+      const footer = document.createElement('div');
+      footer.className = 'ticket-screen__footer';
+      footer.innerHTML = `<a href="/eventos" class="reg-btn reg-btn--ghost">Ver más eventos</a>`;
+      screen.appendChild(footer);
+
+      main.appendChild(screen);
+
+      // Fire confetti
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#1A3FE8', '#7B2FBE', '#C2185B', '#ffffff'] });
+      setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { y: 0.5 }, colors: ['#1A3FE8', '#7B2FBE', '#C2185B'] }), 300);
+    }
+
+    async function checkExistingRegistration() {
+      const stored = loadRegistration();
+      if (!stored) return;
+
+      const estadoRes = await apiService.getEstadoRegistro(stored.registroId);
+      if (!estadoRes.success || !estadoRes.data) {
+        clearRegistration();
+        return;
+      }
+
+      const estado = estadoRes.data.estado;
+      if (estado === 'pendiente' && !stored.comprobanteEnviado) {
+        resumeToStep2(stored);
+      } else if (estado === 'pendiente' && stored.comprobanteEnviado) {
+        showTicketScreen(stored, false);
+      } else if (estado === 'pagado') {
+        showTicketScreen(stored, true);
+      } else {
+        clearRegistration();
+      }
+    }
+
+    checkExistingRegistration();
 
     // ── Populate left panel from API ───────────────────────────────────────
     const MONTHS_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -345,14 +459,15 @@ const { slug } = Astro.params;
       leftTitle.textContent = e.nombre;
       if (mobileTitle) mobileTitle.textContent = e.nombre;
 
+      const liStyle = 'style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.4);"';
       if (e.fechaEvento) {
-        leftMeta.insertAdjacentHTML('beforeend', `<li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${parseFechaShort(e.fechaEvento)}</li>`);
+        leftMeta.insertAdjacentHTML('beforeend', `<li ${liStyle}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${parseFechaShort(e.fechaEvento)}</li>`);
       }
       if (e.lugar) {
-        leftMeta.insertAdjacentHTML('beforeend', `<li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${e.lugar}</li>`);
+        leftMeta.insertAdjacentHTML('beforeend', `<li ${liStyle}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${e.lugar}</li>`);
       }
       if (e.precio != null) {
-        leftMeta.insertAdjacentHTML('beforeend', `<li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>${e.precio === 0 ? 'Gratis' : `$${e.precio}`}</li>`);
+        leftMeta.insertAdjacentHTML('beforeend', `<li ${liStyle}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>${e.precio === 0 ? 'Gratis' : `$${e.precio}`}</li>`);
       }
     })();
 
@@ -372,8 +487,7 @@ const { slug } = Astro.params;
     const fMarketing = document.getElementById('aceptaMarketing') as HTMLInputElement;
 
     // Step 2 inputs
-    const fReferencia  = document.getElementById('referenciaPago') as HTMLInputElement;
-    const fComprobante = document.getElementById('comprobante')    as HTMLInputElement;
+    const fComprobante = document.getElementById('comprobante') as HTMLInputElement;
     const uploadZone   = document.getElementById('upload-zone')    as HTMLLabelElement;
     const uploadText   = document.getElementById('upload-text')    as HTMLSpanElement;
 
@@ -416,6 +530,32 @@ const { slug } = Astro.params;
       }, 280);
     }
 
+    // ── Email blur: check for existing registration (cross-device) ────────
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    fEmail.addEventListener('blur', async () => {
+      const email = fEmail.value.trim();
+      if (!emailRe.test(email)) return;
+      // Already handled by localStorage on page load — only call API if not found locally
+      const stored = loadRegistration();
+      if (stored && stored.email === email) return;
+      const recovered = await apiService.recuperarRegistro(email, eventSlug);
+      if (!recovered.success || !recovered.data) return;
+      const d = recovered.data;
+      const storedRec: StoredReg = {
+        registroId:   d.registroId,
+        sessionToken: d.sessionToken ?? '',
+        idCorto:      d.idCorto,
+        monto:        d.monto,
+        email,
+      };
+      saveRegistration(storedRec);
+      if (d.estado === 'pendiente') {
+        resumeToStep2(storedRec);
+      } else {
+        showTicketScreen(storedRec, false);
+      }
+    });
+
     // ── Validation step 1 ─────────────────────────────────────────────────
     function validateStep1(): boolean {
       clearErrors();
@@ -425,7 +565,6 @@ const { slug } = Astro.params;
         setError('err-nombre', 'Ingresa tu nombre completo (mínimo 2 caracteres).');
         ok = false;
       }
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRe.test(fEmail.value.trim())) {
         setError('err-email', 'Ingresa un correo electrónico válido.');
         ok = false;
@@ -459,6 +598,31 @@ const { slug } = Astro.params;
       btn.innerHTML = 'Continuar <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 
       if (!result.success || !result.data) {
+        const email = fEmail.value.trim();
+        const stored = loadRegistration();
+        if (stored && stored.email === email) {
+          resumeToStep2(stored);
+          return;
+        }
+        // Fallback: try to recover via API (cross-device or cleared localStorage)
+        const recovered = await apiService.recuperarRegistro(email, eventSlug);
+        if (recovered.success && recovered.data) {
+          const d = recovered.data;
+          const storedRec: StoredReg = {
+            registroId:   d.registroId,
+            sessionToken: d.sessionToken ?? '',
+            idCorto:      d.idCorto,
+            monto:        d.monto,
+            email,
+          };
+          saveRegistration(storedRec);
+          if (d.estado === 'pendiente') {
+            resumeToStep2(storedRec);
+          } else {
+            showTicketScreen(storedRec, false);
+          }
+          return;
+        }
         showToast(result.message ?? 'Error al procesar el registro. Intenta nuevamente.');
         return;
       }
@@ -466,32 +630,34 @@ const { slug } = Astro.params;
       const data = result.data;
       registroId   = data.registroId;
       sessionToken = data.sessionToken;
-      sessionStorage.setItem('reg_sessionToken', data.sessionToken);
-      sessionStorage.setItem('reg_registroId',   data.registroId);
-      sessionStorage.setItem('reg_idCorto',       data.idCorto);
 
-      // Fill payment card
-      const dt = data.datosTransferencia;
-      document.getElementById('pay-banco')!.textContent    = dt.banco;
-      document.getElementById('pay-tipo')!.textContent     = dt.tipoCuenta;
-      document.getElementById('pay-numero')!.textContent   = dt.numeroCuenta;
-      document.getElementById('pay-titular')!.textContent  = dt.titular;
-      document.getElementById('pay-monto')!.textContent    = `$${data.monto.toFixed(2)}`;
-      document.getElementById('pay-concepto')!.textContent = data.idCorto;
+      const stored: StoredReg = {
+        registroId:   data.registroId,
+        sessionToken: data.sessionToken,
+        idCorto:      data.idCorto,
+        monto:        data.monto,
+        email:        fEmail.value.trim(),
+        nombre:       fNombre.value.trim(),
+        telefono:     fTelefono.value.trim(),
+        empresa:      fEmpresa.value.trim(),
+        cargo:        fCargo.value.trim(),
+      };
+      saveRegistration(stored);
+      sessionStorage.setItem('reg_session', JSON.stringify({ registroId: data.registroId, sessionToken: data.sessionToken, idCorto: data.idCorto }));
 
+      await populateStep2(data.idCorto, data.monto);
       goToStep(2);
     });
 
     // ── Copy payment data ─────────────────────────────────────────────────
     document.getElementById('btn-copy')!.addEventListener('click', () => {
-      const banco    = document.getElementById('pay-banco')!.textContent;
-      const tipo     = document.getElementById('pay-tipo')!.textContent;
-      const numero   = document.getElementById('pay-numero')!.textContent;
-      const titular  = document.getElementById('pay-titular')!.textContent;
-      const monto    = document.getElementById('pay-monto')!.textContent;
-      const concepto = document.getElementById('pay-concepto')!.textContent;
+      const banco   = document.getElementById('pay-banco')!.textContent;
+      const tipo    = document.getElementById('pay-tipo')!.textContent;
+      const numero  = document.getElementById('pay-numero')!.textContent;
+      const titular = document.getElementById('pay-titular')!.textContent;
+      const monto   = document.getElementById('pay-monto')!.textContent;
 
-      const text = `Banco: ${banco}\nTipo de cuenta: ${tipo}\nNúmero: ${numero}\nTitular: ${titular}\nMonto: ${monto}\nConcepto: ${concepto}`;
+      const text = `Banco: ${banco}\nTipo de cuenta: ${tipo}\nNúmero: ${numero}\nTitular: ${titular}\nMonto: ${monto}`;
       navigator.clipboard.writeText(text).then(() => {
         const label = document.getElementById('copy-label')!;
         label.textContent = '¡Copiado!';
@@ -499,6 +665,21 @@ const { slug } = Astro.params;
         setTimeout(() => {
           label.textContent = 'Copiar datos';
           document.getElementById('btn-copy')!.classList.remove('pay-card__copy--success');
+        }, 2000);
+      });
+    });
+
+    // ── Copy account number ────────────────────────────────────────────────
+    document.getElementById('btn-copy-num')!.addEventListener('click', () => {
+      const numero = document.getElementById('pay-numero')!.textContent ?? '';
+      navigator.clipboard.writeText(numero).then(() => {
+        const label = document.getElementById('copy-num-label')!;
+        const btn = document.getElementById('btn-copy-num')!;
+        label.textContent = '¡Copiado!';
+        btn.classList.add('pay-copy-num--success');
+        setTimeout(() => {
+          label.textContent = 'Copiar';
+          btn.classList.remove('pay-copy-num--success');
         }, 2000);
       });
     });
@@ -539,8 +720,8 @@ const { slug } = Astro.params;
     // ── Validation step 2 ─────────────────────────────────────────────────
     function validateStep2(): boolean {
       clearErrors();
-      if (!fReferencia.value.trim()) {
-        setError('err-referencia', 'Ingresa la referencia o número de tu transferencia.');
+      if (!fComprobante.files?.[0]) {
+        setError('err-comprobante', 'Adjunta el comprobante de pago para continuar.');
         return false;
       }
       return true;
@@ -551,8 +732,10 @@ const { slug } = Astro.params;
       if (!validateStep2()) return;
 
       // Restore from sessionStorage in case of page refresh
-      if (!registroId)   registroId   = sessionStorage.getItem('reg_registroId');
-      if (!sessionToken) sessionToken = sessionStorage.getItem('reg_sessionToken');
+      if (!registroId || !sessionToken) {
+        const session = JSON.parse(sessionStorage.getItem('reg_session') ?? 'null');
+        if (session) { registroId = session.registroId; sessionToken = session.sessionToken; }
+      }
 
       if (!registroId || !sessionToken) {
         showToast('Sesión expirada. Por favor, inicia el registro nuevamente.');
@@ -570,7 +753,7 @@ const { slug } = Astro.params;
       const archivo = fComprobante.files?.[0] ?? null;
       const result  = await apiService.subirComprobante(
         registroId,
-        fReferencia.value.trim(),
+        '',
         archivo,
         sessionToken
       );
@@ -585,13 +768,25 @@ const { slug } = Astro.params;
       }
 
       // Show confirmation
-      const idCorto = sessionStorage.getItem('reg_idCorto') ?? '—';
+      const idCorto = (JSON.parse(sessionStorage.getItem('reg_session') ?? 'null')?.idCorto) ?? '—';
       document.getElementById('confirm-id-corto')!.textContent = idCorto;
 
-      // Clear sensitive session data
-      sessionStorage.removeItem('reg_sessionToken');
+      // Generate QR code
+      const canvas = document.getElementById('confirm-qr-canvas') as HTMLCanvasElement;
+      await QRCode.toCanvas(canvas, idCorto, { width: 260, margin: 2, color: { dark: '#1f085a', light: '#ffffff' } });
+
+      // Mark comprobante as sent so returning users see ticket screen instead of step 2
+      const existingReg = loadRegistration();
+      if (existingReg) saveRegistration({ ...existingReg, comprobanteEnviado: true });
+      sessionStorage.removeItem('reg_session');
 
       goToStep(3);
+
+      // Fire confetti after transition
+      setTimeout(() => {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#1A3FE8', '#7B2FBE', '#C2185B', '#ffffff'] });
+        setTimeout(() => confetti({ particleCount: 60, spread: 120, origin: { y: 0.5 }, colors: ['#1A3FE8', '#7B2FBE', '#C2185B'] }), 300);
+      }, 350);
     });
   </script>
 
@@ -634,7 +829,7 @@ const { slug } = Astro.params;
     width: 100%;
   }
   .reg-logo { display: inline-flex; width: fit-content; }
-  .reg-logo__img { height: 36px; width: auto; }
+  .reg-logo__img { height: 80px; width: auto; }
 
   .reg-event-info {
     flex: 1;
@@ -668,9 +863,9 @@ const { slug } = Astro.params;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.75);
+    color: #fff;
   }
-  .reg-event-info__meta svg { flex-shrink: 0; opacity: 0.7; }
+  .reg-event-info__meta svg { flex-shrink: 0; opacity: 0.9; }
 
   .reg-left__tagline {
     font-size: 0.75rem;
@@ -928,6 +1123,7 @@ const { slug } = Astro.params;
     overflow: hidden;
     margin-bottom: 1rem;
     box-shadow: 0 2px 12px rgba(74,8,178,0.06);
+    max-width: 420px;
   }
   .pay-card__header {
     display: flex;
@@ -961,11 +1157,30 @@ const { slug } = Astro.params;
   .pay-card__copy:hover { background: rgba(255,255,255,0.2); }
   .pay-card__copy--success { background: rgba(34,197,94,0.25) !important; color: #86efac; }
 
+  .pay-copy-num {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    background: #f0ecff;
+    border: 1px solid #c4b5ff;
+    color: #4a08b2;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0;
+  }
+  .pay-copy-num:hover { background: #e0d9ff; }
+  .pay-copy-num--success { background: #dcfce7 !important; border-color: #86efac !important; color: #16a34a !important; }
+
   .pay-card__body { padding: 0; }
   .pay-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
     align-items: center;
-    justify-content: space-between;
     padding: 0.75rem 1.25rem;
     border-bottom: 1px solid #f0ecff;
     gap: 1rem;
@@ -974,7 +1189,7 @@ const { slug } = Astro.params;
   .pay-row--highlight { background: #faf8ff; }
   .pay-row--concept { background: #f5f3ff; }
   .pay-row__key { font-size: 0.8125rem; color: #71717a; white-space: nowrap; }
-  .pay-row__val { font-size: 0.9375rem; font-weight: 600; color: #100123; text-align: right; }
+  .pay-row__val { font-size: 0.9375rem; font-weight: 600; color: #100123; text-align: left; }
   .pay-row__val--mono { font-family: 'Courier New', monospace; font-size: 0.875rem; letter-spacing: 0.04em; }
   .pay-row__val--amount { color: #1A3FE8; font-size: 1.125rem; font-weight: 700; }
   .pay-row__val--concept {
@@ -1052,8 +1267,20 @@ const { slug } = Astro.params;
     text-align: center;
     margin: 1.5rem 0 1rem;
   }
-  .confirm-code__label { font-size: 0.75rem; color: #71717a; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem; }
-  .confirm-code__value { font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 700; color: #4a08b2; letter-spacing: 0.08em; }
+  .confirm-qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
+    margin: 1.5rem 0 1rem;
+    padding: 1.25rem;
+    background: #faf8ff;
+    border: 1.5px solid #e9e3ff;
+    border-radius: 1rem;
+    width: fit-content;
+  }
+  .confirm-qr canvas { display: block; border-radius: 0.5rem; }
+  .confirm-qr__code { font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #4a08b2; letter-spacing: 0.1em; margin: 0; }
   .confirm-note { font-size: 0.8125rem; color: #71717a; max-width: 320px; line-height: 1.6; }
 
   /* ── Spinner ─────────────────────────────────────────────────────────── */
@@ -1065,28 +1292,28 @@ const { slug } = Astro.params;
   /* ── Toast ────────────────────────────────────────────────────────────── */
   .reg-toast {
     position: fixed;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(120%);
+    top: 1.5rem;
+    right: 1.5rem;
+    transform: translateY(-120%);
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
+    padding: 0.875rem 1.25rem;
     border-radius: 0.75rem;
     font-size: 0.875rem;
     font-weight: 500;
     z-index: 100;
     transition: transform 0.3s ease;
-    max-width: calc(100vw - 3rem);
+    max-width: min(420px, calc(100vw - 3rem));
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    white-space: nowrap;
+    white-space: normal;
   }
   .reg-toast--error {
     background: #fef2f2;
     color: #991b1b;
     border: 1px solid #fecaca;
   }
-  .reg-toast--visible { transform: translateX(-50%) translateY(0); }
+  .reg-toast--visible { transform: translateY(0); }
 
   /* ── WhatsApp FAB ─────────────────────────────────────────────────────── */
   .whatsapp-fab {
@@ -1119,6 +1346,74 @@ const { slug } = Astro.params;
     .reg-step__title { font-size: 1.5rem; }
     .reg-input--half { max-width: 100%; }
     .reg-step-label { padding-left: 1.25rem; }
+  }
+
+  /* ── Ticket screen ────────────────────────────────────────────────────── */
+  .ticket-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    min-height: 60vh;
+    gap: 1rem;
+  }
+  .ticket-screen__icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  .ticket-screen__icon--success { background: #dcfce7; color: #16a34a; }
+  .ticket-screen__icon--pending { background: #fef9c3; color: #ca8a04; }
+  .ticket-screen__title { font-size: 1.5rem; font-weight: 800; color: #100123; margin: 0; }
+  .ticket-screen__subtitle { font-size: 0.9375rem; color: #71717a; max-width: 340px; line-height: 1.6; margin: 0; }
+  .ticket-screen__qr {
+    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    padding: 1.25rem; background: #faf8ff;
+    border: 1.5px solid #e9e3ff; border-radius: 1rem;
+    margin: 0.5rem 0;
+  }
+  .ticket-screen__qr canvas { display: block; border-radius: 0.5rem; }
+  .ticket-screen__code { font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #4a08b2; letter-spacing: 0.1em; margin: 0; }
+  .ticket-screen__footer { margin-top: 0.5rem; }
+
+  /* ── Resume banner ────────────────────────────────────────────────────── */
+  .resume-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.125rem 1.25rem;
+    border-radius: 14px;
+    margin: 0 2rem 1.5rem;
+    border: 1.5px solid transparent;
+  }
+  .resume-banner--warning {
+    background: #fffbeb;
+    border-color: #fcd34d;
+    color: #92400e;
+  }
+  .resume-banner--warning .resume-banner__icon { color: #d97706; }
+  .resume-banner--warning .resume-banner__title { color: #92400e; }
+  .resume-banner--success {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #166534;
+  }
+  .resume-banner--success .resume-banner__icon { color: #16a34a; }
+  .resume-banner--success .resume-banner__title { color: #166534; }
+  .resume-banner__icon { flex-shrink: 0; padding-top: 1px; }
+  .resume-banner__content { flex: 1; min-width: 0; }
+  .resume-banner__title { font-size: 0.9375rem; font-weight: 700; margin: 0 0 0.25rem; }
+  .resume-banner__body { font-size: 0.8125rem; margin: 0; line-height: 1.5; opacity: 0.85; }
+  .resume-banner__actions { flex-shrink: 0; display: flex; align-items: center; }
+  .resume-banner__btn { white-space: nowrap; }
+
+  @media (max-width: 640px) {
+    .resume-banner { flex-direction: column; gap: 0.75rem; margin: 0 1rem 1.25rem; }
+    .resume-banner__actions { width: 100%; }
+    .resume-banner__btn { width: 100%; justify-content: center; }
   }
 
   /* ── Utility ──────────────────────────────────────────────────────────── */

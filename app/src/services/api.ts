@@ -26,6 +26,7 @@ import type {
   RegistroRequest,
   RegistroResponse,
   EstadoRegistro,
+  RecuperarRegistroResponse,
   AdminListResponse,
   LoginRequest,
   LoginResponse,
@@ -39,6 +40,10 @@ class ApiService {
     this.baseUrl = baseUrl;
   }
 
+  private errorMessage(result: any, status: number): string {
+    return result.detail || result.message || result.title || `Error ${status}`;
+  }
+
   private async post<T>(path: string, body: unknown, headers?: Record<string, string>): Promise<ApiResponse<T>> {
     try {
       const response = await fetch(`${this.baseUrl}${path}`, {
@@ -47,7 +52,7 @@ class ApiService {
         body: JSON.stringify(body),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || `Error ${response.status}`);
+      if (!response.ok) throw new Error(this.errorMessage(result, response.status));
       return { success: true, data: result.data ?? result, message: result.message };
     } catch (error) {
       return { success: false, message: error instanceof Error ? error.message : 'Error inesperado' };
@@ -60,7 +65,7 @@ class ApiService {
         headers: { 'Accept': 'application/json', ...headers },
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || `Error ${response.status}`);
+      if (!response.ok) throw new Error(this.errorMessage(result, response.status));
       return { success: true, data: result.data ?? result, message: result.message };
     } catch (error) {
       return { success: false, message: error instanceof Error ? error.message : 'Error inesperado' };
@@ -75,7 +80,7 @@ class ApiService {
         body: JSON.stringify(body),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || `Error ${response.status}`);
+      if (!response.ok) throw new Error(this.errorMessage(result, response.status));
       return { success: true, data: result.data ?? result, message: result.message };
     } catch (error) {
       return { success: false, message: error instanceof Error ? error.message : 'Error inesperado' };
@@ -92,6 +97,10 @@ class ApiService {
 
   async getEventos(): Promise<ApiResponse<any[]>> {
     return this.get('/api/v1/eventos');
+  }
+
+  async getDatosCuenta(): Promise<ApiResponse<any>> {
+    return this.get('/api/v1/pago/datos-cuenta');
   }
 
   async crearRegistro(data: RegistroRequest): Promise<ApiResponse<RegistroResponse>> {
@@ -124,6 +133,11 @@ class ApiService {
 
   async getEstadoRegistro(registroId: string): Promise<ApiResponse<EstadoRegistro>> {
     return this.get(`/api/v1/registros/${registroId}/estado`);
+  }
+
+  async recuperarRegistro(email: string, eventoSlug: string): Promise<ApiResponse<RecuperarRegistroResponse>> {
+    const qs = new URLSearchParams({ email, eventoSlug });
+    return this.get(`/api/v1/registros/recuperar?${qs}`);
   }
 
   async adminLogin(data: LoginRequest): Promise<ApiResponse<LoginResponse>> {
