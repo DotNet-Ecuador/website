@@ -88,6 +88,10 @@ const { slug } = Astro.params;
             <h1 class="reg-step__title" id="step1-title">Tus datos</h1>
             <p class="reg-step__subtitle">Completa la información para reservar tu lugar.</p>
 
+            <a href={`/mi-ticket/${slug}`} class="already-registered-link">
+              ¿Ya tienes ticket? Ver mi entrada →
+            </a>
+
             <form id="form-step1" class="reg-form" novalidate>
               <div class="reg-form__row reg-form__row--2">
                 <div class="reg-field">
@@ -991,9 +995,20 @@ const { slug } = Astro.params;
   .reg-step__subtitle {
     font-size: 0.9375rem;
     color: #52525b;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     line-height: 1.6;
   }
+
+  .already-registered-link {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #4a08b2;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.15s;
+  }
+  .already-registered-link:hover { color: #7B2FBE; text-decoration: underline; }
 
   .reg-step__footer {
     display: flex;
@@ -1084,7 +1099,7 @@ const { slug } = Astro.params;
   .reg-checkbox__label { font-size: 0.875rem; color: #3f3f46; line-height: 1.5; }
 
   /* ── Buttons ──────────────────────────────────────────────────────────── */
-  .reg-btn {
+  :global(.reg-btn) {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -1099,21 +1114,21 @@ const { slug } = Astro.params;
     min-height: 48px;
     text-decoration: none;
   }
-  .reg-btn:active { transform: scale(0.97); }
-  .reg-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  :global(.reg-btn:active) { transform: scale(0.97); }
+  :global(.reg-btn:disabled) { opacity: 0.6; cursor: not-allowed; }
 
-  .reg-btn--primary {
+  :global(.reg-btn--primary) {
     background: #4a08b2;
     color: #fff;
   }
-  .reg-btn--primary:hover:not(:disabled) { background: #33057a; }
+  :global(.reg-btn--primary:hover:not(:disabled)) { background: #33057a; }
 
-  .reg-btn--ghost {
+  :global(.reg-btn--ghost) {
     background: transparent;
     color: #52525b;
     border: 1.5px solid #e4e4e7;
   }
-  .reg-btn--ghost:hover { background: #f4f4f5; }
+  :global(.reg-btn--ghost:hover) { background: #f4f4f5; }
 
   /* ── Payment card ─────────────────────────────────────────────────────── */
   .pay-card {
@@ -1348,8 +1363,9 @@ const { slug } = Astro.params;
     .reg-step-label { padding-left: 1.25rem; }
   }
 
-  /* ── Ticket screen ────────────────────────────────────────────────────── */
-  .ticket-screen {
+  /* ── Ticket screen (global: created dynamically in JS) ───────────────── */
+  :global(.ticket-screen) {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1359,25 +1375,25 @@ const { slug } = Astro.params;
     min-height: 60vh;
     gap: 1rem;
   }
-  .ticket-screen__icon {
+  :global(.ticket-screen__icon) {
     width: 64px; height: 64px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 0.5rem;
   }
-  .ticket-screen__icon--success { background: #dcfce7; color: #16a34a; }
-  .ticket-screen__icon--pending { background: #fef9c3; color: #ca8a04; }
-  .ticket-screen__title { font-size: 1.5rem; font-weight: 800; color: #100123; margin: 0; }
-  .ticket-screen__subtitle { font-size: 0.9375rem; color: #71717a; max-width: 340px; line-height: 1.6; margin: 0; }
-  .ticket-screen__qr {
+  :global(.ticket-screen__icon--success) { background: #dcfce7; color: #16a34a; }
+  :global(.ticket-screen__icon--pending) { background: #fef9c3; color: #ca8a04; }
+  :global(.ticket-screen__title) { font-size: 1.5rem; font-weight: 800; color: #100123; margin: 0; }
+  :global(.ticket-screen__subtitle) { font-size: 0.9375rem; color: #71717a; max-width: 340px; line-height: 1.6; margin: 0; }
+  :global(.ticket-screen__qr) {
     display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
     padding: 1.25rem; background: #faf8ff;
     border: 1.5px solid #e9e3ff; border-radius: 1rem;
     margin: 0.5rem 0;
   }
-  .ticket-screen__qr canvas { display: block; border-radius: 0.5rem; }
-  .ticket-screen__code { font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #4a08b2; letter-spacing: 0.1em; margin: 0; }
-  .ticket-screen__footer { margin-top: 0.5rem; }
+  :global(.ticket-screen__qr canvas) { display: block; border-radius: 0.5rem; }
+  :global(.ticket-screen__code) { font-family: 'Courier New', monospace; font-size: 1.125rem; font-weight: 700; color: #4a08b2; letter-spacing: 0.1em; margin: 0; }
+  :global(.ticket-screen__footer) { margin-top: 0.5rem; }
 
   /* ── Resume banner ────────────────────────────────────────────────────── */
   .resume-banner {

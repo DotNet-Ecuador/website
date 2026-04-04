@@ -37,6 +37,13 @@ const { slug } = Astro.params;
 
     <main class="ticket-main">
 
+      <div class="ticket-back-wrap">
+        <a href="/eventos" class="ticket-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Volver
+        </a>
+      </div>
+
       <!-- Email lookup form -->
       <div id="view-form">
         <div class="ticket-card">
@@ -83,8 +90,8 @@ const { slug } = Astro.params;
           <div class="ticket-card__icon ticket-card__icon--error">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
           </div>
-          <h2 class="ticket-card__title">No encontramos tu registro</h2>
-          <p class="ticket-card__subtitle" id="error-detail">No existe un registro con ese correo para este evento.</p>
+          <h2 class="ticket-card__title">No encontramos tu ticket</h2>
+          <p class="ticket-card__subtitle" id="error-detail">No encontramos un ticket con ese correo. Verifica que sea el mismo con el que te registraste.</p>
           <button type="button" class="ticket-btn ticket-btn--ghost" id="btn-retry">Intentar con otro correo</button>
         </div>
       </div>
@@ -134,7 +141,7 @@ const { slug } = Astro.params;
 
       if (!res.success || !res.data) {
         document.getElementById('error-detail').textContent =
-          res.message ?? 'No existe un registro con ese correo para este evento.';
+          'No encontramos un ticket con ese correo. Verifica que sea el mismo con el que te registraste.';
         showView('view-error');
         return;
       }
@@ -222,13 +229,31 @@ const { slug } = Astro.params;
   .ticket-main {
     flex: 1;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     padding: 0 1rem 3rem;
     margin-top: -1.5rem;
     position: relative;
     z-index: 2;
   }
+
+  .ticket-back-wrap {
+    width: 100%;
+    max-width: 420px;
+    padding: 0.75rem 0 0.25rem;
+  }
+  .ticket-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #a8a0c0;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .ticket-back:hover { color: #f0ecff; }
 
   .ticket-card {
     background: #16102e;
