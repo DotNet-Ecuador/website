@@ -188,7 +188,15 @@ const typeLabel: Record<string, string> = {
           Agregar al calendario
         </a>
         <div class="flex items-center gap-2">
-          {event.registrationUrl && (
+          {event.slug && (
+            <a
+              href={`/registro/${event.slug}`}
+              class="btn-primary text-sm px-4 py-2.5 inline-flex items-center gap-2 min-h-[44px]"
+            >
+              Registrarse
+            </a>
+          )}
+          {!event.slug && event.registrationUrl && (
             <a
               href={event.registrationUrl}
               target="_blank"
@@ -198,7 +206,7 @@ const typeLabel: Record<string, string> = {
               Registrarse
             </a>
           )}
-          {event.registrationComingSoon && (
+          {!event.slug && event.registrationComingSoon && (
             <button class="btn-primary text-sm px-4 py-2.5 inline-flex items-center gap-2 min-h-[44px]" data-coming-soon type="button">
               Registrarse
             </button>
@@ -207,7 +215,7 @@ const typeLabel: Record<string, string> = {
       </div>
     ) : (
       <a
-        href={`mailto:equipo@dotnetecuador.com?subject=Notificarme%3A%20${encodeURIComponent(event.title)}`}
+        href={`mailto:contacto@dotnetecuador.com?subject=Notificarme%3A%20${encodeURIComponent(event.title)}`}
         class="btn-notify inline-flex items-center gap-2 min-h-[44px]"
       >
         Notificarme cuando se confirme

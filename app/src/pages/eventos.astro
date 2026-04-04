@@ -1,124 +1,138 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import Breadcrumbs from '../components/Breadcrumbs.astro'
-import Button from '../components/Button.astro'
-import EventCardV2 from '../components/EventCardV2.astro'
 import { SEO_PAGES_CONFIG } from '../config/seo'
-import { EVENTS } from '../data/events'
+import { EVENT_SLUGS } from '../data/events'
 
 const pageConfig = SEO_PAGES_CONFIG['/eventos']
 
-function sortEvents(events: typeof EVENTS) {
-  return [...events].sort((a, b) => {
-    if (a.pinned && !b.pinned) return -1
-    if (!a.pinned && b.pinned) return 1
-    return (a.date ?? '').localeCompare(b.date ?? '')
-  })
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es DotNet Ecuador?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DotNet Ecuador es la comunidad de desarrolladores .NET más activa del Ecuador. Organizamos meetups presenciales en Quito, talleres técnicos, paneles empresariales y la conferencia anual DotNet Developer Conf."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Dónde se realizan los eventos .NET de DotNet Ecuador?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La mayoría de nuestros eventos presenciales se realizan en Quito, Ecuador. También organizamos eventos virtuales e híbridos accesibles desde cualquier ciudad del país."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuestan los eventos de DotNet Ecuador?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los meetups y charlas técnicas suelen tener un costo de $5 USD. La conferencia anual DotNet Developer Conf es gratuita. Los paneles y eventos especiales tienen precios que varían según el formato."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo me registro en los eventos de DotNet Ecuador?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Puedes registrarte directamente desde esta página. Cada evento confirmado tiene un botón de registro que te lleva al formulario de inscripción."
+          }
+        }
+      ]
+    }
+  ]
 }
-
-const confirmedEvents = sortEvents(EVENTS.filter(e => e.status === 'confirmed'))
-const tentativeEvents = sortEvents(EVENTS.filter(e => e.status === 'tentative'))
 ---
 
 <Layout
   title={pageConfig.title}
   description={pageConfig.description}
   keywords={pageConfig.keywords.join(', ')}
+  structuredData={faqStructuredData}
 >
 
-  <h1 class="sr-only">Eventos de la comunidad DotNet Ecuador</h1>
-
   <section class="relative overflow-hidden pb-16 pt-4">
-    <!-- Background gradient -->
     <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700"></div>
-
-    <!-- Decorative elements -->
     <div class="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-primary-600/20 to-primary-500/30 rounded-full blur-3xl"></div>
     <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-primary-700/25 to-primary-600/35 rounded-full blur-3xl"></div>
-    <div class="absolute top-1/3 right-1/3 w-64 h-64 bg-gradient-to-br from-primary-600/15 to-primary-500/25 rounded-full blur-2xl"></div>
 
     <div class="relative z-10">
-
       <div class="container-custom px-4 sm:px-6 lg:px-8 pb-6">
         <Breadcrumbs items={[{ name: 'Eventos', url: '/eventos' }]} variant="dark" />
       </div>
 
+      <div class="container-custom px-4 sm:px-6 lg:px-8 pb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold font-display text-white mb-3 leading-tight">
+          Eventos .NET en Ecuador
+        </h1>
+      </div>
+
       <div class="container-custom px-4 sm:px-6 lg:px-8 pb-4">
 
-        <!-- ─── Confirmed events ───────────────────────────────────────────── -->
-        {confirmedEvents.length > 0 && (
-          <section aria-labelledby="confirmed-heading" class="mb-14">
-            <h2 id="confirmed-heading" class="sr-only">Eventos confirmados</h2>
+        <!-- Event grid — populated by JS -->
+        <section aria-labelledby="eventos-heading" class="mb-14">
+          <h2 id="eventos-heading" class="sr-only">Eventos</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {confirmedEvents.map(event => (
-                <div class={`h-full ${event.featured ? 'md:col-span-2' : ''}`}>
-                  <EventCardV2 event={event} />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+          <!-- Skeleton placeholders (shown while loading) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="eventos-skeleton">
+            {EVENT_SLUGS.map(() => (
+              <div class="ev-skeleton"></div>
+            ))}
+          </div>
 
-        <!-- ─── Divider (only when both sections exist) ────────────────────── -->
-        {confirmedEvents.length > 0 && tentativeEvents.length > 0 && (
-          <hr class="border-white/15 mb-14" />
-        )}
+          <!-- Real cards injected here -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 hidden" id="eventos-grid"></div>
 
-        <!-- ─── Tentative events ───────────────────────────────────────────── -->
-        {tentativeEvents.length > 0 && (
-          <section aria-labelledby="tentative-heading" class="mb-14">
-            <h2 id="tentative-heading" class="section-heading mb-2">
-              <span class="section-heading__dot section-heading__dot--purple"></span>
-              En planificación
-            </h2>
-            <p class="text-sm text-white/60 mb-8 ml-5">
-              Fechas por confirmar — activa las notificaciones para no perderte nada.
+          <!-- Error state -->
+          <div class="hidden" id="eventos-error">
+            <p class="text-white/60 text-sm text-center py-12">
+              No se pudieron cargar los eventos. Intenta refrescar la página.
             </p>
+          </div>
+        </section>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {tentativeEvents.map(event => (
-                <EventCardV2 event={event} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        <!-- ─── Sponsor CTA ────────────────────────────────────────────────── -->
+        <!-- Sponsor CTA -->
         <section class="mb-14">
           <div class="sponsor-cta">
             <div class="sponsor-cta__content">
-              <span class="sponsor-cta__eyebrow">Para empresas</span>
-              <h3 class="sponsor-cta__title">¿Tu empresa quiere estar presente?</h3>
+              <span class="sponsor-cta__eyebrow">Patrocinios · Convenios · Alianzas</span>
+              <h3 class="sponsor-cta__title">¿Tu empresa quiere conectar con talento .NET?</h3>
               <p class="sponsor-cta__text">
-                Conecta con desarrolladores .NET. Nuestros eventos son el espacio ideal para
-                presentar tu marca, producto o iniciativa ante la comunidad tech más activa del Ecuador.
+                Patrocina un evento, firma un convenio o establece una alianza estratégica con DotNet Ecuador.
+                Accede directamente a desarrolladores .NET, C# y Azure activos en Ecuador.
               </p>
             </div>
             <div class="sponsor-cta__action">
-              <a href="/contacto" class="btn-sponsor">
-                Hablar con el equipo
-              </a>
+              <a href="/contacto" class="btn-sponsor">Hablar con el equipo</a>
             </div>
           </div>
         </section>
 
-        <!-- ─── Speaker CTA ────────────────────────────────────────────────── -->
-        <section class="text-center mb-4">
+        <!-- Speaker CTA -->
+        <section class="text-center mb-10">
           <div class="card p-8 max-w-xl mx-auto gradient-primary text-white">
-            <h3 class="text-xl sm:text-2xl font-semibold font-display mb-3">
-              ¿Quieres ser ponente?
-            </h3>
+            <h3 class="text-xl sm:text-2xl font-semibold font-display mb-3">¿Quieres ser ponente?</h3>
             <p class="text-base mb-6 opacity-90">
               Comparte tu conocimiento con la comunidad. Contáctanos para proponer tu charla o taller.
             </p>
-            <a
-              href="/contacto"
-              class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors min-h-[44px]"
-            >
+            <a href="/contacto" class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-medium hover:bg-neutral-100 transition-colors min-h-[44px]">
               Proponer Charla
             </a>
           </div>
+        </section>
+
+        <!-- About section -->
+        <section class="text-center mb-4">
+          <p class="text-white/50 text-sm max-w-xl mx-auto leading-relaxed">
+            DotNet Ecuador organiza meetups, talleres y la conferencia anual DotNet Developer Conf
+            para la comunidad .NET en Ecuador.
+          </p>
         </section>
 
       </div>
@@ -127,122 +141,354 @@ const tentativeEvents = sortEvents(EVENTS.filter(e => e.status === 'tentative'))
 
 </Layout>
 
-<style>
-  .section-heading {
+<style is:global>
+  /* ── Skeleton ──────────────────────────────────────────────────────────── */
+  .ev-skeleton {
+    height: 320px;
+    border-radius: 1.25rem;
+    background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 75%);
+    background-size: 200% 100%;
+    animation: ev-shimmer 1.4s infinite;
+  }
+  @keyframes ev-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* ── EventCardV2 styles (global so JS-rendered cards pick them up) ─────── */
+  .event-card-v2 {
+    background: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    padding: 1.25rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    border-left: 4px solid transparent;
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-family: 'Exo 2', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: white;
-    letter-spacing: -0.01em;
+    flex-direction: column;
+    height: 100%;
+  }
+  .event-card-v2:hover { box-shadow: 0 12px 28px rgba(74,8,178,0.14); transform: translateY(-3px); }
+  .event-card-v2--confirmed { border-left-color: #4a08b2; }
+  .event-card-v2--confirmed:hover { border-left-color: #8b5dff; }
+  .event-card-v2--tentative { border-left-color: #c4b5ff; }
+
+  .event-card-v2--featured {
+    flex-direction: row;
+    padding: 0;
+    overflow: hidden;
+  }
+  .event-card-featured-image { flex: 0 0 50%; width: 50%; min-height: 260px; }
+  .event-card-featured-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .event-card-v2--featured .event-card-v2__body {
+    flex: 1;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  @media (max-width: 639px) {
+    .event-card-v2--featured { flex-direction: column; }
+    .event-card-featured-image { flex: none; width: 100%; height: 180px; min-height: unset; }
   }
 
-  .section-heading__dot {
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 9999px;
-    flex-shrink: 0;
+  .event-date {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 72px; min-height: 80px; border-radius: 0.75rem; padding: 0.5rem 0.25rem;
+    text-align: center; flex-shrink: 0;
   }
+  .event-date--confirmed { background: #100123; color: white; }
+  .event-date--tentative { border: 2px dashed #c4b5ff; color: #4a08b2; }
+  .event-date__day   { display: block; font-family: 'Exo 2', sans-serif; font-size: 1.75rem; font-weight: 800; line-height: 1; }
+  .event-date__month { display: block; font-family: 'Exo 2', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; opacity: 0.75; }
+  .event-date__year  { display: block; font-size: 0.6rem; opacity: 0.55; margin-top: 0.1rem; }
+  .event-date__tentative { display: block; font-family: 'Exo 2', sans-serif; font-size: 0.75rem; font-weight: 700; text-align: center; line-height: 1.3; padding: 0.25rem; }
 
-  .section-heading__dot--cyan   { background: #4a08b2; }
-  .section-heading__dot--purple { background: #8b5dff; }
+  .event-badge {
+    display: inline-flex; align-items: center; padding: 0.2rem 0.6rem;
+    border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
+    font-family: 'Jost', sans-serif; letter-spacing: 0.02em;
+  }
+  .badge--presencial { background: #ede9ff; color: #1f085a; border: 1px solid #c4b5ff; }
+  .badge--virtual    { background: #f5f3ff; color: #4a08b2; border: 1px solid #ddd6ff; }
+  .badge--hibrido    { background: #f5f3ff; color: #4a08b2; border: 1px solid #ddd6fe; }
+  .badge--type       { background: #f4f4f5; color: #52525b; border: 1px solid #e4e4e7; }
+  .badge--networking { background: #1f085a; color: #e9d5ff; border: 1px solid #4a08b2; font-weight: 700; }
 
-  /* ─── Sponsor CTA ────────────────────────────────────── */
+  .event-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 1.25rem; color: #100123; line-height: 1.3; margin: 0 0 0.5rem 0; }
+  @media (min-width: 640px) { .event-title { font-size: 1.375rem; } }
+
+  .event-speakers { display: flex; flex-direction: column; gap: 0.4rem; margin: 0 0 0.5rem 0; }
+  .event-speaker  { display: flex; align-items: center; gap: 0.5rem; }
+  .event-speaker__avatar-wrapper { width: 44px; height: 44px; border-radius: 9999px; overflow: hidden; flex-shrink: 0; border: 2px solid #ede9ff; }
+  .event-speaker__avatar  { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .event-speaker__info    { font-family: 'Jost', sans-serif; font-size: 0.85rem; color: #4a08b2; font-weight: 500; }
+
+  .event-description-wrapper { position: relative; margin-bottom: 0.75rem; }
+  .event-description {
+    font-family: 'Jost', sans-serif; font-size: 0.875rem; color: #52525b; line-height: 1.6; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .event-description.expanded { -webkit-line-clamp: unset; display: block; }
+  .event-toggle {
+    display: inline-block; font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600;
+    color: #4a08b2; background: none; border: none; padding: 0.25rem 0; cursor: pointer;
+    transition: color 0.2s ease; min-height: 44px;
+  }
+  .event-toggle:hover { color: #8b5dff; }
+
+  .event-meta { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin-bottom: 0.75rem; }
+  .event-meta__item { display: inline-flex; align-items: center; gap: 0.375rem; font-family: 'Jost', sans-serif; font-size: 0.8rem; color: #71717a; }
+  .event-meta__price   { color: #4a08b2; font-weight: 600; }
+  .event-meta__limited { color: #7c3aed; font-weight: 600; }
+
+  .event-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+  .event-tag  { font-size: 0.7rem; font-family: 'Jost', sans-serif; padding: 0.15rem 0.5rem; border-radius: 0.375rem; background: #f5f3ff; color: #4a08b2; border: 1px solid #ede9ff; }
+
+  .event-footer { display: flex; justify-content: flex-end; border-top: 1px solid #f4f4f5; margin-top: auto; padding-top: 1rem; }
+
+  .btn-calendar {
+    font-family: 'Jost', sans-serif; font-size: 0.875rem; font-weight: 600;
+    padding: 0.6rem 1.1rem; border-radius: 0.6rem; background: transparent;
+    color: #4a08b2; border: 2px solid #4a08b2; text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .btn-calendar:hover { background: #4a08b2; color: white; transform: translateY(-1px); }
+
+
+  .event-ticket-link { display: flex; justify-content: center; padding: 0.75rem 1.25rem 0.75rem; margin-top: 0.5rem; border-top: 1px solid rgba(139,93,255,0.12); }
+  .ticket-link { font-size: 0.8rem; font-weight: 500; color: #4a08b2; text-decoration: none; opacity: 0.85; transition: opacity 0.15s, color 0.15s; letter-spacing: 0.01em; }
+  .ticket-link:hover { opacity: 1; color: #8b5dff; text-decoration: underline; text-underline-offset: 3px; }
+
+  .animation-fade-up { opacity: 0; transform: translateY(16px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+  .animation-fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .animation-fade-up { opacity: 1; transform: none; transition: none; } }
+</style>
+
+<style>
   .sponsor-cta {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255,255,255,0.08);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255,255,255,0.15);
     border-radius: 1.25rem;
     padding: 2rem;
   }
-
   @media (min-width: 768px) {
-    .sponsor-cta {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .sponsor-cta { flex-direction: row; align-items: center; justify-content: space-between; }
   }
-
-  .sponsor-cta__content {
-    flex: 1;
-  }
-
+  .sponsor-cta__content { flex: 1; }
   .sponsor-cta__eyebrow {
     display: inline-block;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #c4b5ff;
-    margin-bottom: 0.5rem;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #c4b5ff; margin-bottom: 0.5rem;
   }
-
-  .sponsor-cta__title {
-    font-family: 'Exo 2', sans-serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: white;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .sponsor-cta__text {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.6;
-    max-width: 52ch;
-    margin: 0;
-  }
-
-  .sponsor-cta__action {
-    flex-shrink: 0;
-  }
-
+  .sponsor-cta__title { font-family: 'Exo 2', sans-serif; font-size: 1.25rem; font-weight: 700; color: white; margin: 0 0 0.5rem; }
+  .sponsor-cta__text { font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 52ch; margin: 0; }
+  .sponsor-cta__action { flex-shrink: 0; }
   .btn-sponsor {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 0.65rem 1.4rem;
-    border-radius: 0.6rem;
-    min-height: 44px;
-    background: white;
-    color: #1f085a;
-    border: 2px solid white;
-    text-decoration: none;
-    transition: background 0.2s ease, color 0.2s ease;
-    white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 600; padding: 0.65rem 1.4rem;
+    border-radius: 0.6rem; min-height: 44px; background: white; color: #1f085a;
+    border: 2px solid white; text-decoration: none; transition: background 0.2s, color 0.2s; white-space: nowrap;
   }
-
-  .btn-sponsor:hover {
-    background: transparent;
-    color: white;
-  }
+  .btn-sponsor:hover { background: transparent; color: white; }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  import { apiService } from '../services/api';
+
+  const skeleton = document.getElementById('eventos-skeleton')!;
+  const grid     = document.getElementById('eventos-grid')!;
+  const errorEl  = document.getElementById('eventos-error')!;
+
+  const MONTHS_ES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+  const FORMAT_LABEL: Record<string, string> = { presencial: 'Presencial', virtual: 'Virtual', hibrido: 'Híbrido', híbrido: 'Híbrido' };
+  const FORMAT_STYLE: Record<string, string> = { presencial: 'badge--presencial', virtual: 'badge--virtual', hibrido: 'badge--hibrido', híbrido: 'badge--hibrido' };
+  const TYPE_LABEL: Record<string, string>   = { meetup: 'Meetup', workshop: 'Workshop', taller: 'Taller Hands-On', charla: 'Charla + Demo', conference: 'Conferencia', webinar: 'Webinar', panel: 'Panel' };
+
+  function parseFechaECT(iso: string) {
+    const d   = new Date(iso);
+    const ect = new Date(d.getTime() - 5 * 3600000);
+    return {
+      day:   String(ect.getUTCDate()).padStart(2, '0'),
+      month: MONTHS_ES[ect.getUTCMonth()],
+      year:  String(ect.getUTCFullYear()),
+      time:  `${String(ect.getUTCHours()).padStart(2,'0')}:${String(ect.getUTCMinutes()).padStart(2,'0')}`,
+    };
+  }
+
+  function buildCalUrl(e: any): string {
+    if (!e.fechaEvento) return '#';
+    const start = new Date(e.fechaEvento).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+    const end   = e.fechaFin
+      ? new Date(e.fechaFin).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z'
+      : start;
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.nombre)}&dates=${start}/${end}&location=${encodeURIComponent(e.lugar ?? '')}`;
+  }
+
+  function formatPrecio(precio: number | undefined): string {
+    if (precio === undefined || precio === null) return '';
+    return precio === 0 ? 'Gratis' : `$${precio % 1 === 0 ? precio : precio.toFixed(2)}`;
+  }
+
+  function renderCard(e: any): string {
+    const isFeatured  = !!(e.coverImage);
+    const isConfirmed = !!e.activo;
+    const fecha  = e.fechaEvento ? parseFechaECT(e.fechaEvento) : null;
+    const precio = formatPrecio(e.precio);
+    const calUrl = buildCalUrl(e);
+    const desc   = e.descripcion ?? '';
+
+    const dateBlock = fecha
+      ? `<div class="event-date event-date--confirmed flex-shrink-0" aria-label="${fecha.day} de ${fecha.month} ${fecha.year}">
+           <span class="event-date__day">${fecha.day}</span>
+           <span class="event-date__month">${fecha.month}</span>
+           <span class="event-date__year">${fecha.year}</span>
+         </div>`
+      : `<div class="event-date event-date--tentative flex-shrink-0">
+           <span class="event-date__tentative">Próx.</span>
+         </div>`;
+
+    const fmtKey = e.formato?.toLowerCase() ?? '';
+    const tipoKey = e.tipo?.toLowerCase() ?? '';
+    const badges = [
+      e.formato    ? `<span class="event-badge ${FORMAT_STYLE[fmtKey] ?? 'badge--presencial'}">${FORMAT_LABEL[fmtKey] ?? e.formato}</span>` : '',
+      e.tipo       ? `<span class="event-badge badge--type">${TYPE_LABEL[tipoKey] ?? e.tipo}</span>` : '',
+      e.networking ? `<span class="event-badge badge--networking">Networking</span>` : '',
+    ].filter(Boolean).join('');
+
+    const speakersHtml = e.speakers?.length
+      ? `<div class="event-speakers">${e.speakers.map((s: any) => `
+           <div class="event-speaker">
+             ${s.avatar
+               ? `<div class="event-speaker__avatar-wrapper"><img src="${s.avatar}" alt="${s.nombre}" class="event-speaker__avatar" loading="lazy"></div>`
+               : ''}
+             <span class="event-speaker__info">${s.nombre} · ${s.rol}</span>
+           </div>`).join('')}
+         </div>` : '';
+
+    const descHtml = `<div class="event-description-wrapper">
+      <p class="event-description" data-description>${desc}</p>
+      ${desc.length > 120 ? `<button class="event-toggle" data-toggle aria-expanded="false" type="button">Ver más</button>` : ''}
+    </div>`;
+
+    const endTime = e.fechaFin ? parseFechaECT(e.fechaFin).time : null;
+    const timeStr = fecha ? (endTime ? `${fecha.time} – ${endTime}` : fecha.time) : null;
+
+    const metaHtml = [
+      e.lugar
+        ? `<span class="event-meta__item">
+             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+             ${e.lugar}
+           </span>` : '',
+      timeStr
+        ? `<span class="event-meta__item">
+             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+             ${timeStr}
+           </span>` : '',
+      e.capacidadMaxima
+        ? `<span class="event-meta__item event-meta__limited">
+             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+             Aforo limitado
+           </span>` : '',
+      precio
+        ? `<span class="event-meta__item event-meta__price">
+             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
+             ${precio}
+           </span>` : '',
+    ].filter(Boolean).join('');
+
+    const tagsHtml = e.tags?.length
+      ? `<div class="event-tags">${e.tags.map((t: string) => `<span class="event-tag">#${t}</span>`).join('')}</div>`
+      : '';
+
+    const footerHtml = `<div class="flex items-center justify-between gap-3 flex-wrap w-full">
+           <a href="${calUrl}" target="_blank" rel="noopener noreferrer" class="btn-calendar inline-flex items-center gap-2 min-h-[44px]" aria-label="Agregar &quot;${e.nombre}&quot; a Google Calendar">
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+             Agregar al calendario
+           </a>
+           <div class="flex items-center gap-2">
+             <a href="/registro/${e.slug}" class="btn-primary text-sm px-4 py-2.5 inline-flex items-center gap-2 min-h-[44px]">
+               Registrarse
+             </a>
+           </div>
+         </div>`;
+
+    const featuredImageHtml = isFeatured
+      ? `<div class="event-card-featured-image">
+           <img src="${e.coverImage}" alt="${e.nombre}" loading="lazy" />
+         </div>`
+      : '';
+
+    const article = `<article class="event-card-v2 animation-fade-up ${isConfirmed ? 'event-card-v2--confirmed' : 'event-card-v2--tentative'}${isFeatured ? ' event-card-v2--featured' : ''}">
+      ${featuredImageHtml}
+      <div class="event-card-v2__body">
+        <div class="flex items-start gap-4 mb-3">
+          ${dateBlock}
+          <div class="flex flex-wrap gap-1.5 pt-1">${badges}</div>
+        </div>
+        <h2 class="event-title">${e.nombre}</h2>
+        ${speakersHtml}
+        ${descHtml}
+        <div class="event-meta">${metaHtml}</div>
+        ${tagsHtml}
+        <div class="event-footer">${footerHtml}</div>
+        <div class="event-ticket-link">
+          <a href="/mi-ticket/${e.slug}" class="ticket-link">Ya tengo mi ticket</a>
+        </div>
+      </div>
+    </article>`;
+
+    return `<div class="h-full${isFeatured ? ' md:col-span-2' : ''}">${article}</div>`;
+  }
+
+  (async () => {
+    try {
+    const res = await apiService.getEventos();
+    const eventos = res.success && res.data ? res.data : [];
+
+    skeleton.classList.add('hidden');
+
+    if (!eventos.length) {
+      errorEl.classList.remove('hidden');
+      return;
+    }
+
+    grid.innerHTML = eventos
+      .filter(e => e.activo !== false)
+      .map(e => renderCard(e))
+      .join('');
+
+    grid.classList.remove('hidden');
+
+    // IntersectionObserver fade-in (same as original EventCardV2 page)
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-            observer.unobserve(entry.target)
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
           }
-        })
+        });
       },
       { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
-    )
+    );
+    grid.querySelectorAll<HTMLElement>('.animation-fade-up').forEach(el => observer.observe(el));
 
-    document.querySelectorAll('.animation-fade-up').forEach(el => observer.observe(el))
-  })
+    // "Ver más / Ver menos" toggle
+    grid.querySelectorAll<HTMLButtonElement>('[data-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const desc = btn.closest('.event-description-wrapper')?.querySelector<HTMLElement>('[data-description]');
+        if (!desc) return;
+        const expanded = desc.classList.toggle('expanded');
+        btn.textContent = expanded ? 'Ver menos' : 'Ver más';
+        btn.setAttribute('aria-expanded', String(expanded));
+      });
+    });
+    } catch (err) {
+      console.error('[eventos] error:', err);
+    }
+  })();
 </script>

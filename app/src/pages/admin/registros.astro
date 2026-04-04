@@ -1,0 +1,861 @@
+---
+import logo from '../../assets/dotnet_logo.png';
+import '../../assets/styles/base.css';
+import { EVENT_SLUGS } from '../../data/events';
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Registros — DotNet Ecuador</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
+  />
+</head>
+<body class="font-dmsans bg-neutral-100 min-h-screen">
+
+  <!-- Sidebar + Main layout -->
+  <div class="adm-shell">
+
+    <!-- ── Sidebar ── -->
+    <aside class="adm-sidebar">
+      <div class="adm-sidebar__logo">
+        <img src={logo.src} alt="DotNet Ecuador" height="32" />
+      </div>
+      <nav class="adm-nav">
+        <span class="adm-nav__item adm-nav__item--active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Registrados
+        </span>
+        <button type="button" class="adm-nav__item" id="btn-show-create-event">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Crear evento
+        </button>
+      </nav>
+      <button type="button" class="adm-logout" id="btn-logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="adm-main">
+
+      <!-- Filters bar -->
+      <div class="adm-filters">
+        <div class="adm-filters__left">
+          <h1 class="adm-title">Registros</h1>
+          <div class="adm-filters__selects">
+            <select id="filter-evento" class="adm-select" aria-label="Filtrar por evento">
+              <option value="">Todos los eventos</option>
+              <!-- populated by JS from API -->
+            </select>
+            <select id="filter-estado" class="adm-select" aria-label="Filtrar por estado">
+              <option value="">Todos los estados</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="pagado">Pagado</option>
+              <option value="rechazado">Rechazado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+        </div>
+        <div class="adm-filters__right">
+          <button type="button" class="adm-btn adm-btn--outline" id="btn-exportar" aria-label="Exportar CSV">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exportar CSV
+          </button>
+          <button type="button" class="adm-btn adm-btn--primary" id="btn-refresh">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Actualizar
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="adm-stats" id="adm-stats">
+        <div class="adm-stat">
+          <span class="adm-stat__val" id="stat-total">—</span>
+          <span class="adm-stat__key">Total</span>
+        </div>
+        <div class="adm-stat adm-stat--yellow">
+          <span class="adm-stat__val" id="stat-pendiente">—</span>
+          <span class="adm-stat__key">Pendientes</span>
+        </div>
+        <div class="adm-stat adm-stat--green">
+          <span class="adm-stat__val" id="stat-pagado">—</span>
+          <span class="adm-stat__key">Aprobados</span>
+        </div>
+        <div class="adm-stat adm-stat--red">
+          <span class="adm-stat__val" id="stat-rechazado">—</span>
+          <span class="adm-stat__key">Rechazados</span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="adm-table-wrap">
+        <div id="adm-loading" class="adm-loading" aria-live="polite">
+          <svg class="spin" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          Cargando registros…
+        </div>
+        <div id="adm-empty" class="adm-empty hidden" aria-live="polite">
+          No hay registros para los filtros seleccionados.
+        </div>
+        <div id="adm-error-msg" class="adm-error-msg hidden" role="alert"></div>
+
+        <table class="adm-table hidden" id="adm-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Empresa</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+              <th>Referencia</th>
+              <th>Comprobante</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="adm-tbody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── Modal: reject reason ── -->
+  <div class="adm-modal-overlay hidden" id="reject-overlay" role="dialog" aria-modal="true" aria-labelledby="reject-title">
+    <div class="adm-modal">
+      <h2 class="adm-modal__title" id="reject-title">Rechazar pago</h2>
+      <p class="adm-modal__sub">Indica el motivo para que el asistente pueda corregirlo.</p>
+      <textarea
+        id="reject-motivo"
+        rows="3"
+        placeholder="Ej: Comprobante ilegible, monto incorrecto…"
+        class="adm-textarea"
+        maxlength="200"
+      ></textarea>
+      <div class="adm-modal__footer">
+        <button type="button" class="adm-btn adm-btn--outline" id="reject-cancel">Cancelar</button>
+        <button type="button" class="adm-btn adm-btn--danger" id="reject-confirm">Rechazar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: comprobante image ── -->
+  <div class="adm-modal-overlay hidden" id="img-overlay" role="dialog" aria-modal="true" aria-labelledby="img-title">
+    <div class="adm-modal adm-modal--img">
+      <div class="adm-modal__header">
+        <h2 class="adm-modal__title" id="img-title">Comprobante</h2>
+        <button type="button" class="adm-modal__close" id="img-close" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <img id="img-preview" src="" alt="Comprobante de pago" class="adm-modal__img" />
+      <a id="img-download" href="" target="_blank" rel="noopener noreferrer" class="adm-btn adm-btn--outline" style="margin-top:1rem; display:inline-flex; align-items:center; gap:0.375rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Abrir original
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Modal: crear evento ── -->
+  <div class="adm-modal-overlay hidden" id="create-event-overlay" role="dialog" aria-modal="true" aria-labelledby="create-event-title">
+    <div class="adm-modal adm-modal--form">
+      <div class="adm-modal__header">
+        <h2 class="adm-modal__title" id="create-event-title">Crear evento</h2>
+        <button type="button" class="adm-modal__close" id="create-event-close" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="create-event-form" class="create-form" novalidate>
+        <div class="create-form__grid">
+          <div class="adm-field"><label class="adm-label">Slug *</label><input type="text" name="slug" required placeholder="meetup-titulo-mes-año" class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">Nombre *</label><input type="text" name="nombre" required maxlength="120" class="adm-input" /></div>
+          <div class="adm-field adm-field--full"><label class="adm-label">Descripción *</label><textarea name="descripcion" rows="3" required class="adm-textarea adm-textarea--sm"></textarea></div>
+          <div class="adm-field"><label class="adm-label">Fecha y hora *</label><input type="datetime-local" name="fechaEvento" required class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">Lugar *</label><input type="text" name="lugar" required class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">Precio ($) *</label><input type="number" name="precio" min="0" step="0.01" required class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">Capacidad máxima *</label><input type="number" name="capacidadMaxima" min="1" required class="adm-input" /></div>
+        </div>
+        <p class="create-form__section-title">Datos bancarios</p>
+        <div class="create-form__grid">
+          <div class="adm-field"><label class="adm-label">Banco *</label><input type="text" name="banco" required class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">Tipo de cuenta *</label><input type="text" name="tipoCuenta" required placeholder="Ahorro / Corriente" class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">Número de cuenta *</label><input type="text" name="numeroCuenta" required class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">Titular *</label><input type="text" name="titular" required class="adm-input" /></div>
+          <div class="adm-field"><label class="adm-label">RUC / Cédula <span style="font-weight:400;color:#71717a">(opc.)</span></label><input type="text" name="ruc" class="adm-input" /></div>
+        </div>
+        <div class="adm-modal__footer" style="margin-top:1.5rem;">
+          <div id="create-event-error" class="adm-error-msg hidden" style="flex:1"></div>
+          <button type="button" class="adm-btn adm-btn--outline" id="create-event-cancel-btn">Cancelar</button>
+          <button type="submit" class="adm-btn adm-btn--primary" id="create-event-submit">
+            <span id="create-event-submit-label">Crear evento</span>
+            <span id="create-event-submit-spinner" class="hidden"><svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script define:vars={{ EVENT_SLUGS }}>
+    window.__eventSlugs = EVENT_SLUGS;
+  </script>
+
+  <script>
+    import { apiService } from '../../services/api';
+    import type { AdminRegistro } from '../../types/api';
+
+    // ── Auth guard ──────────────────────────────────────────────────────
+    const jwt = sessionStorage.getItem('adminJwt');
+    if (!jwt) window.location.replace('/admin');
+
+    // ── State ────────────────────────────────────────────────────────────
+    let currentEventoId: string | null = null;
+    let pendingRejectId: string | null = null;
+    let allRegistros: AdminRegistro[] = [];
+
+    // ── DOM refs ─────────────────────────────────────────────────────────
+    const filterEvento  = document.getElementById('filter-evento') as HTMLSelectElement;
+    const filterEstado  = document.getElementById('filter-estado') as HTMLSelectElement;
+    const loading       = document.getElementById('adm-loading')!;
+    const emptyMsg      = document.getElementById('adm-empty')!;
+    const errorMsg      = document.getElementById('adm-error-msg')!;
+    const table         = document.getElementById('adm-table')!;
+    const tbody         = document.getElementById('adm-tbody')!;
+    const rejectOverlay = document.getElementById('reject-overlay')!;
+    const rejectMotivo  = document.getElementById('reject-motivo') as HTMLTextAreaElement;
+    const imgOverlay    = document.getElementById('img-overlay')!;
+    const imgPreview    = document.getElementById('img-preview') as HTMLImageElement;
+    const imgDownload   = document.getElementById('img-download') as HTMLAnchorElement;
+    const createEventOverlay = document.getElementById('create-event-overlay')!;
+
+    // ── Helpers ───────────────────────────────────────────────────────────
+    function badgeClass(estado: string) {
+      return {
+        pendiente: 'badge--yellow',
+        pagado:    'badge--green',
+        rechazado: 'badge--red',
+        cancelado: 'badge--gray',
+      }[estado] ?? 'badge--gray';
+    }
+
+    function badgeLabel(estado: string) {
+      return { pendiente: 'Pendiente', pagado: 'Aprobado', rechazado: 'Rechazado', cancelado: 'Cancelado' }[estado] ?? estado;
+    }
+
+    function setLoading(show: boolean) {
+      loading.classList.toggle('hidden', !show);
+      table.classList.toggle('hidden', show || allRegistros.length === 0);
+      emptyMsg.classList.toggle('hidden', show || allRegistros.length > 0);
+    }
+
+    function showError(msg: string) {
+      errorMsg.textContent = msg;
+      errorMsg.classList.remove('hidden');
+      loading.classList.add('hidden');
+    }
+
+    function updateStats(items: AdminRegistro[]) {
+      const counts = { total: items.length, pendiente: 0, pagado: 0, rechazado: 0 };
+      items.forEach(r => {
+        if (r.estado in counts) (counts as any)[r.estado]++;
+      });
+      document.getElementById('stat-total')!.textContent    = String(counts.total);
+      document.getElementById('stat-pendiente')!.textContent = String(counts.pendiente);
+      document.getElementById('stat-pagado')!.textContent    = String(counts.pagado);
+      document.getElementById('stat-rechazado')!.textContent = String(counts.rechazado);
+    }
+
+    function renderRows(items: AdminRegistro[]) {
+      tbody.innerHTML = '';
+      items.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><code class="adm-code">${r.idCorto}</code></td>
+          <td>${r.nombre}</td>
+          <td class="adm-td-email">${r.email}</td>
+          <td>${r.empresa ?? '—'}</td>
+          <td>${r.telefono}</td>
+          <td><span class="adm-badge ${badgeClass(r.estado)}">${badgeLabel(r.estado)}</span></td>
+          <td>${r.referenciaTransferencia ?? '—'}</td>
+          <td>${r.comprobanteUrl
+            ? `<button class="adm-link" data-comprobante="${r.comprobanteUrl}">Ver</button>`
+            : '—'
+          }</td>
+          <td class="adm-td-actions">
+            ${r.estado === 'pendiente' ? `
+              <button class="adm-btn adm-btn--sm adm-btn--success" data-aprobar="${r.id}" title="Aprobar pago">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                Aprobar
+              </button>
+              <button class="adm-btn adm-btn--sm adm-btn--danger" data-rechazar="${r.id}" title="Rechazar pago">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Rechazar
+              </button>
+            ` : ''}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Wire up approve/reject/comprobante buttons
+      tbody.querySelectorAll<HTMLButtonElement>('[data-aprobar]').forEach(btn => {
+        btn.addEventListener('click', () => handleAprobar(btn.dataset.aprobar!));
+      });
+      tbody.querySelectorAll<HTMLButtonElement>('[data-rechazar]').forEach(btn => {
+        btn.addEventListener('click', () => openRejectModal(btn.dataset.rechazar!));
+      });
+      tbody.querySelectorAll<HTMLButtonElement>('[data-comprobante]').forEach(btn => {
+        btn.addEventListener('click', () => openImgModal(btn.dataset.comprobante!));
+      });
+    }
+
+    // ── Load registros ────────────────────────────────────────────────────
+    async function loadRegistros() {
+      setLoading(true);
+      errorMsg.classList.add('hidden');
+
+      const selectedSlug = filterEvento.value;
+      const estado       = filterEstado.value;
+
+      // If a slug is selected, get the eventoId first
+      if (selectedSlug && !currentEventoId) {
+        const eventoRes = await apiService.getEvento(selectedSlug);
+        if (eventoRes.success && eventoRes.data) {
+          currentEventoId = eventoRes.data.id ?? eventoRes.data._id ?? null;
+        }
+      }
+      if (!selectedSlug) currentEventoId = null;
+
+      const result = await apiService.getAdminRegistros(jwt!, {
+        eventoId: currentEventoId ?? undefined,
+        estado: estado || undefined,
+        pageSize: 100,
+      });
+
+      if (!result.success) {
+        if (result.message?.includes('401') || result.message?.includes('403')) {
+          sessionStorage.removeItem('adminJwt');
+          window.location.replace('/admin');
+          return;
+        }
+        showError(result.message ?? 'Error al cargar registros.');
+        return;
+      }
+
+      allRegistros = result.data?.items ?? [];
+      updateStats(allRegistros);
+      renderRows(allRegistros);
+      setLoading(false);
+
+      if (allRegistros.length === 0) {
+        table.classList.add('hidden');
+        emptyMsg.classList.remove('hidden');
+      }
+    }
+
+    // ── Approve ───────────────────────────────────────────────────────────
+    async function handleAprobar(id: string) {
+      if (!confirm('¿Aprobar este pago?')) return;
+      const result = await apiService.aprobarRegistro(id, jwt!);
+      if (!result.success) {
+        alert(result.message ?? 'Error al aprobar.');
+        return;
+      }
+      loadRegistros();
+    }
+
+    // ── Reject modal ──────────────────────────────────────────────────────
+    function openRejectModal(id: string) {
+      pendingRejectId = id;
+      rejectMotivo.value = '';
+      rejectOverlay.classList.remove('hidden');
+      rejectMotivo.focus();
+    }
+
+    document.getElementById('reject-cancel')!.addEventListener('click', () => {
+      rejectOverlay.classList.add('hidden');
+      pendingRejectId = null;
+    });
+
+    document.getElementById('reject-confirm')!.addEventListener('click', async () => {
+      if (!pendingRejectId) return;
+      const motivo = rejectMotivo.value.trim();
+      if (!motivo) { rejectMotivo.focus(); return; }
+
+      const result = await apiService.rechazarRegistro(pendingRejectId, motivo, jwt!);
+      rejectOverlay.classList.add('hidden');
+      pendingRejectId = null;
+
+      if (!result.success) {
+        alert(result.message ?? 'Error al rechazar.');
+        return;
+      }
+      loadRegistros();
+    });
+
+    rejectOverlay.addEventListener('click', (e) => {
+      if (e.target === rejectOverlay) {
+        rejectOverlay.classList.add('hidden');
+        pendingRejectId = null;
+      }
+    });
+
+    // ── Comprobante modal ─────────────────────────────────────────────────
+    function openImgModal(url: string) {
+      imgPreview.src = url;
+      imgDownload.href = url;
+      imgOverlay.classList.remove('hidden');
+    }
+
+    document.getElementById('img-close')!.addEventListener('click', () => imgOverlay.classList.add('hidden'));
+    imgOverlay.addEventListener('click', (e) => {
+      if (e.target === imgOverlay) imgOverlay.classList.add('hidden');
+    });
+
+    // ── Export CSV ────────────────────────────────────────────────────────
+    document.getElementById('btn-exportar')!.addEventListener('click', async () => {
+      if (!currentEventoId) {
+        alert('Selecciona un evento para exportar.');
+        return;
+      }
+      try {
+        const blob = await apiService.exportarCSV(currentEventoId, jwt!);
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url;
+        a.download = `registros-${filterEvento.value}-${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch {
+        alert('Error al exportar CSV.');
+      }
+    });
+
+    // ── Create event modal ────────────────────────────────────────────────
+    document.getElementById('btn-show-create-event')!.addEventListener('click', () => {
+      createEventOverlay.classList.remove('hidden');
+    });
+
+    function closeCreateEventModal() {
+      createEventOverlay.classList.add('hidden');
+      (document.getElementById('create-event-form') as HTMLFormElement).reset();
+      document.getElementById('create-event-error')!.classList.add('hidden');
+    }
+
+    document.getElementById('create-event-close')!.addEventListener('click', closeCreateEventModal);
+    document.getElementById('create-event-cancel-btn')!.addEventListener('click', closeCreateEventModal);
+    createEventOverlay.addEventListener('click', (e) => {
+      if (e.target === createEventOverlay) closeCreateEventModal();
+    });
+
+    document.getElementById('create-event-form')!.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target as HTMLFormElement;
+      const data = Object.fromEntries(new FormData(form));
+      const errEl = document.getElementById('create-event-error')!;
+      const btn   = document.getElementById('create-event-submit') as HTMLButtonElement;
+      const label = document.getElementById('create-event-submit-label')!;
+      const spinner = document.getElementById('create-event-submit-spinner')!;
+
+      btn.disabled = true;
+      label.classList.add('hidden');
+      spinner.classList.remove('hidden');
+
+      const result = await apiService.crearEvento({
+        slug: String(data.slug).trim(),
+        nombre: String(data.nombre).trim(),
+        descripcion: String(data.descripcion).trim(),
+        fechaEvento: new Date(String(data.fechaEvento)).toISOString(),
+        lugar: String(data.lugar).trim(),
+        precio: Number(data.precio),
+        capacidadMaxima: Number(data.capacidadMaxima),
+        activo: true,
+        datosTransferencia: {
+          banco: String(data.banco).trim(),
+          tipoCuenta: String(data.tipoCuenta).trim(),
+          numeroCuenta: String(data.numeroCuenta).trim(),
+          titular: String(data.titular).trim(),
+          ruc: data.ruc ? String(data.ruc).trim() : undefined,
+        },
+      }, jwt!);
+
+      btn.disabled = false;
+      label.classList.remove('hidden');
+      spinner.classList.add('hidden');
+
+      if (!result.success) {
+        errEl.textContent = result.message ?? 'Error al crear el evento.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      closeCreateEventModal();
+      alert(`Evento creado. Recuerda agregar el slug "${data.slug}" al campo slug del evento en src/data/events.ts para activar el flujo de registro.`);
+    });
+
+    // ── Populate event dropdown from API ─────────────────────────────────
+    (async () => {
+      const slugs: string[] = (window as any).__eventSlugs ?? [];
+      const results = await Promise.all(slugs.map(s => apiService.getEvento(s)));
+      results.forEach((r, i) => {
+        if (!r.success || !r.data) return;
+        const opt = document.createElement('option');
+        opt.value = slugs[i];
+        opt.textContent = r.data.nombre ?? slugs[i];
+        filterEvento.appendChild(opt);
+      });
+    })();
+
+    // ── Filters & init ────────────────────────────────────────────────────
+    filterEvento.addEventListener('change', () => { currentEventoId = null; loadRegistros(); });
+    filterEstado.addEventListener('change', loadRegistros);
+    document.getElementById('btn-refresh')!.addEventListener('click', loadRegistros);
+    document.getElementById('btn-logout')!.addEventListener('click', () => {
+      sessionStorage.removeItem('adminJwt');
+      window.location.replace('/admin');
+    });
+
+    loadRegistros();
+  </script>
+
+</body>
+</html>
+
+<style>
+  /* ── Shell ────────────────────────────────────────────────────────────── */
+  .adm-shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ──────────────────────────────────────────────────────────── */
+  .adm-sidebar {
+    background: #100123;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .adm-sidebar__logo {
+    padding: 0.5rem 0.75rem 1.5rem;
+  }
+  .adm-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+  .adm-nav__item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.625rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.15s, background 0.15s;
+  }
+  .adm-nav__item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.05); }
+  .adm-nav__item--active { background: rgba(139,93,255,0.2); color: #c4b5ff; }
+  .adm-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.625rem;
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.35);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.15s;
+  }
+  .adm-logout:hover { color: #f87171; }
+
+  /* ── Main ─────────────────────────────────────────────────────────────── */
+  .adm-main { padding: 2rem; min-width: 0; }
+
+  /* ── Filters ──────────────────────────────────────────────────────────── */
+  .adm-filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .adm-filters__left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .adm-filters__right { display: flex; align-items: center; gap: 0.625rem; }
+  .adm-title { font-size: 1.375rem; font-weight: 700; color: #100123; margin: 0; }
+  .adm-filters__selects { display: flex; gap: 0.625rem; }
+
+  .adm-select {
+    padding: 0.5rem 2rem 0.5rem 0.875rem;
+    border: 1.5px solid #c4b5ff;
+    border-radius: 0.625rem;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b5dff' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+    appearance: none;
+    font-size: 0.875rem;
+    color: #100123;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+  }
+  .adm-select:focus { outline: none; border-color: #8b5dff; box-shadow: 0 0 0 3px rgba(139,93,255,0.1); }
+
+  /* ── Stats ────────────────────────────────────────────────────────────── */
+  .adm-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .adm-stat {
+    background: #fff;
+    border: 1px solid #ede9ff;
+    border-radius: 0.875rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .adm-stat__val { font-size: 1.75rem; font-weight: 700; color: #100123; }
+  .adm-stat__key { font-size: 0.75rem; color: #71717a; text-transform: uppercase; letter-spacing: 0.04em; }
+  .adm-stat--yellow .adm-stat__val { color: #d97706; }
+  .adm-stat--green  .adm-stat__val { color: #16a34a; }
+  .adm-stat--red    .adm-stat__val { color: #dc2626; }
+
+  /* ── Table ────────────────────────────────────────────────────────────── */
+  .adm-table-wrap {
+    background: #fff;
+    border: 1px solid #ede9ff;
+    border-radius: 1rem;
+    overflow: hidden;
+    overflow-x: auto;
+  }
+  .adm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  .adm-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #faf8ff;
+    border-bottom: 1px solid #ede9ff;
+    white-space: nowrap;
+  }
+  .adm-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid #f4f4f5;
+    color: #3f3f46;
+    vertical-align: middle;
+  }
+  .adm-table tbody tr:last-child td { border-bottom: none; }
+  .adm-table tbody tr:hover td { background: #faf8ff; }
+
+  .adm-td-email { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .adm-td-actions { display: flex; gap: 0.5rem; align-items: center; white-space: nowrap; }
+
+  .adm-code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8125rem;
+    background: #ede9ff;
+    color: #4a08b2;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+  }
+
+  /* ── Badges ───────────────────────────────────────────────────────────── */
+  .adm-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge--yellow { background: #fef9c3; color: #854d0e; }
+  .badge--green  { background: #dcfce7; color: #14532d; }
+  .badge--red    { background: #fee2e2; color: #7f1d1d; }
+  .badge--gray   { background: #f4f4f5; color: #52525b; }
+
+  /* ── Buttons ──────────────────────────────────────────────────────────── */
+  .adm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
+  }
+  .adm-btn--primary { background: #4a08b2; color: #fff; }
+  .adm-btn--primary:hover { background: #33057a; }
+  .adm-btn--outline { background: transparent; color: #52525b; border: 1.5px solid #e4e4e7; }
+  .adm-btn--outline:hover { background: #f4f4f5; }
+  .adm-btn--success { background: #dcfce7; color: #14532d; }
+  .adm-btn--success:hover { background: #bbf7d0; }
+  .adm-btn--danger { background: #fee2e2; color: #7f1d1d; }
+  .adm-btn--danger:hover { background: #fecaca; }
+  .adm-btn--sm { padding: 0.375rem 0.75rem; font-size: 0.8125rem; }
+
+  .adm-link {
+    background: none;
+    border: none;
+    color: #4a08b2;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'DM Sans', sans-serif;
+    padding: 0;
+  }
+
+  /* ── States ───────────────────────────────────────────────────────────── */
+  .adm-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 3rem;
+    color: #71717a;
+    font-size: 0.9375rem;
+  }
+  .adm-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #71717a;
+    font-size: 0.9375rem;
+  }
+  .adm-error-msg {
+    padding: 0.75rem 1.25rem;
+    background: #fee2e2;
+    color: #7f1d1d;
+    border-radius: 0.625rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  /* ── Modals ───────────────────────────────────────────────────────────── */
+  .adm-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 1.5rem;
+    backdrop-filter: blur(4px);
+  }
+  .adm-modal {
+    background: #fff;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    max-height: 90dvh;
+    overflow-y: auto;
+  }
+  .adm-modal--img { max-width: 560px; display: flex; flex-direction: column; align-items: center; }
+  .adm-modal--form { max-width: 640px; }
+  .adm-modal__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .adm-modal__title { font-size: 1.125rem; font-weight: 700; color: #100123; margin: 0 0 0.5rem; }
+  .adm-modal__sub { font-size: 0.875rem; color: #52525b; margin-bottom: 1rem; }
+  .adm-modal__footer { display: flex; justify-content: flex-end; gap: 0.625rem; margin-top: 1.25rem; align-items: center; }
+  .adm-modal__close { background: none; border: none; color: #71717a; cursor: pointer; padding: 0.25rem; border-radius: 0.375rem; }
+  .adm-modal__close:hover { color: #100123; background: #f4f4f5; }
+  .adm-modal__img { width: 100%; max-height: 400px; object-fit: contain; border-radius: 0.75rem; border: 1px solid #ede9ff; }
+
+  /* ── Create event form ────────────────────────────────────────────────── */
+  .create-form__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .create-form__section-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #4a08b2;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 1rem 0 0.75rem;
+  }
+  .adm-field { display: flex; flex-direction: column; gap: 0.25rem; }
+  .adm-field--full { grid-column: 1 / -1; }
+  .adm-label { font-size: 0.8125rem; font-weight: 600; color: #1d0448; }
+  .adm-input {
+    padding: 0.625rem 0.875rem;
+    border: 1.5px solid #c4b5ff;
+    border-radius: 0.625rem;
+    font-size: 0.875rem;
+    color: #100123;
+    font-family: 'DM Sans', sans-serif;
+    background: #faf8ff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .adm-input:focus { outline: none; border-color: #8b5dff; box-shadow: 0 0 0 3px rgba(139,93,255,0.1); background: #fff; }
+  .adm-textarea {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #c4b5ff;
+    border-radius: 0.75rem;
+    font-size: 0.9375rem;
+    color: #100123;
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .adm-textarea--sm { font-size: 0.875rem; }
+  .adm-textarea:focus { outline: none; border-color: #8b5dff; box-shadow: 0 0 0 3px rgba(139,93,255,0.1); }
+
+  /* ── Utilities ────────────────────────────────────────────────────────── */
+  .hidden { display: none !important; }
+  .spin { animation: spin 0.8s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* ── Responsive ───────────────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .adm-shell { grid-template-columns: 1fr; }
+    .adm-sidebar { display: none; }
+    .adm-stats { grid-template-columns: repeat(2, 1fr); }
+    .create-form__grid { grid-template-columns: 1fr; }
+  }
+</style>

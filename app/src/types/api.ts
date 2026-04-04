@@ -84,3 +84,118 @@ export interface RequestOptions extends RequestInit {
   timeout?: number;
   retryAttempts?: number;
 }
+
+// ─── Evento API (source of truth: MongoDB) ───────────────────────────────────
+
+export interface EventoSpeakerAPI {
+  nombre: string;
+  rol: string;
+  avatar?: string;
+}
+
+export interface EventoAPI {
+  _id?: string;
+  slug: string;
+  nombre: string;
+  descripcion?: string;
+  fechaEvento?: string;
+  fechaFin?: string;
+  lugar?: string;
+  precio?: number;
+  capacidadMaxima?: number;
+  activo: boolean;
+  tipo?: string;
+  formato?: string;
+  networking?: boolean;
+  tags?: string[];
+  speakers?: EventoSpeakerAPI[];
+  imagen?: string;
+  coverImage?: string;
+}
+
+// ─── Event Registration Types ────────────────────────────────────────────────
+
+export interface DatosTransferencia {
+  banco: string;
+  tipoCuenta: string;
+  numeroCuenta: string;
+  titular: string;
+  ruc?: string;
+}
+
+export interface RegistroRequest {
+  eventoSlug: string;
+  nombre: string;
+  email: string;
+  empresa?: string;
+  cargo?: string;
+  telefono: string;
+  aceptaMarketing: boolean;
+}
+
+export interface RegistroResponse {
+  registroId: string;
+  idCorto: string;
+  sessionToken: string;
+  datosTransferencia: DatosTransferencia;
+  monto: number;
+  nombreEvento?: string;
+}
+
+export interface EstadoRegistro {
+  estado: 'pendiente' | 'pagado' | 'rechazado' | 'cancelado';
+  idCorto: string;
+}
+
+export interface RecuperarRegistroResponse {
+  registroId: string;
+  idCorto: string;
+  monto: number;
+  nombreEvento: string;
+  estado: 'pendiente' | 'pagado' | 'rechazado' | 'cancelado';
+  sessionToken: string | null;
+}
+
+// ─── Admin Types ─────────────────────────────────────────────────────────────
+
+export interface AdminRegistro {
+  id: string;
+  nombre: string;
+  email: string;
+  empresa?: string;
+  cargo?: string;
+  telefono: string;
+  estado: 'pendiente' | 'pagado' | 'rechazado' | 'cancelado';
+  referenciaTransferencia?: string;
+  comprobanteUrl?: string;
+  idCorto: string;
+  creadoEn: string;
+}
+
+export interface AdminListResponse {
+  items: AdminRegistro[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+}
+
+export interface EventoAdminRequest {
+  slug: string;
+  nombre: string;
+  descripcion: string;
+  fechaEvento: string;
+  lugar: string;
+  precio: number;
+  capacidadMaxima: number;
+  activo: boolean;
+  datosTransferencia: DatosTransferencia;
+}

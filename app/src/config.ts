@@ -52,6 +52,7 @@ export const NavigationLinks: NavigationLink[] = [
             { name: 'Sobre Nosotros', url: '/sobre-nosotros' },
             { name: 'NFTs', url: '/nfts' },
             { name: 'Marca', url: '/marca' },
+            { name: 'Admin', url: '/admin' },
         ],
     },
 ]
