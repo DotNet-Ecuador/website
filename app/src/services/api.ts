@@ -31,6 +31,8 @@ import type {
   LoginRequest,
   LoginResponse,
   EventoAdminRequest,
+  PromoCodeValidateRequest,
+  PromoCodeValidateResponse,
 } from '../types/api';
 
 class ApiService {
@@ -183,6 +185,10 @@ class ApiService {
 
   async crearEvento(data: EventoAdminRequest, jwt: string): Promise<ApiResponse<any>> {
     return this.post('/api/v1/admin/eventos', data, { Authorization: `Bearer ${jwt}` });
+  }
+
+  async validatePromoCode(code: string): Promise<ApiResponse<PromoCodeValidateResponse>> {
+    return this.post<PromoCodeValidateResponse>('/api/v1/promo-codes/validate', { code } as PromoCodeValidateRequest);
   }
 }
 

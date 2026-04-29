@@ -240,6 +240,30 @@ const { slug } = Astro.params;
                 <span class="reg-error" id="err-comprobante"></span>
               </div>
             </form>
+
+            <!-- Promo code field -->
+            <div class="promo-section" id="promo-section">
+              <label class="promo-label" for="promo-input">
+                ¿Tienes un código promo?
+                <span class="promo-label__optional">opcional</span>
+              </label>
+              <div class="promo-field" id="promo-field">
+                <input
+                  type="text"
+                  id="promo-input"
+                  name="promo"
+                  placeholder="XXXXXX"
+                  maxlength="6"
+                  autocomplete="off"
+                  class="promo-input"
+                  aria-describedby="promo-msg"
+                />
+                <button type="button" id="btn-apply-promo" class="promo-btn" disabled>
+                  Aplicar
+                </button>
+              </div>
+              <div class="promo-msg" id="promo-msg" role="status" aria-live="polite"></div>
+            </div>
           </div>
 
           <div class="reg-step__footer">
@@ -315,10 +339,11 @@ const { slug } = Astro.params;
     import confetti from 'canvas-confetti';
     import QRCode from 'qrcode';
 
-    // ── State ──────────────────────────────────────────────────────────────
     let currentStep = 1;
     let registroId: string | null = null;
     let sessionToken: string | null = null;
+    let promoApplied = false;
+    let appliedPromoCode: string | null = null;
     const eventSlug = window.location.pathname.split('/').filter(Boolean).pop()!;
     const LS_KEY = `dotnet_reg_${eventSlug}`;
 
@@ -451,7 +476,6 @@ const { slug } = Astro.params;
 
     checkExistingRegistration();
 
-    // ── Populate left panel from API ───────────────────────────────────────
     const MONTHS_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
     const TYPE_LABEL: Record<string,string> = { taller:'Taller', charla:'Charla', meetup:'Meetup', conference:'Conferencia', workshop:'Workshop', webinar:'Webinar', panel:'Panel' };
     const FORMAT_LABEL: Record<string,string> = { presencial:'Presencial', virtual:'Virtual', hibrido:'Híbrido' };
@@ -490,7 +514,6 @@ const { slug } = Astro.params;
       }
     })();
 
-    // ── DOM refs ───────────────────────────────────────────────────────────
     const progressBar   = document.getElementById('reg-progress-bar') as HTMLDivElement;
     const stepLabel     = document.getElementById('reg-step-label') as HTMLElement;
     const steps         = [1, 2, 3].map(n => document.getElementById(`step-${n}`) as HTMLDivElement);
@@ -510,7 +533,6 @@ const { slug } = Astro.params;
     const uploadZone   = document.getElementById('upload-zone')    as HTMLLabelElement;
     const uploadText   = document.getElementById('upload-text')    as HTMLSpanElement;
 
-    // ── Helpers ────────────────────────────────────────────────────────────
     function showToast(msg: string) {
       toastMsg.textContent = msg;
       toast.classList.add('reg-toast--visible');
@@ -549,7 +571,6 @@ const { slug } = Astro.params;
       }, 280);
     }
 
-    // ── Email blur: check for existing registration (cross-device) ────────
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     fEmail.addEventListener('blur', async () => {
       const email = fEmail.value.trim();
@@ -575,7 +596,6 @@ const { slug } = Astro.params;
       }
     });
 
-    // ── Validation step 1 ─────────────────────────────────────────────────
     function validateStep1(): boolean {
       clearErrors();
       let ok = true;
@@ -595,7 +615,6 @@ const { slug } = Astro.params;
       return ok;
     }
 
-    // ── Step 1 → register & go to step 2 ──────────────────────────────────
     document.getElementById('btn-next-1')!.addEventListener('click', async () => {
       if (!validateStep1()) return;
 
@@ -672,7 +691,6 @@ const { slug } = Astro.params;
       }
     });
 
-    // ── Copy payment data ─────────────────────────────────────────────────
     document.getElementById('btn-copy')!.addEventListener('click', () => {
       const banco   = document.getElementById('pay-banco')!.textContent;
       const tipo    = document.getElementById('pay-tipo')!.textContent;
@@ -692,7 +710,6 @@ const { slug } = Astro.params;
       });
     });
 
-    // ── Copy account number ────────────────────────────────────────────────
     document.getElementById('btn-copy-num')!.addEventListener('click', () => {
       const numero = document.getElementById('pay-numero')!.textContent ?? '';
       navigator.clipboard.writeText(numero).then(() => {
@@ -707,7 +724,6 @@ const { slug } = Astro.params;
       });
     });
 
-    // ── File upload feedback ───────────────────────────────────────────────
     fComprobante.addEventListener('change', () => {
       const file = fComprobante.files?.[0];
       if (!file) return;
@@ -737,10 +753,64 @@ const { slug } = Astro.params;
       }
     });
 
-    // ── Back step 2 → 1 ───────────────────────────────────────────────────
+    const promoInput = document.getElementById('promo-input') as HTMLInputElement;
+    const promoBtn   = document.getElementById('btn-apply-promo') as HTMLButtonElement;
+    const promoMsg   = document.getElementById('promo-msg') as HTMLDivElement;
+    const promoField = document.getElementById('promo-field') as HTMLDivElement;
+
+    promoInput.addEventListener('input', () => {
+      const raw = promoInput.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 6);
+      promoInput.value = raw;
+
+      if (promoApplied) {
+        promoApplied = false;
+        appliedPromoCode = null;
+        promoField.classList.remove('promo-field--success');
+        promoMsg.className = 'promo-msg';
+        promoMsg.textContent = '';
+        document.getElementById('btn-next-2-label')!.textContent = 'He realizado el pago';
+      }
+
+      promoBtn.disabled = raw.length < 6;
+      promoField.classList.toggle('promo-field--active', raw.length > 0 && raw.length < 6);
+    });
+
+    promoBtn.addEventListener('click', async () => {
+      const code = promoInput.value.trim();
+      if (code.length !== 6) return;
+
+      promoBtn.disabled = true;
+      promoBtn.textContent = '';
+      promoBtn.innerHTML = '<svg class="reg-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>';
+      promoField.classList.remove('promo-field--error', 'promo-field--success', 'promo-field--active');
+      promoMsg.className = 'promo-msg';
+      promoMsg.textContent = '';
+
+      const result = await apiService.validatePromoCode(code);
+
+      promoBtn.textContent = 'Aplicar';
+      promoBtn.disabled = false;
+
+      if (result.success && result.data?.valid) {
+        promoApplied = true;
+        appliedPromoCode = code;
+        promoField.classList.add('promo-field--success');
+        promoMsg.className = 'promo-msg promo-msg--success';
+        promoMsg.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>${result.data.message}`;
+        document.getElementById('btn-next-2-label')!.textContent = 'Confirmar registro';
+        promoInput.disabled = true;
+        promoBtn.classList.add('promo-btn--applied');
+      } else {
+        promoField.classList.add('promo-field--error');
+        promoMsg.className = 'promo-msg promo-msg--error';
+        promoMsg.textContent = result.message ?? 'Código no válido o expirado.';
+        promoInput.classList.add('promo-input--shake');
+        setTimeout(() => promoInput.classList.remove('promo-input--shake'), 600);
+      }
+    });
+
     document.getElementById('btn-back-2')!.addEventListener('click', () => goToStep(1));
 
-    // ── Validation step 2 ─────────────────────────────────────────────────
     function validateStep2(): boolean {
       clearErrors();
       if (!fComprobante.files?.[0]) {
@@ -750,8 +820,16 @@ const { slug } = Astro.params;
       return true;
     }
 
-    // ── Step 2 → upload & go to step 3 ────────────────────────────────────
     document.getElementById('btn-next-2')!.addEventListener('click', async () => {
+      if (promoApplied) {
+        const session = JSON.parse(sessionStorage.getItem('reg_session') ?? 'null');
+        const idCorto = session?.idCorto ?? '—';
+        const existingReg = loadRegistration();
+        if (existingReg) saveRegistration({ ...existingReg, comprobanteEnviado: true });
+        sessionStorage.removeItem('reg_session');
+        await showConfirmation(idCorto);
+        return;
+      }
       if (!validateStep2()) return;
 
       // Restore from sessionStorage in case of page refresh
@@ -1461,5 +1539,147 @@ const { slug } = Astro.params;
     clip: rect(0,0,0,0);
     white-space: nowrap;
     border-width: 0;
+  }
+
+  /* ── Promo code ───────────────────────────────────────────────────────────── */
+  .promo-section {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px dashed #ddd6fe;
+    animation: promo-slide-in 0.4s cubic-bezier(.22,.68,0,1.2) both;
+  }
+  @keyframes promo-slide-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .promo-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #1d0448;
+    margin-bottom: 0.625rem;
+    letter-spacing: 0.01em;
+  }
+  .promo-label__optional {
+    font-weight: 400;
+    color: #71717a;
+    font-size: 0.75rem;
+  }
+
+  .promo-field {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+    position: relative;
+  }
+  .promo-field::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 1rem;
+    background: linear-gradient(90deg, #1A3FE8, #7B2FBE, #C2185B);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+  }
+  .promo-field--active::before { opacity: 0.15; }
+  .promo-field--success::before { opacity: 0; }
+
+  .promo-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border: 1.5px solid #c4b5ff;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #100123;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  .promo-input::placeholder {
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: #d4d4d8;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .promo-input:focus {
+    outline: none;
+    border-color: #8b5dff;
+    box-shadow: 0 0 0 3px rgba(139,93,255,0.15), 0 0 12px rgba(139,93,255,0.1);
+  }
+  .promo-field--success .promo-input {
+    border-color: #22C55E;
+    background: #f0fdf4;
+    color: #166534;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+  }
+  .promo-field--error .promo-input {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+  }
+  .promo-input--shake {
+    animation: promo-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes promo-shake {
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(4px); }
+    30%, 50%, 70% { transform: translateX(-6px); }
+    40%, 60% { transform: translateX(6px); }
+  }
+
+  .promo-btn {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    background: #4a08b2;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.18s, opacity 0.18s;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .promo-btn:hover:not(:disabled) { background: #33057a; }
+  .promo-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .promo-btn--applied {
+    background: #166534 !important;
+    pointer-events: none;
+  }
+
+  .promo-msg {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    min-height: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s;
+  }
+  .promo-msg--success {
+    color: #16a34a;
+    animation: promo-fade-up 0.3s ease both;
+  }
+  .promo-msg--error {
+    color: #dc2626;
+  }
+  @keyframes promo-fade-up {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 </style>
