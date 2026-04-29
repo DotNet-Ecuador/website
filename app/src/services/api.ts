@@ -190,6 +190,12 @@ class ApiService {
   async validatePromoCode(code: string): Promise<ApiResponse<PromoCodeValidateResponse>> {
     return this.post<PromoCodeValidateResponse>('/api/v1/promo-codes/validate', { code } as PromoCodeValidateRequest);
   }
+
+  async aplicarPromo(registroId: string, sessionToken: string, promoCode: string): Promise<ApiResponse<void>> {
+    return this.post<void>(`/api/v1/registros/${registroId}/aplicar-promo`, { code: promoCode }, {
+      'X-Session-Token': sessionToken,
+    });
+  }
 }
 
 export const apiService = new ApiService();

@@ -685,6 +685,13 @@ const { slug } = Astro.params;
       sessionStorage.setItem('reg_session', JSON.stringify({ registroId: data.registroId, sessionToken: data.sessionToken, idCorto: data.idCorto }));
 
       if (data.monto === 0 || promoApplied) {
+        if (promoApplied) {
+          const promoRes = await apiService.aplicarPromo(data.registroId, data.sessionToken, appliedPromoCode!);
+          if (!promoRes.success) {
+            showToast(promoRes.message ?? 'Error al aplicar el código promo. Intenta nuevamente.');
+            return;
+          }
+        }
         await showConfirmation(data.idCorto);
       } else {
         await populateStep2(data.idCorto, data.monto);
