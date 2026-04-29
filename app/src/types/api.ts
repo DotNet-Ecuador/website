@@ -199,3 +199,12 @@ export interface EventoAdminRequest {
   activo: boolean;
   datosTransferencia: DatosTransferencia;
 }
+
+export interface PromoCodeValidateRequest {
+  code: string;
+}
+
+export interface PromoCodeValidateResponse {
+  valid: boolean;
+  message: string;
+}
