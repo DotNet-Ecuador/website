@@ -163,6 +163,23 @@ export const SEO_PAGES_CONFIG: Record<string, SEOMetrics> = {
     monthlySearchVolume: 100,
     difficulty: 'low'
   },
+  '/mentorias': {
+    title: 'Mentorías Gratuitas para Desarrolladores .NET Ecuador',
+    description: 'Recibe mentoría gratuita de expertos .NET en Ecuador. Resuelve tus dudas sobre C#, ASP.NET Core, Azure y más. Solicita tu mentoría personalizada hoy.',
+    keywords: [
+      'mentoría .NET Ecuador',
+      'mentor programación C# Ecuador',
+      'aprender ASP.NET gratis',
+      'mentoría desarrolladores Ecuador',
+      'orientación carrera .NET',
+      'mentor gratuito tecnología Ecuador'
+    ],
+    targetCTR: 6,
+    targetPosition: 3,
+    competitorAnalysis: [],
+    monthlySearchVolume: 200,
+    difficulty: 'low'
+  },
   '/nfts': {
     title: 'NFT Collection DotNet Ecuador Developers - First Edition 2026',
     description: 'Explora la colección NFT exclusiva de DotNet Ecuador: 31 arquetipos únicos de desarrolladores .NET en Polygon. First Edition 2026 en OpenSea.',

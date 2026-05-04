@@ -85,8 +85,6 @@ export interface RequestOptions extends RequestInit {
   retryAttempts?: number;
 }
 
-// ─── Evento API (source of truth: MongoDB) ───────────────────────────────────
-
 export interface EventoSpeakerAPI {
   nombre: string;
   rol: string;
@@ -112,8 +110,6 @@ export interface EventoAPI {
   imagen?: string;
   coverImage?: string;
 }
-
-// ─── Event Registration Types ────────────────────────────────────────────────
 
 export interface DatosTransferencia {
   banco: string;
@@ -155,8 +151,6 @@ export interface RecuperarRegistroResponse {
   estado: 'pendiente' | 'pagado' | 'rechazado' | 'cancelado';
   sessionToken: string | null;
 }
-
-// ─── Admin Types ─────────────────────────────────────────────────────────────
 
 export interface AdminRegistro {
   id: string;
@@ -207,4 +201,23 @@ export interface PromoCodeValidateRequest {
 export interface PromoCodeValidateResponse {
   valid: boolean;
   message: string;
+}
+
+export interface InstitucionDto {
+  id: string;
+  nombre: string;
+}
+
+export interface SolicitudMentoriaRequest {
+  nombreCompleto: string;
+  email: string;
+  telefono: string;
+  institucionId: string;
+  otraInstitucion?: string;
+  temaConsulta: string;
+}
+
+export interface SolicitudMentoriaResponse {
+  solicitudId: string;
+  mensaje: string;
 }

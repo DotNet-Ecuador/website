@@ -33,6 +33,9 @@ import type {
   EventoAdminRequest,
   PromoCodeValidateRequest,
   PromoCodeValidateResponse,
+  InstitucionDto,
+  SolicitudMentoriaRequest,
+  SolicitudMentoriaResponse,
 } from '../types/api';
 
 class ApiService {
@@ -195,6 +198,14 @@ class ApiService {
     return this.post<void>(`/api/v1/registros/${registroId}/aplicar-promo`, { code: promoCode }, {
       'X-Session-Token': sessionToken,
     });
+  }
+
+  async getInstituciones(): Promise<ApiResponse<InstitucionDto[]>> {
+    return this.get<InstitucionDto[]>('/api/v1/mentorias/instituciones');
+  }
+
+  async enviarSolicitudMentoria(data: SolicitudMentoriaRequest): Promise<ApiResponse<SolicitudMentoriaResponse>> {
+    return this.post<SolicitudMentoriaResponse>('/api/v1/mentorias/solicitudes', data);
   }
 }
 
