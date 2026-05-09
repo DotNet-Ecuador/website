@@ -154,23 +154,27 @@ export interface RecuperarRegistroResponse {
 
 export interface AdminRegistro {
   id: string;
-  nombre: string;
-  email: string;
-  empresa?: string;
-  cargo?: string;
-  telefono: string;
-  estado: 'pendiente' | 'pagado' | 'rechazado' | 'cancelado';
-  referenciaTransferencia?: string;
-  comprobanteUrl?: string;
   idCorto: string;
-  creadoEn: string;
+  estado: 'pendiente' | 'pagado' | 'rechazado' | 'cancelado';
+  referenciaPago?: string | null;
+  comprobanteUrl?: string | null;
+  notasAdmin?: string | null;
+  registradoEn: string;
+  confirmadoEn?: string | null;
+  nombreAsistente: string;
+  emailAsistente: string;
+  empresaAsistente?: string;
+  cargoAsistente?: string;
 }
 
 export interface AdminListResponse {
-  items: AdminRegistro[];
-  total: number;
+  data: AdminRegistro[];
+  totalCount: number;
   page: number;
   pageSize: number;
+  totalPages?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
 }
 
 export interface LoginRequest {

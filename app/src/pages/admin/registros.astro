@@ -118,7 +118,7 @@ import { EVENT_SLUGS } from '../../data/events';
               <th>Nombre</th>
               <th>Email</th>
               <th>Empresa</th>
-              <th>Teléfono</th>
+              <th>Cargo</th>
               <th>Estado</th>
               <th>Referencia</th>
               <th>Comprobante</th>
@@ -281,12 +281,12 @@ import { EVENT_SLUGS } from '../../data/events';
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><code class="adm-code">${r.idCorto}</code></td>
-          <td>${r.nombre}</td>
-          <td class="adm-td-email">${r.email}</td>
-          <td>${r.empresa ?? '—'}</td>
-          <td>${r.telefono}</td>
+          <td>${r.nombreAsistente || '—'}</td>
+          <td class="adm-td-email">${r.emailAsistente || '—'}</td>
+          <td>${r.empresaAsistente || '—'}</td>
+          <td>${r.cargoAsistente || '—'}</td>
           <td><span class="adm-badge ${badgeClass(r.estado)}">${badgeLabel(r.estado)}</span></td>
-          <td>${r.referenciaTransferencia ?? '—'}</td>
+          <td>${r.referenciaPago ?? '—'}</td>
           <td>${r.comprobanteUrl
             ? `<button class="adm-link" data-comprobante="${r.comprobanteUrl}">Ver</button>`
             : '—'
@@ -352,7 +352,7 @@ import { EVENT_SLUGS } from '../../data/events';
         return;
       }
 
-      allRegistros = result.data?.items ?? [];
+      allRegistros = result.data?.data ?? [];
       updateStats(allRegistros);
       renderRows(allRegistros);
       setLoading(false);
