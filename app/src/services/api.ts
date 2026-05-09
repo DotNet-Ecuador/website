@@ -173,6 +173,20 @@ class ApiService {
     });
   }
 
+  async eliminarRegistro(registroId: string, jwt: string): Promise<ApiResponse<void>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/v1/admin/eventos/registros/${registroId}`, {
+        method: 'DELETE',
+        headers: { 'Accept': 'application/json', Authorization: `Bearer ${jwt}` },
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(this.errorMessage(result, response.status));
+      return { success: true, message: result.message };
+    } catch (error) {
+      return { success: false, message: error instanceof Error ? error.message : 'Error inesperado' };
+    }
+  }
+
   async exportarCSV(eventoId: string, jwt: string): Promise<Blob> {
     const response = await fetch(
       `${this.baseUrl}/api/v1/admin/eventos/registros/exportar?eventoId=${eventoId}`,
