@@ -227,21 +227,17 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
   import { apiService } from '../../services/api';
   import type { AdminRegistro } from '../../types/api';
 
-  // ── Auth guard ──────────────────────────────────────────────────────────
   const jwt = sessionStorage.getItem('adminJwt');
   if (!jwt) window.location.replace('/admin');
 
-  // ── Constants ────────────────────────────────────────────────────────────
   const PAGE_SIZE = 20;
 
-  // ── State ────────────────────────────────────────────────────────────────
   let currentEventoId: string | null = null;
   let pendingRejectId: string | null = null;
   let allRegistros: AdminRegistro[]      = [];
   let filteredRegistros: AdminRegistro[] = [];
   let currentPage = 1;
 
-  // ── DOM refs ─────────────────────────────────────────────────────────────
   const filterEvento  = document.getElementById('filter-evento') as HTMLSelectElement;
   const filterEstado  = document.getElementById('filter-estado') as HTMLSelectElement;
   const searchInput   = document.getElementById('search-input') as HTMLInputElement;
@@ -261,15 +257,12 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
   const imgDownload   = document.getElementById('img-download') as HTMLAnchorElement;
   const createEventOverlay = document.getElementById('create-event-overlay')!;
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
   const storageBase   = ((window as any).__storageBase as string ?? '').replace(/\/$/, '');
   const AVATAR_COLORS = ['#5b21b6','#0369a1','#0f766e','#b45309','#be185d','#7c3aed','#1d4ed8'];
 
   function comprobanteFullUrl(raw: string): string {
     if (!raw) return '';
-    // Already absolute
     if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
-    // Prepend configured storage base, falling back to API base
     const base = storageBase || (import.meta.env.PUBLIC_API_BASE_URL ?? '').replace(/\/$/, '');
     return `${base}/${raw}`;
   }
@@ -329,7 +322,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     document.getElementById('stat-rechazado')!.textContent = String(rechazado);
   }
 
-  // ── Render table page ────────────────────────────────────────────────────
   function renderPage() {
     const start = (currentPage - 1) * PAGE_SIZE;
     const page  = filteredRegistros.slice(start, start + PAGE_SIZE);
@@ -386,7 +378,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
       tbody.appendChild(tr);
     });
 
-    // Wire buttons
     tbody.querySelectorAll<HTMLButtonElement>('[data-aprobar]').forEach(b =>
       b.addEventListener('click', () => handleAprobar(b.dataset.aprobar!)));
     tbody.querySelectorAll<HTMLButtonElement>('[data-rechazar]').forEach(b =>
@@ -399,7 +390,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     renderPagination();
   }
 
-  // ── Pagination ────────────────────────────────────────────────────────────
   function renderPagination() {
     const total = filteredRegistros.length;
     const pages = Math.ceil(total / PAGE_SIZE);
@@ -445,7 +435,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     return [1, '…', current-1, current, current+1, '…', total];
   }
 
-  // ── Apply filters & search ────────────────────────────────────────────────
   function applyFilters() {
     const q      = searchInput.value.trim().toLowerCase();
     const estado = filterEstado.value;
@@ -466,7 +455,33 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     renderPage();
   }
 
-  // ── Load registros ────────────────────────────────────────────────────────
+  async function fetchAllPages(eventoId?: string): Promise<AdminRegistro[] | null> {
+    const collected: AdminRegistro[] = [];
+    let page = 1;
+
+    while (true) {
+      const res = await apiService.getAdminRegistros(jwt!, { eventoId, pageSize: 100, page });
+
+      if (!res.success) {
+        if (res.message?.includes('401') || res.message?.includes('403') || res.message?.toLowerCase().includes('unauthorized')) {
+          sessionStorage.removeItem('adminJwt');
+          window.location.replace('/admin');
+          return null;
+        }
+        showError(res.message ?? 'Error al cargar registros.');
+        return null;
+      }
+
+      const batch = res.data?.data ?? [];
+      collected.push(...batch);
+
+      if (!res.data?.hasNextPage || batch.length === 0) break;
+      page++;
+    }
+
+    return collected;
+  }
+
   async function loadRegistros() {
     setState('loading');
 
@@ -480,23 +495,8 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     }
     if (!selectedSlug) currentEventoId = null;
 
-    const result = await apiService.getAdminRegistros(jwt!, {
-      eventoId: currentEventoId ?? undefined,
-      pageSize: 1000,
-    });
-
-    if (!result.success) {
-      if (result.message?.includes('401') || result.message?.includes('403') || result.message?.toLowerCase().includes('unauthorized')) {
-        sessionStorage.removeItem('adminJwt');
-        window.location.replace('/admin');
-        return;
-      }
-      showError(result.message ?? 'Error al cargar registros.');
-      return;
-    }
-
-    const items = result.data?.data ?? [];
-    // Sort newest first
+    const items = await fetchAllPages(currentEventoId ?? undefined);
+    if (items === null) return;
     allRegistros = [...items].sort((a, b) =>
       new Date(b.registradoEn).getTime() - new Date(a.registradoEn).getTime()
     );
@@ -505,7 +505,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     applyFilters();
   }
 
-  // ── Actions ───────────────────────────────────────────────────────────────
   async function handleAprobar(id: string) {
     if (!confirm('¿Aprobar este pago?')) return;
     const res = await apiService.aprobarRegistro(id, jwt!);
@@ -533,7 +532,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     imgOverlay.classList.remove('hidden');
   }
 
-  // ── Reject modal wiring ───────────────────────────────────────────────────
   document.getElementById('reject-cancel')!.addEventListener('click', () => {
     rejectOverlay.classList.add('hidden');
     pendingRejectId = null;
@@ -554,11 +552,9 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     if (e.target === rejectOverlay) { rejectOverlay.classList.add('hidden'); pendingRejectId = null; }
   });
 
-  // ── Img modal wiring ──────────────────────────────────────────────────────
   document.getElementById('img-close')!.addEventListener('click', () => imgOverlay.classList.add('hidden'));
   imgOverlay.addEventListener('click', e => { if (e.target === imgOverlay) imgOverlay.classList.add('hidden'); });
 
-  // ── Export CSV ────────────────────────────────────────────────────────────
   document.getElementById('btn-exportar')!.addEventListener('click', async () => {
     if (!currentEventoId) { alert('Selecciona un evento para exportar.'); return; }
     try {
@@ -572,7 +568,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     } catch { alert('Error al exportar CSV.'); }
   });
 
-  // ── Create event modal ────────────────────────────────────────────────────
   document.getElementById('btn-show-create-event')!.addEventListener('click', () =>
     createEventOverlay.classList.remove('hidden'));
 
@@ -626,7 +621,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     alert(`Evento creado. Recuerda agregar el slug "${data.slug}" a src/data/events.ts.`);
   });
 
-  // ── Populate event dropdown ───────────────────────────────────────────────
   (async () => {
     const slugs: string[] = (window as any).__eventSlugs ?? [];
     const results = await Promise.all(slugs.map(s => apiService.getEvento(s)));
@@ -639,7 +633,6 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     });
   })();
 
-  // ── Event listeners ───────────────────────────────────────────────────────
   filterEvento.addEventListener('change', () => { currentEventoId = null; loadRegistros(); });
   filterEstado.addEventListener('change', applyFilters);
   document.getElementById('btn-refresh')!.addEventListener('click', loadRegistros);
