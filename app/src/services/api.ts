@@ -31,6 +31,8 @@ import type {
   LoginRequest,
   LoginResponse,
   EventoAdminRequest,
+  EventoUpdateRequest,
+  EventoAPI,
   PromoCodeValidateRequest,
   PromoCodeValidateResponse,
   InstitucionDto,
@@ -68,6 +70,21 @@ class ApiService {
     try {
       const response = await fetch(`${this.baseUrl}${path}`, {
         headers: { 'Accept': 'application/json', ...headers },
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(this.errorMessage(result, response.status));
+      return { success: true, data: result.data ?? result, message: result.message };
+    } catch (error) {
+      return { success: false, message: error instanceof Error ? error.message : 'Error inesperado' };
+    }
+  }
+
+  private async put<T>(path: string, body: unknown, headers?: Record<string, string>): Promise<ApiResponse<T>> {
+    try {
+      const response = await fetch(`${this.baseUrl}${path}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', ...headers },
+        body: JSON.stringify(body),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(this.errorMessage(result, response.status));
@@ -196,12 +213,30 @@ class ApiService {
     return response.blob();
   }
 
-  async getAdminEventos(jwt: string): Promise<ApiResponse<any[]>> {
-    return this.get('/api/v1/admin/eventos', { Authorization: `Bearer ${jwt}` });
+  async getAdminEventos(jwt: string): Promise<ApiResponse<EventoAPI[]>> {
+    return this.get<EventoAPI[]>('/api/v1/admin/eventos', { Authorization: `Bearer ${jwt}` });
   }
 
-  async crearEvento(data: EventoAdminRequest, jwt: string): Promise<ApiResponse<any>> {
-    return this.post('/api/v1/admin/eventos', data, { Authorization: `Bearer ${jwt}` });
+  async crearEvento(data: EventoAdminRequest, jwt: string): Promise<ApiResponse<EventoAPI>> {
+    return this.post<EventoAPI>('/api/v1/admin/eventos', data, { Authorization: `Bearer ${jwt}` });
+  }
+
+  async actualizarEvento(slug: string, data: EventoUpdateRequest, jwt: string): Promise<ApiResponse<EventoAPI>> {
+    return this.put<EventoAPI>(`/api/v1/admin/eventos/${slug}`, data, { Authorization: `Bearer ${jwt}` });
+  }
+
+  async eliminarEvento(slug: string, jwt: string): Promise<ApiResponse<void>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/v1/admin/eventos/${slug}`, {
+        method: 'DELETE',
+        headers: { 'Accept': 'application/json', Authorization: `Bearer ${jwt}` },
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(this.errorMessage(result, response.status));
+      return { success: true, message: result.message };
+    } catch (error) {
+      return { success: false, message: error instanceof Error ? error.message : 'Error inesperado' };
+    }
   }
 
   async validatePromoCode(code: string): Promise<ApiResponse<PromoCodeValidateResponse>> {

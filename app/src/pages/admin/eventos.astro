@@ -1,0 +1,1479 @@
+---
+import logo from '../../assets/dotnet_logo.png';
+import '../../assets/styles/base.css';
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Eventos — DotNet Ecuador</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src={logo.src} alt="DotNet Ecuador" height="26" />
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/admin/registros" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Registrados
+      </a>
+      <a href="/admin/eventos" class="nav-item nav-item--active">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Eventos
+      </a>
+    </nav>
+    <button type="button" class="logout-btn" id="btn-logout">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Cerrar sesión
+    </button>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Eventos</h1>
+        <p class="page-sub">Gestiona los eventos de la comunidad</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-ghost" id="btn-refresh">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Actualizar
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-new">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo evento
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-val" id="stat-total">—</span>
+        <span class="stat-key">Total</span>
+      </div>
+      <div class="stat-card stat-card--green">
+        <span class="stat-val" id="stat-activos">—</span>
+        <span class="stat-key">Activos</span>
+      </div>
+      <div class="stat-card stat-card--gray">
+        <span class="stat-val" id="stat-inactivos">—</span>
+        <span class="stat-key">Inactivos</span>
+      </div>
+      <div class="stat-card stat-card--purple">
+        <span class="stat-val" id="stat-speakers">—</span>
+        <span class="stat-key">Con speakers</span>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Buscar por nombre o slug…" autocomplete="off" />
+      </div>
+      <select id="filter-tipo" class="filter-select" aria-label="Filtrar por tipo">
+        <option value="">Todos los tipos</option>
+        <option value="meetup">Meetup</option>
+        <option value="taller">Taller</option>
+        <option value="workshop">Workshop</option>
+        <option value="conference">Conferencia</option>
+        <option value="webinar">Webinar</option>
+      </select>
+      <select id="filter-formato" class="filter-select" aria-label="Filtrar por formato">
+        <option value="">Todos los formatos</option>
+        <option value="presencial">Presencial</option>
+        <option value="virtual">Virtual</option>
+        <option value="hibrido">Híbrido</option>
+      </select>
+      <select id="filter-activo" class="filter-select" aria-label="Filtrar por estado">
+        <option value="">Todos</option>
+        <option value="activo">Activos</option>
+        <option value="inactivo">Inactivos</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div id="state-loading" class="state-box">
+        <svg class="spin" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        <span>Cargando eventos…</span>
+      </div>
+      <div id="state-empty" class="state-box hidden">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#c4b5fd"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <p style="margin:0;font-weight:600;color:#3f3f46">Sin eventos</p>
+        <p style="margin:0;font-size:.8125rem;color:#a1a1aa">No hay resultados para los filtros aplicados.</p>
+      </div>
+      <div id="state-error" class="state-box state-box--error hidden" role="alert">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="error-text"></span>
+      </div>
+      <table class="data-table hidden" id="data-table">
+        <thead>
+          <tr>
+            <th class="col-evento">Evento</th>
+            <th class="col-fecha">Fecha</th>
+            <th class="col-lugar">Lugar</th>
+            <th class="col-precio">Precio</th>
+            <th class="col-cap">Capacidad</th>
+            <th class="col-tipo">Tipo / Formato</th>
+            <th class="col-estado">Estado</th>
+            <th class="col-actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination-bar hidden" id="pagination-bar">
+      <span class="pagination-info" id="pagination-info"></span>
+      <div class="pagination-controls" id="pagination-controls"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── Modal: eliminar ── -->
+<div class="overlay hidden" id="delete-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-title">
+  <div class="modal modal--delete">
+    <div class="delete-icon-wrap">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </div>
+    <h2 class="modal-title" id="delete-title" style="text-align:center">Eliminar evento</h2>
+    <p class="modal-sub" id="delete-sub" style="text-align:center"></p>
+    <div class="modal-footer" style="justify-content:center">
+      <button type="button" class="btn btn-ghost" id="delete-cancel">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="delete-confirm">
+        <span id="delete-confirm-label">Eliminar</span>
+        <span id="delete-confirm-spinner" class="hidden"><svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Drawer: crear / editar ── -->
+<div class="drawer-overlay hidden" id="drawer-overlay" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+  <div class="drawer" id="drawer">
+
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-title" id="drawer-title">Crear evento</h2>
+        <p class="drawer-sub" id="drawer-sub">Completa los campos del nuevo evento</p>
+      </div>
+      <button type="button" class="modal-close" id="drawer-close" aria-label="Cerrar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <form id="evento-form" novalidate>
+
+        <!-- ── Sección: Info básica ── -->
+        <div class="form-section">
+          <p class="form-section-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Info básica
+          </p>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label" for="f-slug">Slug <span class="field-req">*</span></label>
+              <input type="text" id="f-slug" name="slug" required maxlength="80" placeholder="mi-evento-mes-año" class="field-input" autocomplete="off" />
+              <span class="field-hint">Solo letras minúsculas, números y guiones. No se puede cambiar después.</span>
+              <span class="field-error" id="err-slug"></span>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-nombre">Nombre <span class="field-req">*</span></label>
+              <input type="text" id="f-nombre" name="nombre" required maxlength="120" class="field-input" />
+              <span class="field-error" id="err-nombre"></span>
+            </div>
+            <div class="field field--full">
+              <label class="field-label" for="f-descripcion">Descripción</label>
+              <textarea id="f-descripcion" name="descripcion" rows="4" maxlength="2000" class="modal-textarea modal-textarea--sm"></textarea>
+              <div class="field-hint" style="display:flex;justify-content:flex-end"><span id="desc-count">0</span>/2000</div>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-tipo">Tipo</label>
+              <select id="f-tipo" name="tipo" class="field-select">
+                <option value="">— selecciona —</option>
+                <option value="meetup">Meetup</option>
+                <option value="taller">Taller</option>
+                <option value="workshop">Workshop</option>
+                <option value="conference">Conferencia</option>
+                <option value="webinar">Webinar</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-subtipo">Subtipo <span class="field-opt">(opc.)</span></label>
+              <input type="text" id="f-subtipo" name="subtipo" maxlength="60" placeholder="Ej: Taller Hands-On" class="field-input" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-formato">Formato</label>
+              <select id="f-formato" name="formato" class="field-select">
+                <option value="">— selecciona —</option>
+                <option value="presencial">Presencial</option>
+                <option value="virtual">Virtual</option>
+                <option value="hibrido">Híbrido</option>
+              </select>
+            </div>
+            <div class="field field--full">
+              <label class="field-label">Tags <span class="field-opt">(opc. · máx. 10)</span></label>
+              <div class="tags-input-wrap" id="tags-wrap">
+                <input type="text" id="tags-input-field" class="tags-input-field" placeholder="Escribe y presiona Enter…" maxlength="30" autocomplete="off" />
+              </div>
+              <span class="field-hint">Presiona <kbd>Enter</kbd> o <kbd>,</kbd> para agregar un tag.</span>
+              <span class="field-error" id="err-tags"></span>
+            </div>
+            <div class="field toggles-row">
+              <div class="toggle-wrap">
+                <label class="toggle" for="f-networking">
+                  <input type="checkbox" id="f-networking" name="networking" />
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Networking</span>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle" for="f-activo">
+                  <input type="checkbox" id="f-activo" name="activo" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Activo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Sección: Fecha y lugar ── -->
+        <div class="form-section">
+          <p class="form-section-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Fecha y lugar
+          </p>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label" for="f-fechaEvento">Fecha de inicio</label>
+              <input type="datetime-local" id="f-fechaEvento" name="fechaEvento" class="field-input" />
+              <span class="field-error" id="err-fechaEvento"></span>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-fechaFin">Fecha de fin</label>
+              <input type="datetime-local" id="f-fechaFin" name="fechaFin" class="field-input" />
+              <span class="field-error" id="err-fechaFin"></span>
+            </div>
+            <div class="field field--full">
+              <label class="field-label" for="f-lugar">Lugar</label>
+              <input type="text" id="f-lugar" name="lugar" maxlength="200" placeholder="Ej: Quito, Hub Co-work" class="field-input" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Sección: Precio y capacidad ── -->
+        <div class="form-section">
+          <p class="form-section-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Precio y capacidad
+          </p>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label" for="f-precio">Precio ($) <span class="field-opt">(0 = gratis)</span></label>
+              <input type="number" id="f-precio" name="precio" min="0" step="0.01" placeholder="0.00" class="field-input" />
+              <span class="field-error" id="err-precio"></span>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-capacidad">Capacidad máxima</label>
+              <input type="number" id="f-capacidad" name="capacidadMaxima" min="1" max="10000" step="1" placeholder="40" class="field-input" />
+              <span class="field-error" id="err-capacidad"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Sección: Imágenes y enlaces ── -->
+        <div class="form-section">
+          <p class="form-section-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Imágenes y enlaces
+          </p>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label" for="f-imagen">URL imagen <span class="field-opt">(opc.)</span></label>
+              <input type="url" id="f-imagen" name="imagen" placeholder="https://…" class="field-input" />
+              <span class="field-error" id="err-imagen"></span>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-coverImage">URL portada <span class="field-opt">(opc.)</span></label>
+              <input type="url" id="f-coverImage" name="coverImage" placeholder="https://…" class="field-input" />
+              <span class="field-error" id="err-coverImage"></span>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-registroUrl">URL registro externo <span class="field-opt">(opc.)</span></label>
+              <input type="url" id="f-registroUrl" name="registroUrl" placeholder="https://…" class="field-input" />
+              <span class="field-error" id="err-registroUrl"></span>
+            </div>
+            <div class="field">
+              <label class="field-label" for="f-hostedBy">Organizado por <span class="field-opt">(opc.)</span></label>
+              <input type="text" id="f-hostedBy" name="hostedBy" maxlength="100" class="field-input" />
+            </div>
+            <div class="field field--full">
+              <label class="field-label" for="f-partnerEvento">Partner del evento <span class="field-opt">(opc.)</span></label>
+              <input type="text" id="f-partnerEvento" name="partnerEvento" maxlength="100" class="field-input" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Sección: Speakers ── -->
+        <div class="form-section">
+          <p class="form-section-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Speakers
+          </p>
+          <div class="speaker-list" id="speaker-list"></div>
+          <button type="button" class="btn-add-speaker" id="btn-add-speaker">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar speaker
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="drawer-footer">
+      <div id="drawer-error" class="inline-error hidden" style="flex:1;margin-right:.5rem"></div>
+      <button type="button" class="btn btn-ghost" id="drawer-cancel">Cancelar</button>
+      <button type="submit" form="evento-form" class="btn btn-primary" id="drawer-submit">
+        <span id="drawer-submit-label">Crear evento</span>
+        <span id="drawer-submit-spinner" class="hidden">
+          <svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        </span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Toast container ── -->
+<div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+<script>
+  import { apiService } from '../../services/api';
+  import type { EventoAPI, EventoSpeakerAPI, EventoUpdateRequest } from '../../types/api';
+
+  const jwt = sessionStorage.getItem('adminJwt');
+  if (!jwt) window.location.replace('/admin');
+
+  const PAGE_SIZE = 10;
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  let allEventos: EventoAPI[]      = [];
+  let filteredEventos: EventoAPI[] = [];
+  let currentPage = 1;
+  let drawerMode: 'create' | 'edit' = 'create';
+  let editingSlug: string | null    = null;
+  let pendingDeleteSlug: string | null = null;
+  let currentTags: string[]   = [];
+  let speakerCount = 0;
+
+  // ── DOM refs ───────────────────────────────────────────────────────────────
+  const searchInput   = document.getElementById('search-input')   as HTMLInputElement;
+  const filterTipo    = document.getElementById('filter-tipo')    as HTMLSelectElement;
+  const filterFormato = document.getElementById('filter-formato') as HTMLSelectElement;
+  const filterActivo  = document.getElementById('filter-activo')  as HTMLSelectElement;
+  const stateLoading  = document.getElementById('state-loading')!;
+  const stateEmpty    = document.getElementById('state-empty')!;
+  const stateError    = document.getElementById('state-error')!;
+  const errorText     = document.getElementById('error-text')!;
+  const table         = document.getElementById('data-table')!;
+  const tbody         = document.getElementById('tbody')!;
+  const paginationBar = document.getElementById('pagination-bar')!;
+  const paginationInfo= document.getElementById('pagination-info')!;
+  const paginationCtrl= document.getElementById('pagination-controls')!;
+  const deleteOverlay = document.getElementById('delete-overlay')!;
+  const drawerOverlay = document.getElementById('drawer-overlay')!;
+  const drawer        = document.getElementById('drawer')!;
+  const drawerTitle   = document.getElementById('drawer-title')!;
+  const drawerSub     = document.getElementById('drawer-sub')!;
+  const drawerError   = document.getElementById('drawer-error')!;
+  const drawerSubmitLabel   = document.getElementById('drawer-submit-label')!;
+  const drawerSubmitSpinner = document.getElementById('drawer-submit-spinner')!;
+  const drawerSubmitBtn     = document.getElementById('drawer-submit') as HTMLButtonElement;
+  const speakerListEl = document.getElementById('speaker-list')!;
+  const tagsWrap      = document.getElementById('tags-wrap')!;
+  const tagsInputField= document.getElementById('tags-input-field') as HTMLInputElement;
+  const descTextarea  = document.getElementById('f-descripcion') as HTMLTextAreaElement;
+  const descCount     = document.getElementById('desc-count')!;
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function fmtDate(iso: string | null | undefined): string {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('es-EC', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function fmtPrecio(precio: number | undefined): string {
+    if (precio === undefined || precio === null) return '—';
+    return precio === 0 ? 'Gratis' : `$${precio.toFixed(2)}`;
+  }
+
+  function fmtCap(cupos: number | undefined, max: number | undefined): string {
+    if (!max) return '—';
+    if (cupos !== undefined && cupos !== null) return `${cupos} / ${max}`;
+    return String(max);
+  }
+
+  function tipoBadge(tipo: string | undefined): string {
+    if (!tipo) return '';
+    const colors: Record<string, string> = {
+      meetup: 'badge--blue', taller: 'badge--purple', workshop: 'badge--purple',
+      conference: 'badge--indigo', webinar: 'badge--teal',
+    };
+    return `<span class="badge ${colors[tipo] ?? 'badge--gray'}">${tipo}</span>`;
+  }
+
+  function formatoBadge(formato: string | undefined): string {
+    if (!formato) return '';
+    const colors: Record<string, string> = {
+      presencial: 'badge--green', virtual: 'badge--sky', hibrido: 'badge--amber',
+    };
+    const labels: Record<string, string> = { hibrido: 'Híbrido' };
+    return `<span class="badge ${colors[formato] ?? 'badge--gray'}">${labels[formato] ?? formato}</span>`;
+  }
+
+  function toDatetimeLocal(iso: string | undefined): string {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  function toISOOrNull(val: string): string | null {
+    if (!val) return null;
+    return new Date(val).toISOString();
+  }
+
+  function isValidUrl(url: string): boolean {
+    if (!url) return true;
+    try { const u = new URL(url); return u.protocol === 'http:' || u.protocol === 'https:'; }
+    catch { return false; }
+  }
+
+  function isValidSlug(slug: string): boolean {
+    return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
+  }
+
+  // ── State management ───────────────────────────────────────────────────────
+  function setState(s: 'loading' | 'empty' | 'error' | 'data') {
+    stateLoading.classList.toggle('hidden', s !== 'loading');
+    stateEmpty.classList.toggle('hidden',   s !== 'empty');
+    stateError.classList.toggle('hidden',   s !== 'error');
+    table.classList.toggle('hidden',        s !== 'data');
+    paginationBar.classList.toggle('hidden', s !== 'data');
+  }
+
+  function updateStats(items: EventoAPI[]) {
+    document.getElementById('stat-total')!.textContent    = String(items.length);
+    document.getElementById('stat-activos')!.textContent  = String(items.filter(e => e.activo).length);
+    document.getElementById('stat-inactivos')!.textContent= String(items.filter(e => !e.activo).length);
+    document.getElementById('stat-speakers')!.textContent = String(items.filter(e => (e.speakers?.length ?? 0) > 0).length);
+  }
+
+  // ── Filters ────────────────────────────────────────────────────────────────
+  function applyFilters() {
+    const q      = searchInput.value.trim().toLowerCase();
+    const tipo   = filterTipo.value;
+    const formato= filterFormato.value;
+    const activo = filterActivo.value;
+
+    filteredEventos = allEventos.filter(e => {
+      if (tipo   && e.tipo   !== tipo)   return false;
+      if (formato && e.formato !== formato) return false;
+      if (activo === 'activo'  && !e.activo) return false;
+      if (activo === 'inactivo' && e.activo) return false;
+      if (q) {
+        const hay = `${e.nombre} ${e.slug}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+
+    currentPage = 1;
+    if (filteredEventos.length === 0) { setState('empty'); return; }
+    setState('data');
+    renderPage();
+  }
+
+  // ── Table render ───────────────────────────────────────────────────────────
+  function renderPage() {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const page  = filteredEventos.slice(start, start + PAGE_SIZE);
+
+    tbody.innerHTML = '';
+    page.forEach((e, i) => {
+      const tr = document.createElement('tr');
+      tr.className = 'row-animate';
+      tr.style.animationDelay = `${i * 35}ms`;
+      tr.dataset.slug = e.slug;
+
+      tr.innerHTML = `
+        <td class="col-evento">
+          <div class="evento-cell">
+            <span class="evento-nombre">${e.nombre}</span>
+            <code class="slug-code">${e.slug}</code>
+            ${(e.tags?.length ?? 0) > 0 ? `<div class="tag-row">${e.tags!.slice(0,3).map(t => `<span class="tag-mini">${t}</span>`).join('')}${e.tags!.length > 3 ? `<span class="tag-mini tag-mini--more">+${e.tags!.length-3}</span>` : ''}</div>` : ''}
+          </div>
+        </td>
+        <td class="col-fecha">${fmtDate(e.fechaEvento)}</td>
+        <td class="col-lugar"><span class="cell-truncate">${e.lugar || '—'}</span></td>
+        <td class="col-precio">${fmtPrecio(e.precio)}</td>
+        <td class="col-cap">${fmtCap(e.cuposDisponibles, e.capacidadMaxima)}</td>
+        <td class="col-tipo">
+          <div style="display:flex;flex-direction:column;gap:.25rem;align-items:flex-start">
+            ${tipoBadge(e.tipo)}
+            ${formatoBadge(e.formato)}
+          </div>
+        </td>
+        <td class="col-estado">
+          ${e.activo
+            ? '<span class="badge badge--green">Activo</span>'
+            : '<span class="badge badge--gray">Inactivo</span>'}
+        </td>
+        <td class="col-actions">
+          <div class="action-group">
+            <button class="icon-btn icon-btn--blue" data-edit="${e.slug}" title="Editar evento">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="icon-btn icon-btn--red" data-delete="${e.slug}" data-nombre="${e.nombre}" title="Eliminar evento">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll<HTMLButtonElement>('[data-edit]').forEach(b =>
+      b.addEventListener('click', () => openEditDrawer(b.dataset.edit!)));
+    tbody.querySelectorAll<HTMLButtonElement>('[data-delete]').forEach(b =>
+      b.addEventListener('click', () => openDeleteModal(b.dataset.delete!, b.dataset.nombre!)));
+
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const total = filteredEventos.length;
+    const pages = Math.ceil(total / PAGE_SIZE);
+    const start = (currentPage - 1) * PAGE_SIZE + 1;
+    const end   = Math.min(currentPage * PAGE_SIZE, total);
+    paginationInfo.textContent = total === 0 ? '' : `Mostrando ${start}–${end} de ${total} eventos`;
+    paginationCtrl.innerHTML = '';
+    if (pages <= 1) return;
+    const mkBtn = (label: string, page: number, disabled = false, active = false) => {
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.textContent = label;
+      btn.className = `page-btn${active ? ' page-btn--active' : ''}`;
+      btn.disabled = disabled;
+      btn.addEventListener('click', () => { currentPage = page; renderPage(); });
+      return btn;
+    };
+    paginationCtrl.appendChild(mkBtn('←', currentPage - 1, currentPage === 1));
+    const range: (number | '…')[] = pages <= 7
+      ? Array.from({ length: pages }, (_, i) => i + 1)
+      : currentPage <= 4 ? [1,2,3,4,5,'…',pages]
+      : currentPage >= pages-3 ? [1,'…',pages-4,pages-3,pages-2,pages-1,pages]
+      : [1,'…',currentPage-1,currentPage,currentPage+1,'…',pages];
+    range.forEach(p => {
+      if (p === '…') {
+        const el = document.createElement('span'); el.className = 'page-ellipsis'; el.textContent = '…';
+        paginationCtrl.appendChild(el);
+      } else { paginationCtrl.appendChild(mkBtn(String(p), p, false, p === currentPage)); }
+    });
+    paginationCtrl.appendChild(mkBtn('→', currentPage + 1, currentPage === pages));
+  }
+
+  // ── Load ───────────────────────────────────────────────────────────────────
+  async function loadEventos() {
+    setState('loading');
+    const res = await apiService.getAdminEventos(jwt!);
+    if (!res.success) {
+      if (res.message?.includes('401') || res.message?.includes('403') || res.message?.toLowerCase().includes('unauthorized')) {
+        sessionStorage.removeItem('adminJwt'); window.location.replace('/admin'); return;
+      }
+      errorText.textContent = res.message ?? 'Error al cargar eventos.';
+      setState('error'); return;
+    }
+    allEventos = (Array.isArray(res.data) ? res.data : []).sort((a, b) =>
+      (b.fechaEvento ?? '').localeCompare(a.fechaEvento ?? ''));
+    updateStats(allEventos);
+    applyFilters();
+  }
+
+  // ── Tags ───────────────────────────────────────────────────────────────────
+  function renderTags() {
+    tagsWrap.querySelectorAll('.tag-chip').forEach(c => c.remove());
+    currentTags.forEach(tag => {
+      const chip = document.createElement('span');
+      chip.className = 'tag-chip';
+      chip.innerHTML = `${tag}<button type="button" class="tag-chip-remove" aria-label="Quitar ${tag}">×</button>`;
+      chip.querySelector('button')!.addEventListener('click', () => removeTag(tag));
+      tagsWrap.insertBefore(chip, tagsInputField);
+    });
+  }
+
+  function addTag(raw: string) {
+    const tag = raw.trim().toLowerCase().replace(/,/g, '');
+    if (!tag || currentTags.includes(tag) || currentTags.length >= 10 || tag.length > 30) return;
+    currentTags.push(tag);
+    renderTags();
+    clearFieldError('err-tags');
+  }
+
+  function removeTag(tag: string) {
+    currentTags = currentTags.filter(t => t !== tag);
+    renderTags();
+  }
+
+  tagsInputField.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addTag(tagsInputField.value);
+      tagsInputField.value = '';
+    }
+    if (e.key === 'Backspace' && !tagsInputField.value && currentTags.length > 0) {
+      removeTag(currentTags[currentTags.length - 1]);
+    }
+  });
+  tagsInputField.addEventListener('blur', () => {
+    if (tagsInputField.value.trim()) { addTag(tagsInputField.value); tagsInputField.value = ''; }
+  });
+  tagsWrap.addEventListener('click', () => tagsInputField.focus());
+
+  // ── Speakers ───────────────────────────────────────────────────────────────
+  function addSpeakerRow(speaker?: EventoSpeakerAPI) {
+    const idx = speakerCount++;
+    const row = document.createElement('div');
+    row.className = 'speaker-row';
+    row.dataset.idx = String(idx);
+    row.innerHTML = `
+      <div class="field">
+        <label class="field-label">Nombre <span class="field-req">*</span></label>
+        <input type="text" name="sp-nombre-${idx}" maxlength="100" class="field-input" value="${speaker?.nombre ?? ''}" />
+        <span class="field-error" id="err-sp-nombre-${idx}"></span>
+      </div>
+      <div class="field">
+        <label class="field-label">Rol <span class="field-req">*</span></label>
+        <input type="text" name="sp-rol-${idx}" maxlength="100" class="field-input" value="${speaker?.rol ?? ''}" />
+        <span class="field-error" id="err-sp-rol-${idx}"></span>
+      </div>
+      <button type="button" class="speaker-remove" data-remove="${idx}" aria-label="Quitar speaker">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="field field--full">
+        <label class="field-label">Avatar URL <span class="field-opt">(opc.)</span></label>
+        <input type="url" name="sp-avatar-${idx}" class="field-input" placeholder="https://…" value="${speaker?.avatar ?? ''}" />
+        <span class="field-error" id="err-sp-avatar-${idx}"></span>
+      </div>
+    `;
+    row.querySelector<HTMLButtonElement>('[data-remove]')!.addEventListener('click', () => {
+      row.style.animation = 'slideUp 0.18s ease both';
+      row.addEventListener('animationend', () => row.remove(), { once: true });
+    });
+    speakerListEl.appendChild(row);
+  }
+
+  function collectSpeakers(): EventoSpeakerAPI[] | null {
+    const rows = speakerListEl.querySelectorAll<HTMLDivElement>('.speaker-row');
+    const speakers: EventoSpeakerAPI[] = [];
+    let valid = true;
+    rows.forEach(row => {
+      const idx  = row.dataset.idx!;
+      const nombre = (row.querySelector<HTMLInputElement>(`[name="sp-nombre-${idx}"]`)!.value ?? '').trim();
+      const rol    = (row.querySelector<HTMLInputElement>(`[name="sp-rol-${idx}"]`)!.value ?? '').trim();
+      const avatar = (row.querySelector<HTMLInputElement>(`[name="sp-avatar-${idx}"]`)!.value ?? '').trim();
+
+      if (!nombre) { showFieldError(`err-sp-nombre-${idx}`, 'Nombre requerido'); valid = false; }
+      if (!rol)    { showFieldError(`err-sp-rol-${idx}`,    'Rol requerido');    valid = false; }
+      if (avatar && !isValidUrl(avatar)) { showFieldError(`err-sp-avatar-${idx}`, 'URL inválida'); valid = false; }
+      if (nombre && rol) speakers.push({ nombre, rol, avatar: avatar || undefined });
+    });
+    return valid ? speakers : null;
+  }
+
+  // ── Field error helpers ────────────────────────────────────────────────────
+  function showFieldError(id: string, msg: string) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = msg; el.classList.add('visible'); }
+  }
+
+  function clearFieldError(id: string) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = ''; el.classList.remove('visible'); }
+  }
+
+  function clearAllErrors() {
+    document.querySelectorAll('.field-error').forEach(el => {
+      el.textContent = ''; el.classList.remove('visible');
+    });
+    drawerError.textContent = ''; drawerError.classList.add('hidden');
+  }
+
+  // ── Validate ───────────────────────────────────────────────────────────────
+  function validateForm(mode: 'create' | 'edit'): boolean {
+    clearAllErrors();
+    let ok = true;
+
+    const slug  = (document.getElementById('f-slug')   as HTMLInputElement).value.trim();
+    const nombre= (document.getElementById('f-nombre') as HTMLInputElement).value.trim();
+    const desc  = descTextarea.value.trim();
+    const fechaI= (document.getElementById('f-fechaEvento') as HTMLInputElement).value;
+    const fechaF= (document.getElementById('f-fechaFin')    as HTMLInputElement).value;
+    const precio= (document.getElementById('f-precio')  as HTMLInputElement).value;
+    const cap   = (document.getElementById('f-capacidad') as HTMLInputElement).value;
+    const imagen  = (document.getElementById('f-imagen')    as HTMLInputElement).value.trim();
+    const cover   = (document.getElementById('f-coverImage') as HTMLInputElement).value.trim();
+    const regUrl  = (document.getElementById('f-registroUrl') as HTMLInputElement).value.trim();
+
+    if (mode === 'create') {
+      if (!slug)                          { showFieldError('err-slug', 'El slug es requerido'); ok = false; }
+      else if (!isValidSlug(slug))        { showFieldError('err-slug', 'Solo minúsculas, números y guiones. Sin espacios ni caracteres especiales.'); ok = false; }
+    }
+
+    if (!nombre)                          { showFieldError('err-nombre', 'El nombre es requerido'); ok = false; }
+    else if (nombre.length < 3)           { showFieldError('err-nombre', 'Mínimo 3 caracteres'); ok = false; }
+
+    if (desc.length > 2000)               { ok = false; } // textarea has maxlength
+
+    if (fechaI && fechaF && new Date(fechaI) >= new Date(fechaF)) {
+      showFieldError('err-fechaFin', 'La fecha de fin debe ser posterior al inicio'); ok = false;
+    }
+
+    if (precio !== '' && (isNaN(Number(precio)) || Number(precio) < 0)) {
+      showFieldError('err-precio', 'Debe ser 0 o mayor'); ok = false;
+    }
+
+    if (cap !== '' && (isNaN(Number(cap)) || !Number.isInteger(Number(cap)) || Number(cap) < 1)) {
+      showFieldError('err-capacidad', 'Debe ser un entero mayor a 0'); ok = false;
+    }
+
+    if (imagen  && !isValidUrl(imagen))  { showFieldError('err-imagen',    'URL inválida'); ok = false; }
+    if (cover   && !isValidUrl(cover))   { showFieldError('err-coverImage', 'URL inválida'); ok = false; }
+    if (regUrl  && !isValidUrl(regUrl))  { showFieldError('err-registroUrl','URL inválida'); ok = false; }
+
+    return ok;
+  }
+
+  // ── Drawer ─────────────────────────────────────────────────────────────────
+  function openCreateDrawer() {
+    drawerMode  = 'create';
+    editingSlug = null;
+    drawerTitle.textContent = 'Crear evento';
+    drawerSub.textContent   = 'Completa los campos del nuevo evento';
+    drawerSubmitLabel.textContent = 'Crear evento';
+    (document.getElementById('evento-form') as HTMLFormElement).reset();
+    (document.getElementById('f-activo') as HTMLInputElement).checked = true;
+    (document.getElementById('f-slug')   as HTMLInputElement).disabled = false;
+    clearAllErrors();
+    currentTags  = [];
+    speakerCount = 0;
+    speakerListEl.innerHTML = '';
+    renderTags();
+    descCount.textContent = '0';
+    openDrawer();
+  }
+
+  function openEditDrawer(slug: string) {
+    const evento = allEventos.find(e => e.slug === slug);
+    if (!evento) return;
+    drawerMode  = 'edit';
+    editingSlug = slug;
+    drawerTitle.textContent = 'Editar evento';
+    drawerSub.textContent   = `Editando: ${evento.nombre}`;
+    drawerSubmitLabel.textContent = 'Guardar cambios';
+    clearAllErrors();
+
+    // Fill basic fields
+    const setVal = (id: string, val: string | undefined | null) =>
+      ((document.getElementById(id) as HTMLInputElement).value = val ?? '');
+
+    const slugInput = document.getElementById('f-slug') as HTMLInputElement;
+    slugInput.value    = evento.slug;
+    slugInput.disabled = true;
+
+    setVal('f-nombre',       evento.nombre);
+    descTextarea.value = evento.descripcion ?? '';
+    descCount.textContent = String(descTextarea.value.length);
+
+    (document.getElementById('f-tipo')    as HTMLSelectElement).value = evento.tipo    ?? '';
+    (document.getElementById('f-formato') as HTMLSelectElement).value = evento.formato ?? '';
+    setVal('f-subtipo',      evento.subtipo);
+    setVal('f-fechaEvento',  toDatetimeLocal(evento.fechaEvento));
+    setVal('f-fechaFin',     toDatetimeLocal(evento.fechaFin));
+    setVal('f-lugar',        evento.lugar);
+    setVal('f-precio',       evento.precio !== undefined ? String(evento.precio) : '');
+    setVal('f-capacidad',    evento.capacidadMaxima !== undefined ? String(evento.capacidadMaxima) : '');
+    setVal('f-imagen',       evento.imagen);
+    setVal('f-coverImage',   evento.coverImage);
+    setVal('f-registroUrl',  evento.registroUrl);
+    setVal('f-hostedBy',     evento.hostedBy);
+    setVal('f-partnerEvento',evento.partnerEvento);
+
+    (document.getElementById('f-networking') as HTMLInputElement).checked = evento.networking ?? false;
+    (document.getElementById('f-activo')     as HTMLInputElement).checked = evento.activo;
+
+    // Tags
+    currentTags = [...(evento.tags ?? [])];
+    renderTags();
+
+    // Speakers
+    speakerCount = 0;
+    speakerListEl.innerHTML = '';
+    (evento.speakers ?? []).forEach(s => addSpeakerRow(s));
+
+    openDrawer();
+  }
+
+  function openDrawer() {
+    drawerOverlay.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      drawerOverlay.classList.add('open');
+      drawer.classList.add('open');
+    });
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    drawerOverlay.classList.remove('open');
+    drawer.classList.remove('open');
+    drawerOverlay.addEventListener('transitionend', () => {
+      drawerOverlay.classList.add('hidden');
+      document.body.style.overflow = '';
+    }, { once: true });
+  }
+
+  // ── Submit ─────────────────────────────────────────────────────────────────
+  document.getElementById('evento-form')!.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateForm(drawerMode)) return;
+
+    const speakers = collectSpeakers();
+    if (speakers === null) return;
+
+    const getVal = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim();
+
+    const fechaEvento = toISOOrNull(getVal('f-fechaEvento'));
+    const fechaFin    = toISOOrNull(getVal('f-fechaFin'));
+    const precioRaw   = getVal('f-precio');
+    const capRaw      = getVal('f-capacidad');
+    const tipo        = (document.getElementById('f-tipo')    as HTMLSelectElement).value || null;
+    const formato     = (document.getElementById('f-formato') as HTMLSelectElement).value || null;
+
+    const payload: EventoUpdateRequest = {
+      nombre:          getVal('f-nombre'),
+      descripcion:     getVal('f-descripcion') || null,
+      fechaEvento,
+      fechaFin,
+      lugar:           getVal('f-lugar') || null,
+      precio:          precioRaw !== '' ? parseFloat(precioRaw) : null,
+      capacidadMaxima: capRaw    !== '' ? parseInt(capRaw, 10)   : null,
+      activo:          (document.getElementById('f-activo')     as HTMLInputElement).checked,
+      tipo,
+      subtipo:         getVal('f-subtipo')      || null,
+      formato,
+      networking:      (document.getElementById('f-networking') as HTMLInputElement).checked,
+      tags:            currentTags,
+      speakers,
+      imagen:          getVal('f-imagen')       || null,
+      coverImage:      getVal('f-coverImage')   || null,
+      registroUrl:     getVal('f-registroUrl')  || null,
+      hostedBy:        getVal('f-hostedBy')     || null,
+      partnerEvento:   getVal('f-partnerEvento')|| null,
+    };
+
+    drawerSubmitBtn.disabled = true;
+    drawerSubmitLabel.classList.add('hidden');
+    drawerSubmitSpinner.classList.remove('hidden');
+
+    let res;
+    if (drawerMode === 'create') {
+      const slugVal = (document.getElementById('f-slug') as HTMLInputElement).value.trim();
+      res = await apiService.crearEvento({
+        slug: slugVal,
+        nombre:          payload.nombre,
+        descripcion:     payload.descripcion ?? '',
+        fechaEvento:     payload.fechaEvento ?? '',
+        lugar:           payload.lugar ?? '',
+        precio:          payload.precio ?? 0,
+        capacidadMaxima: payload.capacidadMaxima ?? 0,
+        activo:          payload.activo,
+        datosTransferencia: { banco: '', tipoCuenta: '', numeroCuenta: '', titular: '' },
+      }, jwt!);
+    } else {
+      res = await apiService.actualizarEvento(editingSlug!, payload, jwt!);
+    }
+
+    drawerSubmitBtn.disabled = false;
+    drawerSubmitLabel.classList.remove('hidden');
+    drawerSubmitSpinner.classList.add('hidden');
+
+    if (!res.success) {
+      drawerError.textContent = res.message ?? 'Error al guardar el evento.';
+      drawerError.classList.remove('hidden');
+      return;
+    }
+
+    closeDrawer();
+    showToast(drawerMode === 'create' ? 'Evento creado correctamente' : 'Evento actualizado correctamente', 'success');
+    await loadEventos();
+  });
+
+  // ── Delete ─────────────────────────────────────────────────────────────────
+  function openDeleteModal(slug: string, nombre: string) {
+    pendingDeleteSlug = slug;
+    document.getElementById('delete-sub')!.textContent =
+      `¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`;
+    deleteOverlay.classList.remove('hidden');
+    requestAnimationFrame(() => deleteOverlay.classList.add('open'));
+  }
+
+  function closeDeleteModal() {
+    deleteOverlay.classList.remove('open');
+    deleteOverlay.addEventListener('transitionend', () => deleteOverlay.classList.add('hidden'), { once: true });
+    pendingDeleteSlug = null;
+  }
+
+  document.getElementById('delete-cancel')!.addEventListener('click', closeDeleteModal);
+  deleteOverlay.addEventListener('click', e => { if (e.target === deleteOverlay) closeDeleteModal(); });
+
+  document.getElementById('delete-confirm')!.addEventListener('click', async () => {
+    if (!pendingDeleteSlug) return;
+    const btn     = document.getElementById('delete-confirm')     as HTMLButtonElement;
+    const label   = document.getElementById('delete-confirm-label')!;
+    const spinner = document.getElementById('delete-confirm-spinner')!;
+    btn.disabled = true; label.classList.add('hidden'); spinner.classList.remove('hidden');
+
+    const res = await apiService.eliminarEvento(pendingDeleteSlug, jwt!);
+
+    btn.disabled = false; label.classList.remove('hidden'); spinner.classList.add('hidden');
+
+    if (!res.success) {
+      closeDeleteModal();
+      showToast(res.message ?? 'Error al eliminar el evento.', 'error');
+      return;
+    }
+    closeDeleteModal();
+    showToast('Evento eliminado', 'success');
+    await loadEventos();
+  });
+
+  // ── Toast ──────────────────────────────────────────────────────────────────
+  function showToast(message: string, type: 'success' | 'error') {
+    const container = document.getElementById('toast-container')!;
+    const toast = document.createElement('div');
+    toast.className = `toast toast--${type}`;
+    const icon = type === 'success'
+      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+      : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    toast.innerHTML = `${icon}<span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toastOut 0.25s ease both';
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }, 3200);
+  }
+
+  // ── Event listeners ────────────────────────────────────────────────────────
+  document.getElementById('btn-new')!.addEventListener('click', openCreateDrawer);
+  document.getElementById('drawer-close')!.addEventListener('click', closeDrawer);
+  document.getElementById('drawer-cancel')!.addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', e => { if (e.target === drawerOverlay) closeDrawer(); });
+  document.getElementById('btn-add-speaker')!.addEventListener('click', () => addSpeakerRow());
+  document.getElementById('btn-logout')!.addEventListener('click', () => {
+    sessionStorage.removeItem('adminJwt'); window.location.replace('/admin');
+  });
+  document.getElementById('btn-refresh')!.addEventListener('click', loadEventos);
+
+  searchInput.addEventListener('input', () => {
+    clearTimeout((searchInput as any)._t);
+    (searchInput as any)._t = setTimeout(applyFilters, 220);
+  });
+  filterTipo.addEventListener('change', applyFilters);
+  filterFormato.addEventListener('change', applyFilters);
+  filterActivo.addEventListener('change', applyFilters);
+
+  descTextarea.addEventListener('input', () => {
+    descCount.textContent = String(descTextarea.value.length);
+  });
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  loadEventos();
+</script>
+
+</body>
+</html>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.875rem;
+    background: #f0eeff;
+    color: #18181b;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Layout ── */
+  .shell { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    background: #0d0020;
+    display: flex; flex-direction: column;
+    padding: 1.25rem 0.875rem;
+    position: sticky; top: 0; height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid rgba(255,255,255,0.04);
+  }
+  .sidebar-logo {
+    padding: 0.25rem 0.625rem 1.5rem;
+    display: flex; align-items: center;
+  }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 0.125rem; flex: 1; }
+  .nav-item {
+    display: flex; align-items: center; gap: 0.625rem;
+    padding: 0.5625rem 0.75rem; border-radius: 0.5rem;
+    font-size: 0.8125rem; font-weight: 500;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer; background: none; border: none;
+    width: 100%; text-align: left; font-family: inherit;
+    text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-item:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+  .nav-item--active { background: rgba(139,92,246,0.18); color: #c4b5fd; }
+  .logout-btn {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.75rem; border-radius: 0.5rem;
+    font-size: 0.8125rem; color: rgba(255,255,255,0.3);
+    cursor: pointer; background: none; border: none;
+    font-family: inherit; transition: color 0.15s; margin-top: auto;
+  }
+  .logout-btn:hover { color: #f87171; }
+
+  /* ── Main ── */
+  .main { padding: 2rem 2.25rem; min-width: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  /* ── Page header ── */
+  .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+  .page-title { margin: 0 0 0.125rem; font-size: 1.375rem; font-weight: 700; color: #0d0020; letter-spacing: -0.01em; }
+  .page-sub { margin: 0; font-size: 0.8125rem; color: #71717a; }
+  .header-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.5rem 0.875rem; border-radius: 0.5rem;
+    font-size: 0.8125rem; font-weight: 500; font-family: inherit;
+    cursor: pointer; border: none;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    text-decoration: none; white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: #5b21b6; color: #fff; }
+  .btn-primary:hover { background: #4c1d95; }
+  .btn-ghost { background: #fff; color: #52525b; border: 1px solid #e4e4e7; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  .btn-ghost:hover { background: #fafafa; }
+  .btn-danger { background: #ef4444; color: #fff; }
+  .btn-danger:hover { background: #dc2626; }
+
+  /* ── Stats ── */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.875rem; }
+  .stat-card {
+    background: #fff; border: 1px solid #e9e4ff; border-radius: 0.875rem;
+    padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    animation: statIn 0.4s ease both;
+  }
+  .stat-card:nth-child(1) { animation-delay: 0ms; }
+  .stat-card:nth-child(2) { animation-delay: 60ms; }
+  .stat-card:nth-child(3) { animation-delay: 120ms; }
+  .stat-card:nth-child(4) { animation-delay: 180ms; }
+  @keyframes statIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .stat-val { font-size: 1.875rem; font-weight: 700; color: #0d0020; letter-spacing: -0.02em; line-height: 1; }
+  .stat-key { font-size: 0.6875rem; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat-card--green  .stat-val { color: #059669; }
+  .stat-card--gray   .stat-val { color: #71717a; }
+  .stat-card--purple .stat-val { color: #5b21b6; }
+
+  /* ── Toolbar ── */
+  .toolbar { display: flex; align-items: center; gap: 0.625rem; flex-wrap: wrap; }
+  .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 300px; }
+  .search-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #a1a1aa; pointer-events: none; }
+  .search-input {
+    width: 100%; padding: 0.5625rem 0.875rem 0.5625rem 2.25rem;
+    border: 1px solid #e4e4e7; border-radius: 0.5rem;
+    font-size: 0.8125rem; font-family: inherit; color: #18181b;
+    background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .search-input:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); }
+  .filter-select {
+    padding: 0.5625rem 2rem 0.5625rem 0.75rem;
+    border: 1px solid #e4e4e7; border-radius: 0.5rem;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238b5cf6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 0.625rem center;
+    appearance: none; font-size: 0.8125rem; font-family: inherit; color: #18181b;
+    cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: border-color 0.15s;
+  }
+  .filter-select:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); }
+
+  /* ── Table ── */
+  .table-card { background: #fff; border: 1px solid #ede9ff; border-radius: 1rem; overflow: hidden; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .state-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.625rem; padding: 3.5rem 2rem; color: #71717a; font-size: 0.875rem; text-align: center; }
+  .state-box--error { flex-direction: row; padding: 1rem 1.25rem; background: #fef2f2; color: #b91c1c; border-radius: 0; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+  .data-table thead th {
+    padding: 0.75rem 1rem; text-align: left;
+    font-size: 0.6875rem; font-weight: 600; color: #71717a;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    background: #faf8ff; border-bottom: 1px solid #ede9ff; white-space: nowrap;
+  }
+  .data-table tbody tr { border-bottom: 1px solid #f4f4f5; transition: background 0.1s; }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table tbody tr:hover { background: #faf8ff; }
+  .data-table td { padding: 0.875rem 1rem; vertical-align: middle; color: #3f3f46; }
+
+  /* Column widths */
+  .col-evento  { min-width: 220px; }
+  .col-fecha   { width: 130px; white-space: nowrap; }
+  .col-lugar   { min-width: 110px; max-width: 160px; }
+  .col-precio  { width: 80px; white-space: nowrap; }
+  .col-cap     { width: 90px; }
+  .col-tipo    { width: 150px; }
+  .col-estado  { width: 90px; }
+  .col-actions { width: 80px; }
+
+  /* Row animation */
+  @keyframes rowIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .row-animate { animation: rowIn 0.28s ease both; }
+
+  /* Evento cell */
+  .evento-cell { display: flex; flex-direction: column; gap: 0.25rem; }
+  .evento-nombre { font-weight: 600; color: #0d0020; line-height: 1.3; }
+  .slug-code {
+    display: inline-block; font-family: 'SF Mono', 'Cascadia Code', monospace;
+    font-size: 0.6875rem; background: #ede9ff; color: #5b21b6;
+    padding: 0.0625rem 0.375rem; border-radius: 0.25rem; letter-spacing: 0.03em; width: fit-content;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.125rem; }
+  .tag-mini {
+    display: inline-block; font-size: 0.625rem; font-weight: 500;
+    background: #f4f4f5; color: #52525b; padding: 0.0625rem 0.375rem; border-radius: 9999px;
+  }
+  .tag-mini--more { background: #ede9ff; color: #5b21b6; }
+
+  .cell-truncate { display: block; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Badges */
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 0.2rem 0.55rem; border-radius: 9999px;
+    font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .badge--green  { background: #d1fae5; color: #064e3b; }
+  .badge--gray   { background: #f4f4f5; color: #52525b; }
+  .badge--amber  { background: #fef3c7; color: #92400e; }
+  .badge--blue   { background: #dbeafe; color: #1e40af; }
+  .badge--sky    { background: #e0f2fe; color: #0369a1; }
+  .badge--purple { background: #ede9ff; color: #5b21b6; }
+  .badge--indigo { background: #e0e7ff; color: #3730a3; }
+  .badge--teal   { background: #ccfbf1; color: #0f766e; }
+
+  /* Action buttons */
+  .action-group { display: flex; align-items: center; gap: 0.375rem; }
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 0.375rem;
+    border: none; cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .icon-btn:hover  { transform: scale(1.1); }
+  .icon-btn:active { transform: scale(0.93); }
+  .icon-btn--blue { background: #dbeafe; color: #1e40af; }
+  .icon-btn--blue:hover  { background: #bfdbfe; }
+  .icon-btn--red  { background: #fee2e2; color: #7f1d1d; }
+  .icon-btn--red:hover   { background: #fecaca; }
+
+  /* Pagination */
+  .pagination-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .pagination-info { font-size: 0.8125rem; color: #71717a; }
+  .pagination-controls { display: flex; align-items: center; gap: 0.25rem; }
+  .page-btn {
+    min-width: 32px; height: 32px; padding: 0 0.5rem; border-radius: 0.375rem;
+    border: 1px solid #e4e4e7; background: #fff; color: #3f3f46;
+    font-size: 0.8125rem; font-family: inherit; font-weight: 500; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .page-btn:hover:not(:disabled) { background: #faf8ff; border-color: #8b5cf6; color: #5b21b6; }
+  .page-btn:disabled { opacity: 0.38; cursor: not-allowed; }
+  .page-btn--active { background: #5b21b6; border-color: #5b21b6; color: #fff; }
+  .page-btn--active:hover { background: #4c1d95; }
+  .page-ellipsis { min-width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8125rem; color: #a1a1aa; }
+
+  /* ── Delete modal ── */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0); display: flex;
+    align-items: center; justify-content: center; z-index: 200; padding: 1.5rem;
+    backdrop-filter: blur(0px); transition: background 0.2s, backdrop-filter 0.2s;
+  }
+  .overlay.open { background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
+  .overlay.hidden { display: none !important; }
+  .modal {
+    background: #fff; border-radius: 1rem; padding: 1.75rem; width: 100%; max-width: 420px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.22); max-height: 90dvh; overflow-y: auto;
+    transform: scale(0.95); opacity: 0; transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .overlay.open .modal { transform: scale(1); opacity: 1; }
+  .modal--delete { text-align: center; }
+  .delete-icon-wrap {
+    width: 52px; height: 52px; border-radius: 50%; background: #fee2e2; color: #b91c1c;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .modal-title { font-size: 1rem; font-weight: 700; color: #0d0020; margin: 0 0 0.375rem; }
+  .modal-sub   { font-size: 0.8125rem; color: #52525b; margin: 0 0 1rem; }
+  .modal-footer { display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; margin-top: 1.25rem; }
+
+  /* ── Drawer ── */
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0);
+    z-index: 300; display: flex; justify-content: flex-end;
+    backdrop-filter: blur(0px); transition: background 0.25s, backdrop-filter 0.25s;
+  }
+  .drawer-overlay.open { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
+  .drawer-overlay.hidden { display: none !important; }
+
+  .drawer {
+    background: #fff; width: 580px; max-width: 100vw; height: 100dvh;
+    display: flex; flex-direction: column;
+    box-shadow: -8px 0 40px rgba(0,0,0,0.16);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 1.375rem 1.75rem 1.125rem; border-bottom: 1px solid #ede9ff; flex-shrink: 0;
+  }
+  .drawer-title { font-size: 1rem; font-weight: 700; color: #0d0020; margin: 0 0 0.125rem; }
+  .drawer-sub   { font-size: 0.8125rem; color: #71717a; margin: 0; }
+
+  .drawer-body { flex: 1; overflow-y: auto; padding: 1.5rem 1.75rem; scroll-behavior: smooth; }
+
+  .drawer-footer {
+    padding: 0.875rem 1.75rem; border-top: 1px solid #ede9ff;
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 0.5rem; flex-shrink: 0; background: #faf8ff;
+  }
+
+  .modal-close {
+    background: none; border: none; color: #71717a; cursor: pointer;
+    padding: 0.25rem; border-radius: 0.375rem; display: flex; align-items: center;
+    transition: color 0.15s, background 0.15s;
+  }
+  .modal-close:hover { color: #18181b; background: #f4f4f5; }
+
+  /* ── Form ── */
+  .form-section { margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid #f4f4f5; }
+  .form-section:last-child { border-bottom: none; margin-bottom: 0; }
+
+  .form-section-title {
+    display: flex; align-items: center; gap: 0.375rem;
+    font-size: 0.6875rem; font-weight: 700; color: #5b21b6;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    margin: 0 0 1rem;
+  }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; }
+  .field { display: flex; flex-direction: column; gap: 0.25rem; }
+  .field--full { grid-column: 1 / -1; }
+
+  .field-label { font-size: 0.75rem; font-weight: 600; color: #0d0020; }
+  .field-req { color: #dc2626; }
+  .field-opt { font-weight: 400; color: #a1a1aa; }
+  .field-hint { font-size: 0.6875rem; color: #a1a1aa; }
+  .field-hint kbd {
+    font-family: inherit; background: #f4f4f5; border: 1px solid #d4d4d8;
+    border-radius: 0.25rem; padding: 0.0625rem 0.25rem; font-size: 0.6875rem;
+  }
+
+  .field-error { font-size: 0.75rem; color: #dc2626; font-weight: 500; min-height: 1rem; display: none; }
+  .field-error.visible { display: block; }
+
+  .field-input {
+    padding: 0.5625rem 0.75rem; border: 1px solid #d4d4d8; border-radius: 0.5rem;
+    font-size: 0.8125rem; font-family: inherit; color: #18181b; background: #faf8ff;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .field-input:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); background: #fff; }
+  .field-input:disabled { background: #f4f4f5; color: #71717a; cursor: not-allowed; border-color: #e4e4e7; }
+
+  .field-select {
+    padding: 0.5625rem 2rem 0.5625rem 0.75rem;
+    border: 1px solid #d4d4d8; border-radius: 0.5rem;
+    background: #faf8ff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238b5cf6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 0.625rem center;
+    appearance: none; font-size: 0.8125rem; font-family: inherit; color: #18181b;
+    cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field-select:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); }
+
+  .modal-textarea {
+    width: 100%; padding: 0.75rem; border: 1px solid #d4d4d8; border-radius: 0.5rem;
+    font-size: 0.875rem; font-family: inherit; color: #18181b; background: #faf8ff;
+    resize: vertical; box-sizing: border-box; transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .modal-textarea--sm { font-size: 0.8125rem; }
+  .modal-textarea:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); background: #fff; }
+
+  /* Toggles */
+  .toggles-row { grid-column: 1 / -1; display: flex; gap: 2rem; align-items: center; padding: 0.5rem 0; }
+  .toggle-wrap { display: flex; align-items: center; gap: 0.625rem; }
+  .toggle-label { font-size: 0.875rem; font-weight: 500; color: #18181b; }
+  .toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; display: inline-block; cursor: pointer; }
+  .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .toggle-slider {
+    position: absolute; cursor: pointer; inset: 0;
+    background: #d4d4d8; border-radius: 9999px; transition: background 0.2s;
+  }
+  .toggle-slider::before {
+    content: ''; position: absolute; width: 16px; height: 16px;
+    left: 3px; top: 3px; background: white; border-radius: 50%;
+    transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle input:checked + .toggle-slider { background: #5b21b6; }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+  .toggle input:focus + .toggle-slider { box-shadow: 0 0 0 3px rgba(139,92,246,0.18); }
+
+  /* Tags input */
+  .tags-input-wrap {
+    display: flex; flex-wrap: wrap; gap: 0.375rem;
+    padding: 0.4375rem 0.625rem; border: 1px solid #d4d4d8; border-radius: 0.5rem;
+    background: #faf8ff; min-height: 42px; cursor: text;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    align-items: center;
+  }
+  .tags-input-wrap:focus-within { border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); background: #fff; }
+  .tags-input-field {
+    border: none; outline: none; background: transparent;
+    font-size: 0.8125rem; font-family: inherit; min-width: 100px; flex: 1;
+    padding: 0.125rem 0; color: #18181b;
+  }
+  .tag-chip {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    background: #ede9ff; color: #5b21b6; font-size: 0.75rem; font-weight: 600;
+    padding: 0.125rem 0.25rem 0.125rem 0.625rem; border-radius: 9999px;
+    animation: chipIn 0.15s ease both;
+  }
+  @keyframes chipIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  .tag-chip-remove {
+    background: none; border: none; cursor: pointer; padding: 0.125rem 0.25rem;
+    color: #8b5cf6; display: flex; align-items: center; font-size: 0.875rem; line-height: 1;
+    border-radius: 9999px; transition: color 0.1s, background 0.1s;
+  }
+  .tag-chip-remove:hover { color: #4c1d95; background: rgba(91,33,182,0.12); }
+
+  /* Speakers */
+  .speaker-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .speaker-row {
+    display: grid; grid-template-columns: 1fr 1fr auto; grid-template-rows: auto auto;
+    gap: 0.5rem 0.625rem; align-items: start;
+    padding: 0.875rem; background: #faf8ff; border: 1px solid #ede9ff; border-radius: 0.625rem;
+    animation: slideDown 0.2s ease both;
+  }
+  @keyframes slideDown {
+    from { transform: translateY(-6px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(0);  opacity: 1; }
+    to   { transform: translateY(-6px); opacity: 0; }
+  }
+  .field--full { grid-column: 1 / -1; }
+  .speaker-remove {
+    background: none; border: none; cursor: pointer; color: #a1a1aa;
+    padding: 0.375rem; border-radius: 0.375rem; display: flex; align-items: center;
+    transition: color 0.15s, background 0.15s; margin-top: 1.375rem; align-self: start;
+  }
+  .speaker-remove:hover { color: #ef4444; background: #fee2e2; }
+
+  .btn-add-speaker {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.5rem 0.875rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 500;
+    font-family: inherit; cursor: pointer; border: 1.5px dashed #c4b5fd; background: transparent;
+    color: #5b21b6; transition: background 0.15s, border-color 0.15s;
+  }
+  .btn-add-speaker:hover { background: #ede9ff; border-color: #8b5cf6; }
+
+  .inline-error { font-size: 0.8125rem; color: #b91c1c; font-weight: 500; }
+
+  /* ── Toast ── */
+  .toast-container {
+    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 500;
+    display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;
+  }
+  .toast {
+    display: flex; align-items: center; gap: 0.625rem;
+    padding: 0.75rem 1rem; border-radius: 0.75rem;
+    font-size: 0.875rem; font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    pointer-events: auto; max-width: 320px;
+    animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes toastIn {
+    from { transform: translateY(16px) scale(0.92); opacity: 0; }
+    to   { transform: translateY(0)    scale(1);    opacity: 1; }
+  }
+  @keyframes toastOut {
+    from { transform: translateY(0) scale(1);     opacity: 1; }
+    to   { transform: translateY(8px) scale(0.95); opacity: 0; }
+  }
+  .toast--success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+  .toast--error   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+  /* ── Utilities ── */
+  .hidden { display: none !important; }
+  .spin { animation: spin 0.75s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 1.25rem; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .form-grid { grid-template-columns: 1fr; }
+    .speaker-row { grid-template-columns: 1fr auto; }
+    .col-lugar, .col-cap, .col-tipo { display: none; }
+    .drawer { width: 100vw; }
+  }
+</style>
