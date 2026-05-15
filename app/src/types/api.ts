@@ -92,7 +92,7 @@ export interface EventoSpeakerAPI {
 }
 
 export interface EventoAPI {
-  _id?: string;
+  id?: string;
   slug: string;
   nombre: string;
   descripcion?: string;
@@ -101,14 +101,41 @@ export interface EventoAPI {
   lugar?: string;
   precio?: number;
   capacidadMaxima?: number;
+  cuposDisponibles?: number;
   activo: boolean;
   tipo?: string;
+  subtipo?: string;
   formato?: string;
   networking?: boolean;
   tags?: string[];
   speakers?: EventoSpeakerAPI[];
   imagen?: string;
   coverImage?: string;
+  hostedBy?: string;
+  partnerEvento?: string;
+  registroUrl?: string;
+}
+
+export interface EventoUpdateRequest {
+  nombre: string;
+  descripcion?: string | null;
+  fechaEvento?: string | null;
+  fechaFin?: string | null;
+  lugar?: string | null;
+  precio?: number | null;
+  capacidadMaxima?: number | null;
+  activo: boolean;
+  tipo?: string | null;
+  subtipo?: string | null;
+  formato?: string | null;
+  networking?: boolean;
+  tags?: string[];
+  speakers?: EventoSpeakerAPI[];
+  imagen?: string | null;
+  coverImage?: string | null;
+  hostedBy?: string | null;
+  partnerEvento?: string | null;
+  registroUrl?: string | null;
 }
 
 export interface DatosTransferencia {
