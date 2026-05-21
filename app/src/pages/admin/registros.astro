@@ -2,6 +2,7 @@
 import logo from '../../assets/dotnet_logo.png';
 import '../../assets/styles/base.css';
 import { EVENT_SLUGS } from '../../data/events';
+import RegistrosTable from '../../components/admin/RegistrosTable';
 
 const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace(/\/$/, '');
 ---
@@ -88,67 +89,8 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
       </div>
     </div>
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <div class="search-wrap">
-        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" class="search-input" placeholder="Buscar por nombre, email o código…" autocomplete="off" />
-      </div>
-      <select id="filter-evento" class="filter-select" aria-label="Filtrar por evento">
-        <option value="">Todos los eventos</option>
-      </select>
-      <select id="filter-estado" class="filter-select" aria-label="Filtrar por estado">
-        <option value="">Todos los estados</option>
-        <option value="pendiente">Pendiente</option>
-        <option value="pagado">Pagado</option>
-        <option value="rechazado">Rechazado</option>
-        <option value="cancelado">Cancelado</option>
-      </select>
-    </div>
-
-    <!-- Table container -->
-    <div class="table-card">
-
-      <!-- Loading -->
-      <div id="state-loading" class="state-box">
-        <svg class="spin" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-        <span>Cargando registros…</span>
-      </div>
-
-      <!-- Empty -->
-      <div id="state-empty" class="state-box hidden">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#c4b5fd"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        <p style="margin:0;font-weight:600;color:#3f3f46">Sin registros</p>
-        <p style="margin:0;font-size:.8125rem;color:#a1a1aa">No hay resultados para los filtros aplicados.</p>
-      </div>
-
-      <!-- Error -->
-      <div id="state-error" class="state-box state-box--error hidden" role="alert">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span id="error-text"></span>
-      </div>
-
-      <!-- Table -->
-      <table class="data-table hidden" id="data-table">
-        <thead>
-          <tr>
-            <th class="col-asistente">Asistente</th>
-            <th class="col-empresa">Empresa / Cargo</th>
-            <th class="col-estado">Estado</th>
-            <th class="col-fecha">Registrado</th>
-            <th class="col-comp">Comprobante</th>
-            <th class="col-actions">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </div>
-
-    <!-- Pagination -->
-    <div class="pagination-bar hidden" id="pagination-bar">
-      <span class="pagination-info" id="pagination-info"></span>
-      <div class="pagination-controls" id="pagination-controls"></div>
-    </div>
+    <!-- Table (TanStack Table via React island) -->
+    <RegistrosTable client:load />
 
   </main>
 </div>
@@ -234,26 +176,8 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
   const jwt = sessionStorage.getItem('adminJwt');
   if (!jwt) window.location.replace('/admin');
 
-  const PAGE_SIZE = 20;
-
-  let currentEventoId: string | null = null;
   let pendingRejectId: string | null = null;
-  let allRegistros: AdminRegistro[]      = [];
-  let filteredRegistros: AdminRegistro[] = [];
-  let currentPage = 1;
 
-  const filterEvento  = document.getElementById('filter-evento') as HTMLSelectElement;
-  const filterEstado  = document.getElementById('filter-estado') as HTMLSelectElement;
-  const searchInput   = document.getElementById('search-input') as HTMLInputElement;
-  const stateLoading  = document.getElementById('state-loading')!;
-  const stateEmpty    = document.getElementById('state-empty')!;
-  const stateError    = document.getElementById('state-error')!;
-  const errorText     = document.getElementById('error-text')!;
-  const table         = document.getElementById('data-table')!;
-  const tbody         = document.getElementById('tbody')!;
-  const paginationBar = document.getElementById('pagination-bar')!;
-  const paginationInfo= document.getElementById('pagination-info')!;
-  const paginationCtrl= document.getElementById('pagination-controls')!;
   const rejectOverlay = document.getElementById('reject-overlay')!;
   const rejectMotivo  = document.getElementById('reject-motivo') as HTMLTextAreaElement;
   const imgOverlay    = document.getElementById('img-overlay')!;
@@ -261,259 +185,48 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
   const imgDownload   = document.getElementById('img-download') as HTMLAnchorElement;
   const createEventOverlay = document.getElementById('create-event-overlay')!;
 
-  const storageBase   = ((window as any).__storageBase as string ?? '').replace(/\/$/, '');
-  const AVATAR_COLORS = ['#5b21b6','#0369a1','#0f766e','#b45309','#be185d','#7c3aed','#1d4ed8'];
+  // ── Stats update (driven by React table via custom event) ─────────────────
+  window.addEventListener('tabla:stats-update', (e) => {
+    const d = (e as CustomEvent).detail;
+    const set = (id: string, v: number) => { const el = document.getElementById(id); if (el) el.textContent = String(v); };
+    set('stat-total',     d.total);
+    set('stat-pendiente', d.pendiente);
+    set('stat-pagado',    d.pagado);
+    set('stat-rechazado', d.rechazado);
+  });
 
-  function comprobanteFullUrl(raw: string): string {
-    if (!raw) return '';
-    if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
-    const base = storageBase || (import.meta.env.PUBLIC_API_BASE_URL ?? '').replace(/\/$/, '');
-    return `${base}/${raw}`;
-  }
+  // ── Table action events (from React) ──────────────────────────────────────
+  window.addEventListener('tabla:aprobar', async (e) => {
+    const { id } = (e as CustomEvent<{id:string}>).detail;
+    if (!confirm('¿Aprobar este pago?')) return;
+    const res = await apiService.aprobarRegistro(id, jwt!);
+    if (!res.success) { alert(res.message ?? 'Error al aprobar.'); return; }
+    window.dispatchEvent(new CustomEvent('tabla:refresh'));
+  });
 
-  function avatarColor(name: string): string {
-    const h = [...name].reduce((a, c) => a + c.charCodeAt(0), 0);
-    return AVATAR_COLORS[h % AVATAR_COLORS.length];
-  }
+  window.addEventListener('tabla:rechazar', (e) => {
+    const { id } = (e as CustomEvent<{id:string}>).detail;
+    openRejectModal(id);
+  });
 
-  function initials(name: string): string {
-    const parts = name.trim().split(/\s+/).filter(Boolean);
-    if (!parts.length) return '?';
-    return parts.length === 1
-      ? parts[0][0].toUpperCase()
-      : (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  }
+  window.addEventListener('tabla:eliminar', async (e) => {
+    const { id } = (e as CustomEvent<{id:string}>).detail;
+    if (!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.')) return;
+    const res = await apiService.eliminarRegistro(id, jwt!);
+    if (!res.success) { alert(res.message ?? 'Error al eliminar.'); return; }
+    window.dispatchEvent(new CustomEvent('tabla:refresh'));
+  });
 
-  function fmtDate(iso: string | null | undefined): string {
-    if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('es-EC', { day: '2-digit', month: 'short', year: 'numeric' });
-  }
-
-  function badgeHtml(estado: string): string {
-    const map: Record<string, [string, string]> = {
-      pendiente: ['badge badge--amber', 'Pendiente'],
-      pagado:    ['badge badge--green', 'Aprobado'],
-      rechazado: ['badge badge--red',   'Rechazado'],
-      cancelado: ['badge badge--gray',  'Cancelado'],
-    };
-    const [cls, label] = map[estado] ?? ['badge badge--gray', estado];
-    return `<span class="${cls}">${label}</span>`;
-  }
-
-  function setState(s: 'loading' | 'empty' | 'error' | 'data') {
-    stateLoading.classList.toggle('hidden', s !== 'loading');
-    stateEmpty.classList.toggle('hidden',   s !== 'empty');
-    stateError.classList.toggle('hidden',   s !== 'error');
-    table.classList.toggle('hidden',        s !== 'data');
-    paginationBar.classList.toggle('hidden', s !== 'data');
-  }
-
-  function showError(msg: string) {
-    errorText.textContent = msg;
-    setState('error');
-  }
-
-  function updateStats(items: AdminRegistro[]) {
-    let pendiente = 0, pagado = 0, rechazado = 0;
-    items.forEach(r => {
-      if (r.estado === 'pendiente') pendiente++;
-      else if (r.estado === 'pagado') pagado++;
-      else if (r.estado === 'rechazado') rechazado++;
-    });
-    document.getElementById('stat-total')!.textContent     = String(items.length);
-    document.getElementById('stat-pendiente')!.textContent = String(pendiente);
-    document.getElementById('stat-pagado')!.textContent    = String(pagado);
-    document.getElementById('stat-rechazado')!.textContent = String(rechazado);
-  }
-
-  function renderPage() {
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const page  = filteredRegistros.slice(start, start + PAGE_SIZE);
-
-    tbody.innerHTML = '';
-    page.forEach(r => {
-      const name   = r.nombreAsistente || '';
-      const email  = r.emailAsistente  || '';
-      const color  = avatarColor(name || email || r.idCorto);
-      const ini    = initials(name || email.split('@')[0] || '?');
-
-      const tr = document.createElement('tr');
-      tr.dataset.id = r.id;
-      tr.innerHTML = `
-        <td class="col-asistente">
-          <div class="asistente-cell">
-            <span class="avatar" style="background:${color}">${ini}</span>
-            <div class="asistente-info">
-              <span class="asistente-name">${name || '—'}</span>
-              <span class="asistente-email">${email || '—'}</span>
-              <code class="id-code">${r.idCorto}</code>
-            </div>
-          </div>
-        </td>
-        <td class="col-empresa">
-          <div class="empresa-cell">
-            <span>${r.empresaAsistente || '—'}</span>
-            ${r.cargoAsistente ? `<span class="cargo-sub">${r.cargoAsistente}</span>` : ''}
-          </div>
-        </td>
-        <td class="col-estado">${badgeHtml(r.estado)}</td>
-        <td class="col-fecha">${fmtDate(r.registradoEn)}</td>
-        <td class="col-comp">
-          ${r.comprobanteUrl
-            ? `<button class="link-btn" data-comp="${comprobanteFullUrl(r.comprobanteUrl)}">Ver</button>`
-            : '<span class="muted">—</span>'}
-        </td>
-        <td class="col-actions">
-          <div class="action-group">
-            ${r.estado === 'pendiente' ? `
-              <button class="icon-btn icon-btn--green" data-aprobar="${r.id}" title="Aprobar pago">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              </button>
-              <button class="icon-btn icon-btn--amber" data-rechazar="${r.id}" title="Rechazar pago">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            ` : ''}
-            <button class="icon-btn icon-btn--red" data-eliminar="${r.id}" title="Eliminar registro">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-            </button>
-          </div>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    tbody.querySelectorAll<HTMLButtonElement>('[data-aprobar]').forEach(b =>
-      b.addEventListener('click', () => handleAprobar(b.dataset.aprobar!)));
-    tbody.querySelectorAll<HTMLButtonElement>('[data-rechazar]').forEach(b =>
-      b.addEventListener('click', () => openRejectModal(b.dataset.rechazar!)));
-    tbody.querySelectorAll<HTMLButtonElement>('[data-comp]').forEach(b =>
-      b.addEventListener('click', () => openImgModal(b.dataset.comp!)));
-    tbody.querySelectorAll<HTMLButtonElement>('[data-eliminar]').forEach(b =>
-      b.addEventListener('click', () => handleEliminar(b.dataset.eliminar!)));
-
-    renderPagination();
-  }
-
-  function renderPagination() {
-    const total = filteredRegistros.length;
-    const pages = Math.ceil(total / PAGE_SIZE);
-    const start = (currentPage - 1) * PAGE_SIZE + 1;
-    const end   = Math.min(currentPage * PAGE_SIZE, total);
-
-    paginationInfo.textContent = total === 0 ? '' : `Mostrando ${start}–${end} de ${total} registros`;
-
-    paginationCtrl.innerHTML = '';
-    if (pages <= 1) return;
-
-    const mkBtn = (label: string, page: number, disabled = false, active = false) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.textContent = label;
-      btn.className = `page-btn${active ? ' page-btn--active' : ''}`;
-      btn.disabled = disabled;
-      btn.addEventListener('click', () => { currentPage = page; renderPage(); });
-      return btn;
-    };
-
-    paginationCtrl.appendChild(mkBtn('←', currentPage - 1, currentPage === 1));
-
-    const range = buildPageRange(currentPage, pages);
-    range.forEach(p => {
-      if (p === '…') {
-        const el = document.createElement('span');
-        el.className = 'page-ellipsis';
-        el.textContent = '…';
-        paginationCtrl.appendChild(el);
-      } else {
-        paginationCtrl.appendChild(mkBtn(String(p), p as number, false, p === currentPage));
-      }
-    });
-
-    paginationCtrl.appendChild(mkBtn('→', currentPage + 1, currentPage === pages));
-  }
-
-  function buildPageRange(current: number, total: number): (number | '…')[] {
-    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
-    if (current <= 4) return [1, 2, 3, 4, 5, '…', total];
-    if (current >= total - 3) return [1, '…', total-4, total-3, total-2, total-1, total];
-    return [1, '…', current-1, current, current+1, '…', total];
-  }
-
-  function applyFilters() {
-    const q      = searchInput.value.trim().toLowerCase();
-    const estado = filterEstado.value;
-
-    filteredRegistros = allRegistros.filter(r => {
-      if (estado && r.estado !== estado) return false;
-      if (q) {
-        const hay = [r.nombreAsistente, r.emailAsistente, r.idCorto, r.empresaAsistente, r.cargoAsistente]
-          .join(' ').toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
-
-    currentPage = 1;
-    if (filteredRegistros.length === 0) { setState('empty'); return; }
-    setState('data');
-    renderPage();
-  }
-
-  async function fetchAllPages(eventoId?: string): Promise<AdminRegistro[] | null> {
-    const collected: AdminRegistro[] = [];
-    let page = 1;
-
-    while (true) {
-      const res = await apiService.getAdminRegistros(jwt!, { eventoId, pageSize: 100, page });
-
-      if (!res.success) {
-        if (res.message?.includes('401') || res.message?.includes('403') || res.message?.toLowerCase().includes('unauthorized')) {
-          sessionStorage.removeItem('adminJwt');
-          window.location.replace('/admin');
-          return null;
-        }
-        showError(res.message ?? 'Error al cargar registros.');
-        return null;
-      }
-
-      const batch = res.data?.data ?? [];
-      collected.push(...batch);
-
-      if (!res.data?.hasNextPage || batch.length === 0) break;
-      page++;
-    }
-
-    return collected;
-  }
-
-  async function loadRegistros() {
-    setState('loading');
-
-    const selectedSlug = filterEvento.value;
-
-    if (selectedSlug && !currentEventoId) {
-      const res = await apiService.getEvento(selectedSlug);
-      if (res.success && res.data) {
-        currentEventoId = res.data.id ?? res.data._id ?? null;
-      }
-    }
-    if (!selectedSlug) currentEventoId = null;
-
-    const items = await fetchAllPages(currentEventoId ?? undefined);
-    if (items === null) return;
-    allRegistros = [...items].sort((a, b) =>
-      new Date(b.registradoEn).getTime() - new Date(a.registradoEn).getTime()
-    );
-
-    updateStats(allRegistros);
-    applyFilters();
-  }
+  window.addEventListener('tabla:ver-comp', (e) => {
+    const { url } = (e as CustomEvent<{url:string}>).detail;
+    openImgModal(url);
+  });
 
   async function handleAprobar(id: string) {
     if (!confirm('¿Aprobar este pago?')) return;
     const res = await apiService.aprobarRegistro(id, jwt!);
     if (!res.success) { alert(res.message ?? 'Error al aprobar.'); return; }
-    loadRegistros();
+    window.dispatchEvent(new CustomEvent('tabla:refresh'));
   }
 
   function openRejectModal(id: string) {
@@ -527,7 +240,7 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     if (!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.')) return;
     const res = await apiService.eliminarRegistro(id, jwt!);
     if (!res.success) { alert(res.message ?? 'Error al eliminar.'); return; }
-    loadRegistros();
+    window.dispatchEvent(new CustomEvent('tabla:refresh'));
   }
 
   function openImgModal(url: string) {
@@ -549,7 +262,7 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     rejectOverlay.classList.add('hidden');
     pendingRejectId = null;
     if (!res.success) { alert(res.message ?? 'Error al rechazar.'); return; }
-    loadRegistros();
+    window.dispatchEvent(new CustomEvent('tabla:refresh'));
   });
 
   rejectOverlay.addEventListener('click', e => {
@@ -625,33 +338,13 @@ const STORAGE_BASE_URL = (import.meta.env.PUBLIC_STORAGE_BASE_URL ?? '').replace
     alert(`Evento creado. Recuerda agregar el slug "${data.slug}" a src/data/events.ts.`);
   });
 
-  (async () => {
-    const slugs: string[] = (window as any).__eventSlugs ?? [];
-    const results = await Promise.all(slugs.map(s => apiService.getEvento(s)));
-    results.forEach((r, i) => {
-      if (!r.success || !r.data) return;
-      const opt = document.createElement('option');
-      opt.value = slugs[i];
-      opt.textContent = r.data.nombre ?? slugs[i];
-      filterEvento.appendChild(opt);
-    });
-  })();
-
-  filterEvento.addEventListener('change', () => { currentEventoId = null; loadRegistros(); });
-  filterEstado.addEventListener('change', applyFilters);
-  document.getElementById('btn-refresh')!.addEventListener('click', loadRegistros);
+  document.getElementById('btn-refresh')!.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('tabla:refresh'));
+  });
   document.getElementById('btn-logout')!.addEventListener('click', () => {
     sessionStorage.removeItem('adminJwt');
     window.location.replace('/admin');
   });
-
-  let searchTimeout: ReturnType<typeof setTimeout>;
-  searchInput.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(applyFilters, 220);
-  });
-
-  loadRegistros();
 </script>
 
 </body>

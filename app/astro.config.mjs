@@ -1,15 +1,27 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://dotnetecuador.com',
   output: 'static',
-  integrations: [tailwind()],
+  integrations: [tailwind(), react()],
   compressHTML: true,
   build: {
     assets: '_astro'
+  },
+  vite: {
+    server: {
+      proxy: {
+        '/api': {
+          target: 'https://api.dotnetecuador.com',
+          changeOrigin: true,
+          secure: true,
+        }
+      }
+    }
   },
   image: {
     domains: [
