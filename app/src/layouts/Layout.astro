@@ -70,17 +70,17 @@ const { title, description = SITE.description, lang = 'es', structuredData, keyw
     ─────────────────────────────────────────────────────────────── -->
     <script>
       // Hide real content immediately so it does not flash before load
-      document.querySelectorAll<HTMLElement>('[data-content]').forEach((el) => {
+      document.querySelectorAll('[data-content]').forEach((el) => {
         el.style.opacity = '0';
         el.style.transition = 'opacity 0.4s ease';
       });
 
       // Once all resources are ready: hide skeletons, reveal real content
       window.addEventListener('load', () => {
-        document.querySelectorAll<HTMLElement>('[data-skeleton]').forEach((el) => {
+        document.querySelectorAll('[data-skeleton]').forEach((el) => {
           el.style.display = 'none';
         });
-        document.querySelectorAll<HTMLElement>('[data-content]').forEach((el) => {
+        document.querySelectorAll('[data-content]').forEach((el) => {
           el.style.opacity = '1';
         });
       });

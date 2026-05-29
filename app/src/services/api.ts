@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://api.dotnetecuador.com';
+const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || (import.meta.env.DEV ? '' : 'https://api.dotnetecuador.com');
 
 export interface VolunteerApplicationRequest {
   fullName: string;
