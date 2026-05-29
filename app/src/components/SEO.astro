@@ -1,6 +1,26 @@
 ---
 import { SITE } from '../config';
 
+const orgJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": SITE.title,
+  "url": SITE.url,
+  "description": SITE.description,
+  "logo": `${SITE.url}/logo.png`,
+  "foundingDate": "2020",
+  "foundingLocation": { "@type": "Place", "name": "Ecuador" },
+  "areaServed": { "@type": "Country", "name": "Ecuador" },
+  "knowsAbout": [".NET Framework","C# Programming","ASP.NET","Microsoft Technologies","Software Development","Programming Education"],
+  "sameAs": [
+    "https://github.com/DotNet-Ecuador",
+    "https://www.linkedin.com/company/dotnet-ecuador/",
+    "https://www.instagram.com/dotnet_ecuador/",
+    "https://www.tiktok.com/@dotnetecuador",
+    "https://www.youtube.com/@dotnet-ecuador"
+  ]
+});
+
 export interface Props {
   title?: string;
   description?: string;
@@ -59,40 +79,7 @@ const socialImageURL = new URL(image, Astro.site || SITE.url).href;
 <meta name="googlebot" content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} />
 
 <!-- Structured Data -->
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "${SITE.title}",
-    "url": "${SITE.url}",
-    "description": "${SITE.description}",
-    "logo": "${SITE.url}/logo.png",
-    "foundingDate": "2020",
-    "foundingLocation": {
-      "@type": "Place",
-      "name": "Ecuador"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "Ecuador"
-    },
-    "knowsAbout": [
-      ".NET Framework",
-      "C# Programming",
-      "ASP.NET",
-      "Microsoft Technologies",
-      "Software Development",
-      "Programming Education"
-    ],
-    "sameAs": [
-      "https://github.com/DotNet-Ecuador",
-      "https://www.linkedin.com/company/dotnet-ecuador/",
-      "https://www.instagram.com/dotnet_ecuador/",
-      "https://www.tiktok.com/@dotnetecuador",
-      "https://www.youtube.com/@dotnet-ecuador"
-    ]
-  }
-</script>
+<script type="application/ld+json" set:html={orgJsonLd} />
 
 {structuredData && (
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
