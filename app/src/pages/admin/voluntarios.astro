@@ -1,0 +1,556 @@
+---
+import logo from '../../assets/dotnet_logo.png';
+import '../../assets/styles/base.css';
+import VoluntariosTable from '../../components/admin/VoluntariosTable';
+import type { VolunteerAdmin } from '../../types/api';
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Voluntarios — DotNet Ecuador</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src={logo.src} alt="DotNet Ecuador" height="26" />
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/admin/registros" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Registrados
+      </a>
+      <a href="/admin/eventos" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Eventos
+      </a>
+      <a href="/admin/voluntarios" class="nav-item nav-item--active">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Voluntarios
+      </a>
+    </nav>
+    <button type="button" class="logout-btn" id="btn-logout">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Cerrar sesión
+    </button>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Voluntarios</h1>
+        <p class="page-sub">Solicitudes de voluntariado recibidas</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-ghost" id="btn-refresh">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Actualizar
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-val" id="stat-total">—</span>
+        <span class="stat-key">Total voluntarios</span>
+      </div>
+    </div>
+
+    <!-- Table (TanStack Table via React island) -->
+    <VoluntariosTable client:load />
+
+  </main>
+</div>
+
+<!-- ── Modal: detalle voluntario ── -->
+<div class="overlay hidden" id="detalle-overlay" role="dialog" aria-modal="true" aria-labelledby="detalle-title">
+  <div class="modal modal--detalle">
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title" id="detalle-title">Detalle del voluntario</h2>
+        <p class="modal-sub" id="detalle-sub"></p>
+      </div>
+      <button type="button" class="modal-close" id="detalle-close" aria-label="Cerrar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="detalle-grid">
+      <div class="detalle-section">
+        <p class="detalle-label">Teléfono</p>
+        <p class="detalle-val" id="detalle-telefono">—</p>
+      </div>
+      <div class="detalle-section">
+        <p class="detalle-label">Ciudad / País</p>
+        <p class="detalle-val" id="detalle-ciudad">—</p>
+      </div>
+      <div class="detalle-section">
+        <p class="detalle-label">Experiencia previa</p>
+        <p class="detalle-val" id="detalle-experiencia">—</p>
+      </div>
+      <div class="detalle-section">
+        <p class="detalle-label">Disponibilidad</p>
+        <p class="detalle-val" id="detalle-disponibilidad">—</p>
+      </div>
+      <div class="detalle-section detalle-section--full">
+        <p class="detalle-label">Áreas de interés</p>
+        <div id="detalle-areas" class="detalle-badges"></div>
+      </div>
+      <div class="detalle-section detalle-section--full">
+        <p class="detalle-label">Habilidades / Conocimientos</p>
+        <p class="detalle-val" id="detalle-skills">—</p>
+      </div>
+      <div class="detalle-section detalle-section--full">
+        <p class="detalle-label">¿Por qué quiere ser voluntario?</p>
+        <p class="detalle-val" id="detalle-why">—</p>
+      </div>
+      <div class="detalle-section detalle-section--full" id="detalle-comments-wrap">
+        <p class="detalle-label">Comentarios adicionales</p>
+        <p class="detalle-val" id="detalle-comments">—</p>
+      </div>
+      <div class="detalle-section">
+        <p class="detalle-label">Fecha de registro</p>
+        <p class="detalle-val" id="detalle-fecha">—</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-ghost" id="detalle-close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const jwt = sessionStorage.getItem('adminJwt');
+  if (!jwt) window.location.replace('/admin');
+
+  const AREA_LABELS: Record<string, string> = {
+    EventOrganization:     'Org. eventos',
+    ContentCreation:       'Creación de contenido',
+    TechnicalSupport:      'Soporte técnico',
+    SocialMediaManagement: 'Gestión de redes sociales',
+    Other:                 'Otras áreas',
+  };
+
+  const AREA_COLORS: Record<string, string> = {
+    EventOrganization:     'badge--violet',
+    ContentCreation:       'badge--sky',
+    TechnicalSupport:      'badge--green',
+    SocialMediaManagement: 'badge--pink',
+    Other:                 'badge--gray',
+  };
+
+  function fmtDate(iso?: string | null) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('es-EC', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  // ── Stats ─────────────────────────────────────────────────────────────────
+  window.addEventListener('voluntarios:stats-update', (e) => {
+    const d = (e as CustomEvent).detail;
+    const el = document.getElementById('stat-total');
+    if (el) el.textContent = String(d.total);
+  });
+
+  // ── Detail modal ──────────────────────────────────────────────────────────
+  const detalleOverlay = document.getElementById('detalle-overlay')!;
+
+  window.addEventListener('voluntarios:ver-detalle', (e) => {
+    const v = (e as CustomEvent).detail;
+
+    (document.getElementById('detalle-title') as HTMLElement).textContent = v.fullName || 'Detalle del voluntario';
+    (document.getElementById('detalle-sub') as HTMLElement).textContent = v.email || '';
+    (document.getElementById('detalle-telefono') as HTMLElement).textContent = v.phoneNumber || '—';
+    (document.getElementById('detalle-ciudad') as HTMLElement).textContent =
+      [v.city, v.country].filter(Boolean).join(', ') || '—';
+    (document.getElementById('detalle-experiencia') as HTMLElement).textContent =
+      v.hasVolunteeringExperience ? 'Sí' : 'No';
+    (document.getElementById('detalle-disponibilidad') as HTMLElement).textContent = v.availableTime || '—';
+    (document.getElementById('detalle-skills') as HTMLElement).textContent = v.skillsOrKnowledge || '—';
+    (document.getElementById('detalle-why') as HTMLElement).textContent = v.whyVolunteer || '—';
+
+    const commentsWrap = document.getElementById('detalle-comments-wrap')!;
+    const commentsEl   = document.getElementById('detalle-comments')!;
+    if (v.additionalComments) {
+      commentsEl.textContent = v.additionalComments;
+      commentsWrap.classList.remove('hidden');
+    } else {
+      commentsWrap.classList.add('hidden');
+    }
+
+    (document.getElementById('detalle-fecha') as HTMLElement).textContent = fmtDate(v.createdAt);
+
+    const areasContainer = document.getElementById('detalle-areas')!;
+    areasContainer.innerHTML = '';
+    const areas: string[] = v.areasOfInterest ?? [];
+    if (areas.length) {
+      areas.forEach((a: string) => {
+        const label = a === 'Other' && v.otherAreas ? v.otherAreas : (AREA_LABELS[a] ?? a);
+        const colorCls = AREA_COLORS[a] ?? 'badge--gray';
+        const span = document.createElement('span');
+        span.className = `badge ${colorCls}`;
+        span.textContent = label;
+        areasContainer.appendChild(span);
+      });
+    } else {
+      areasContainer.textContent = '—';
+    }
+
+    detalleOverlay.classList.remove('hidden');
+  });
+
+  function closeDetalle() {
+    detalleOverlay.classList.add('hidden');
+  }
+
+  document.getElementById('detalle-close')!.addEventListener('click', closeDetalle);
+  document.getElementById('detalle-close-btn')!.addEventListener('click', closeDetalle);
+  detalleOverlay.addEventListener('click', e => { if (e.target === detalleOverlay) closeDetalle(); });
+
+  // ── Toolbar ───────────────────────────────────────────────────────────────
+  document.getElementById('btn-refresh')!.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('voluntarios:refresh'));
+  });
+
+  document.getElementById('btn-logout')!.addEventListener('click', () => {
+    sessionStorage.removeItem('adminJwt');
+    window.location.replace('/admin');
+  });
+</script>
+
+</body>
+</html>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.875rem;
+    background: #f0eeff;
+    color: #18181b;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Layout ─────────────────────────────────────────────────────────────── */
+  .shell {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ─────────────────────────────────────────────────────────────── */
+  .sidebar {
+    background: #0d0020;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 0.875rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .sidebar-logo {
+    padding: 0.25rem 0.625rem 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5625rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .nav-item:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+
+  .nav-item--active {
+    background: rgba(139,92,246,0.18);
+    color: #c4b5fd;
+  }
+
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.3);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    transition: color 0.15s;
+    margin-top: auto;
+  }
+
+  .logout-btn:hover { color: #f87171; }
+
+  /* ── Main ─────────────────────────────────────────────────────────────────── */
+  .main {
+    padding: 2rem 2.25rem;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* ── Page header ─────────────────────────────────────────────────────────── */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .page-title {
+    margin: 0 0 0.125rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #0d0020;
+    letter-spacing: -0.01em;
+  }
+
+  .page-sub {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #71717a;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Buttons ─────────────────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-ghost {
+    background: #fff;
+    color: #52525b;
+    border: 1px solid #e4e4e7;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .btn-ghost:hover { background: #fafafa; }
+
+  /* ── Stats ────────────────────────────────────────────────────────────────── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.875rem;
+  }
+
+  .stat-card {
+    background: #fff;
+    border: 1px solid #e9e4ff;
+    border-radius: 0.875rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .stat-val {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #0d0020;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .stat-key {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Modals ──────────────────────────────────────────────────────────────── */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 1.5rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.75rem;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+    max-height: 90dvh;
+    overflow-y: auto;
+  }
+
+  .modal--detalle { max-width: 600px; }
+
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    gap: 1rem;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0d0020;
+    margin: 0 0 0.25rem;
+  }
+
+  .modal-sub {
+    font-size: 0.8125rem;
+    color: #71717a;
+    margin: 0;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: #71717a;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { color: #18181b; background: #f4f4f5; }
+
+  /* ── Detalle grid ──────────────────────────────────────────────────────────── */
+  .detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+  }
+
+  .detalle-section { display: flex; flex-direction: column; gap: 0.25rem; }
+  .detalle-section--full { grid-column: 1 / -1; }
+
+  .detalle-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #5b21b6;
+    margin: 0;
+  }
+
+  .detalle-val {
+    font-size: 0.875rem;
+    color: #18181b;
+    margin: 0;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .detalle-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 0.125rem;
+  }
+
+  /* ── Badges (used in modal script) ──────────────────────────────────────── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .badge--violet { background: #ede9fe; color: #5b21b6; }
+  .badge--sky    { background: #e0f2fe; color: #075985; }
+  .badge--green  { background: #d1fae5; color: #064e3b; }
+  .badge--pink   { background: #fce7f3; color: #831843; }
+  .badge--gray   { background: #f4f4f5; color: #52525b; }
+
+  /* ── Utilities ───────────────────────────────────────────────────────────── */
+  .hidden { display: none !important; }
+
+  /* ── Responsive ──────────────────────────────────────────────────────────── */
+  @media (max-width: 960px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 1.25rem; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .detalle-grid { grid-template-columns: 1fr; }
+  }
+</style>

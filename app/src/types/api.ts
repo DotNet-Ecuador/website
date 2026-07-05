@@ -252,3 +252,29 @@ export interface SolicitudMentoriaResponse {
   solicitudId: string;
   mensaje: string;
 }
+
+export interface VolunteerAdmin {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  city: string;
+  country: string;
+  hasVolunteeringExperience: boolean;
+  areasOfInterest: string[];
+  otherAreas?: string;
+  availableTime: string;
+  skillsOrKnowledge: string;
+  whyVolunteer: string;
+  additionalComments?: string;
+  createdAt: string;
+}
+
+export interface VoluntariosListResponse {
+  data: VolunteerAdmin[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+}

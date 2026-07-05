@@ -38,6 +38,7 @@ import type {
   InstitucionDto,
   SolicitudMentoriaRequest,
   SolicitudMentoriaResponse,
+  VoluntariosListResponse,
 } from '../types/api';
 
 class ApiService {
@@ -255,6 +256,17 @@ class ApiService {
 
   async enviarSolicitudMentoria(data: SolicitudMentoriaRequest): Promise<ApiResponse<SolicitudMentoriaResponse>> {
     return this.post<SolicitudMentoriaResponse>('/api/v1/mentorias/solicitudes', data);
+  }
+
+  async getAdminVoluntarios(
+    jwt: string,
+    params: { page?: number; pageSize?: number; search?: string } = {}
+  ): Promise<ApiResponse<VoluntariosListResponse>> {
+    const qs = new URLSearchParams();
+    if (params.search) qs.set('search', params.search);
+    qs.set('page', String(params.page ?? 1));
+    qs.set('pageSize', String(params.pageSize ?? 100));
+    return this.get(`/api/v1/volunteer-application?${qs}`, { Authorization: `Bearer ${jwt}` });
   }
 }
 
